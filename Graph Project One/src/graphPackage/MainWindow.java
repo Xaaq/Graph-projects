@@ -61,26 +61,26 @@ public class MainWindow extends JFrame {
 		contentPane.add(matrixScrollPane);
 
 		//tworzy textfield do wpisywania wielkosci grafu i jego label
-		JLabel lblWielkoscGrafu = new JLabel("wielkosc grafu");
-		lblWielkoscGrafu.setBounds(627, 48, 96, 14);
-		contentPane.add(lblWielkoscGrafu);
+		JLabel graphSizeLabel = new JLabel("wielkosc grafu");
+		graphSizeLabel.setBounds(627, 48, 96, 14);
+		contentPane.add(graphSizeLabel);
 
 		graphSizeTextField = new JTextField();
 		graphSizeTextField.setBounds(627, 73, 186, 40);
 		contentPane.add(graphSizeTextField);
 		graphSizeTextField.setColumns(10);
 
-		//tworzy textfield do wpisywania prawdopodobienstwa wystapienia / liczby krawedzi
+		//tworzy textfield do wpisywania prawdopodobienstwa wystapienia / liczby krawedzi i jego label
+		JLabel probabilityLabel = new JLabel("prawdopodobienstwo (0 - 1)");
+		probabilityLabel.setBounds(640, 136, 173, 14);
+		contentPane.add(probabilityLabel);
+		
 		probabilityTextField = new JTextField();
 		probabilityTextField.setBounds(640, 161, 192, 47);
 		contentPane.add(probabilityTextField);
 		probabilityTextField.setColumns(10);
 
-		//tworzy przycisk do generowania grafu i jego label
-		JLabel lblPrawdopodobienstwo = new JLabel("prawdopodobienstwo (0 - 1)");
-		lblPrawdopodobienstwo.setBounds(640, 136, 173, 14);
-		contentPane.add(lblPrawdopodobienstwo);
-
+		//tworzy przycisk do generowania grafu
 		JButton generateGraphButton = new JButton("Wygeneruj graf");
 		generateGraphButton.setBackground(Color.WHITE);
 		generateGraphButton.setBounds(684, 222, 109, 72);
@@ -95,7 +95,7 @@ public class MainWindow extends JFrame {
 					int size = Integer.parseInt(graphSizeTextField.getText());
 					double probability = Double.parseDouble(probabilityTextField.getText());
 					
-					graph.generateProbabilityMatrix(size, probability);
+					graph.generateNumberMatrix(size, probability);
 					graph.writeMatrix();
 					
 					SwingUtilities.updateComponentTreeUI(matrixPanel);

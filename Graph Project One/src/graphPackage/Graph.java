@@ -46,7 +46,8 @@ public class Graph {
 	}
 
 	//generuje graf w postaci macierzy z podana liczba krawedzi
-	public void generateNumberMatrix(int size, int number) {
+	public void generateNumberMatrix(int size, double numberOfLines) {
+		int number = (int) numberOfLines;
 		graphMatrix = new int[size][size];
 
 		ArrayList<Point> pointList = new ArrayList<Point>();
@@ -59,13 +60,19 @@ public class Graph {
 		}
 
 		while (!pointList.isEmpty() && lineCount < number) {
-			int randomIndex = (int) Math.random() * (pointList.size() - 1);
+			int randomIndex = (int) (Math.random() * (pointList.size()));
 			int x = (int) pointList.get(randomIndex).getX();
 			int y = (int) pointList.get(randomIndex).getY();
 			pointList.remove(randomIndex);
 
 			graphMatrix[x][y] = 1;
 			lineCount++;
+		}
+		
+		for (int i = 0; i < graphMatrix.length; i++) {
+			for (int j = 0; j < i; j++) {
+				graphMatrix[i][j] = graphMatrix[j][i];
+			}
 		}
 	}
 
