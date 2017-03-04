@@ -96,7 +96,7 @@ public class MainWindow extends JFrame {
 					double probability = Double.parseDouble(probabilityTextField.getText());
 					
 					graph.generateProbabilityMatrix(size, probability);
-					graph.writeToMatrix();
+					graph.writeMatrix();
 					
 					SwingUtilities.updateComponentTreeUI(matrixPanel);
 				} catch (NumberFormatException exception) {
