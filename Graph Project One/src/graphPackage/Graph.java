@@ -2,6 +2,8 @@ package graphPackage;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -45,18 +47,26 @@ public class Graph {
 
 	//generuje graf w postaci macierzy z podana liczba krawedzi
 	public void generateNumberMatrix(int size, int number) {
-		//
-		//
-		//
-		//
-		//
-		//
-		//FUNKCJA DO ZROBIENIA
-		//
-		//
-		//
-		//
-		//
+		graphMatrix = new int[size][size];
+
+		ArrayList<Point> pointList = new ArrayList<Point>();
+		int lineCount = 0;
+
+		for (int i = 0; i < graphMatrix.length; i++) {
+			for (int j = i + 1; j < graphMatrix[i].length; j++) {
+				pointList.add(new Point(i, j));
+			}
+		}
+
+		while (!pointList.isEmpty() && lineCount < number) {
+			int randomIndex = (int) Math.random() * (pointList.size() - 1);
+			int x = (int) pointList.get(randomIndex).getX();
+			int y = (int) pointList.get(randomIndex).getY();
+			pointList.remove(randomIndex);
+
+			graphMatrix[x][y] = 1;
+			lineCount++;
+		}
 	}
 
 	//funkcja robiaca grid w JFramie i wpisujaca do niego macierz
