@@ -51,7 +51,7 @@ public class Graph {
 		//
 		//
 		//
-		//tu zmienilem nazwe zmiennej
+		//zmienna u mnie
 		//
 		//
 		//
