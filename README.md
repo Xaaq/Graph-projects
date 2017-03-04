@@ -1,2 +1,2 @@
 # Graphs
-Small graph project
+Projekty Grafowe
