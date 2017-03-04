@@ -51,15 +51,12 @@ public class Graph {
 		//
 		//
 		//
-		//ppp
+		//FUNKCJA DO ZROBIENIA
 		//
 		//
 		//
 		//
 		//
-		//tu zmienna
-		//tu tez
-		
 	}
 
 	//funkcja robiaca grid w JFramie i wpisujaca do niego macierz
