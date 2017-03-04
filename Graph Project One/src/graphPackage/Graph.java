@@ -76,7 +76,7 @@ public class Graph {
 		}
 	}
 
-	//funkcja robiaca grid w JFramie i wpisujaca do niego macierz
+	//funkcja robiaca grid w JFramie (podanym w konstruktorze) i wpisujaca do niego macierz
 	public void writeMatrix() {
 		if (graphMatrix == null)
 			return;

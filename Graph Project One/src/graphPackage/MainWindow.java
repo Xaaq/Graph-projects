@@ -60,21 +60,23 @@ public class MainWindow extends JFrame {
 		matrixScrollPane.setSize(619, 502);
 		contentPane.add(matrixScrollPane);
 
-		//tworzy textfield do wpisywania wielkosci grafu i jego label
+		//tworzy label do textfielda wielkosci grafu
 		JLabel graphSizeLabel = new JLabel("wielkosc grafu");
 		graphSizeLabel.setBounds(627, 48, 96, 14);
 		contentPane.add(graphSizeLabel);
 
+		//tworzy textfield do wpisywania wielkosci grafu
 		graphSizeTextField = new JTextField();
 		graphSizeTextField.setBounds(627, 73, 186, 40);
 		contentPane.add(graphSizeTextField);
 		graphSizeTextField.setColumns(10);
 
-		//tworzy textfield do wpisywania prawdopodobienstwa wystapienia / liczby krawedzi i jego label
+		//tworzy label do textfielda prawdopodobienstwa wystapienia / liczby krawedzi
 		JLabel probabilityLabel = new JLabel("prawdopodobienstwo (0 - 1)");
 		probabilityLabel.setBounds(640, 136, 173, 14);
 		contentPane.add(probabilityLabel);
 		
+		//tworzy textfield do wpisywania prawdopodobienstwa wystapienia / liczby krawedzi
 		probabilityTextField = new JTextField();
 		probabilityTextField.setBounds(640, 161, 192, 47);
 		contentPane.add(probabilityTextField);
@@ -94,7 +96,13 @@ public class MainWindow extends JFrame {
 				try {
 					int size = Integer.parseInt(graphSizeTextField.getText());
 					double probability = Double.parseDouble(probabilityTextField.getText());
-					
+//
+//					
+//					trzeba tu zrobic cos zeby mozna bylo wybrac
+//					czy chce sie zeby generowalo graf na podstawie prawdopodobienstwa
+//					czy sztwnej liczby wystapien
+//					
+//					
 					graph.generateNumberMatrix(size, probability);
 					graph.writeMatrix();
 					
