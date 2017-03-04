@@ -76,6 +76,7 @@ public class Graph {
 				writePanel.add(label, gridInfo);
 			}
 		}
+		//koniec writematrixa
 	}
 
 }
