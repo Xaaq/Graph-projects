@@ -78,6 +78,7 @@ public class Graph {
 				writePanel.add(label, gridInfo);
 			}
 		}
+		//tutaj na koncowce writeMAtrixa jakis komc
 	}
 
 }
