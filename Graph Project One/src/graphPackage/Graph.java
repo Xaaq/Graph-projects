@@ -51,7 +51,7 @@ public class Graph {
 		//
 		//
 		//
-		//moja zmienna
+		//gg
 		//
 		//
 		//
