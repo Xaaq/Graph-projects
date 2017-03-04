@@ -51,7 +51,7 @@ public class Graph {
 		//
 		//
 		//
-		//github zmienna
+		//moja zmienna
 		//
 		//
 		//
