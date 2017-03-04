@@ -58,6 +58,7 @@ public class Graph {
 		//
 		//
 		//komentarz z edita
+		//komanetarz z serwera
 	}
 
 	//funkcja robiaca grid w JFramie i wpisujaca do niego macierz
