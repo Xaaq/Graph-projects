@@ -57,7 +57,7 @@ public class Graph {
 		//
 		//
 		//
-		//komentarz z kompa
+		//komentarz z edita
 	}
 
 	//funkcja robiaca grid w JFramie i wpisujaca do niego macierz
@@ -77,7 +77,6 @@ public class Graph {
 				writePanel.add(label, gridInfo);
 			}
 		}
-		//koniec writematrixa
 	}
 
 }
