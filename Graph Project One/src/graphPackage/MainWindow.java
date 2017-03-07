@@ -94,6 +94,7 @@ class MainWindow extends JFrame {
 //					czy sztwnej liczby wystapien
 //
 //
+//
                 graph.generateNumberMatrix(size, probability);
                 graph.writeMatrix();
 
