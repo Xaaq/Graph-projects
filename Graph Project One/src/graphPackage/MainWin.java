@@ -26,6 +26,15 @@ public class MainWin {
     private JButton wczytajZPlikuButton;
 
 
+    public MainWin() {
+        generujButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+//                circleGraph1 = new CircleGraph(0);                     nie dziala aktualizacja
+//                SwingUtilities.updateComponentTreeUI(mainPanel);
+            }
+        });
+    }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainWin");
