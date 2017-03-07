@@ -74,7 +74,7 @@ public class Graph {
 				graphMatrix[i][j] = graphMatrix[j][i];
 			}
 		}
-		//komentarz z komputera
+//dziki komentarz
 	}
 
 	//funkcja robiaca grid w JFramie (podanym w konstruktorze) i wpisujaca do niego macierz
