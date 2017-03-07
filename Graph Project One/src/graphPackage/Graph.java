@@ -75,6 +75,7 @@ public class Graph {
 			}
 		}
 //dziki komentarz
+		//komenarz
 	}
 
 	//funkcja robiaca grid w JFramie (podanym w konstruktorze) i wpisujaca do niego macierz
