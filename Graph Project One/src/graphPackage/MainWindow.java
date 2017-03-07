@@ -115,5 +115,6 @@ public class MainWindow extends JFrame {
 		});
 	}
 	//komentarz z brancza MOJEGO KURWA
+	//komentarz nr 1 z A
 	//brancz z M
 }
