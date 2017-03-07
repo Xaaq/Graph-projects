@@ -74,8 +74,6 @@ public class Graph {
 				graphMatrix[i][j] = graphMatrix[j][i];
 			}
 		}
-//dziki komentarz
-
 	}
 
 	//funkcja robiaca grid w JFramie (podanym w konstruktorze) i wpisujaca do niego macierz
@@ -95,6 +93,5 @@ public class Graph {
 				writePanel.add(label, gridInfo);
 			}
 		}
-		//fdsf
 	}
 }
