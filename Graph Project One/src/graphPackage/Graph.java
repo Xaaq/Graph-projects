@@ -89,6 +89,5 @@ public class Graph {
                 writePanel.add(label, gridInfo);
             }
         }
-        //test
     }
 }
