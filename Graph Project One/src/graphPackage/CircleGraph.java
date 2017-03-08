@@ -20,7 +20,7 @@ class CircleGraph extends JPanel {
         this( graph.getGraphMatrix()[0].length);
         this.graphMatrix = graph.getGraphMatrix();
     }
-    // przyjmujacy ilosc wierzcholkow
+    // konstruktor przyjmujacy ilosc wierzcholkow
     CircleGraph(int n) {
         this.setPreferredSize(new Dimension(SIZE, SIZE));
         this.n =n;
