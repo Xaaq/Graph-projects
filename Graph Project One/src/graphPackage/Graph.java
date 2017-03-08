@@ -92,5 +92,4 @@ public class Graph {
     }
 }
 // commit Mateusz testowy
-// 2
-//2323232gf3ew
+// 2dew
