@@ -1,8 +1,8 @@
 package graphPackage;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * Created by pawel on 07.03.17.
@@ -24,14 +24,32 @@ public class MainWin {
     private JTextField wielkoscTextField;
     private JTextField prawdopodobienstwoTextField;
     private JButton wczytajZPlikuButton;
-
+    private Graph graph = new Graph();
 
     public MainWin() {
         generujButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-//                circleGraph1 = new CircleGraph(0);                     nie dziala aktualizacja
-//                SwingUtilities.updateComponentTreeUI(mainPanel);
+
+                try {
+                    int size = Integer.parseInt(wielkoscTextField.getText());
+                    double probability = Double.parseDouble(prawdopodobienstwoTextField.getText());
+//
+//
+//					trzeba tu zrobic cos zeby mozna bylo wybrac
+//					czy chce sie zeby generowalo graf na podstawie prawdopodobienstwa
+//					czy sztwnej liczby wystapien
+//
+//
+//
+                    graph.generateNumberMatrix(size, probability);
+                    subPan1.remove(circleGraph1);
+                    circleGraph1 = new CircleGraph(graph);
+                    subPan1.add(circleGraph1);
+                    SwingUtilities.updateComponentTreeUI(mainPanel);
+                } catch (NumberFormatException exception) {
+                    System.out.println(exception.getMessage());
+                }
             }
         });
     }
