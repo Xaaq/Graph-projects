@@ -5,18 +5,20 @@ import java.util.ArrayList;
 
 class Graph {
 
+    //przechowuje graf w postaci macierzy
+    private int[][] graphMatrix = null;
+
+    //konstruktor
+    Graph() {
+    }
+
+    //zwraca graf w postaci macierzy
     int[][] getGraphMatrix() {
         return graphMatrix;
     }
 
-    //przechowuje graf w postaci macierzy
-    private int[][] graphMatrix = null;
-
-    Graph() {}
-
     //generuje graf w postaci macierzy z zadanym prawdopodobienstwem wstapienia krawedzi
-
-        void generateProbabilityMatrix(int size, double probability) {
+    void generateProbabilityMatrix(int size, double probability) {
         graphMatrix = new int[size][size];
 
         for (int i = 0; i < graphMatrix.length; i++) {
@@ -71,5 +73,3 @@ class Graph {
         }
     }
 }
-// commit Mateusz testowy
-// 2dew

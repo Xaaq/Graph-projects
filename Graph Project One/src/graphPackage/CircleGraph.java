@@ -8,6 +8,7 @@ import java.awt.*;
  */
 @SuppressWarnings("DefaultFileTemplate")
 class CircleGraph extends JPanel {
+
     private static final int SIZE = 256;
 
     private final int n;
@@ -17,13 +18,14 @@ class CircleGraph extends JPanel {
 
     // konstruktor przyjmujacy macierz wieczholkow
     CircleGraph(Graph graph) {
-        this( graph.getGraphMatrix()[0].length);
+        this(graph.getGraphMatrix()[0].length);
         this.graphMatrix = graph.getGraphMatrix();
     }
+
     // konstruktor przyjmujacy ilosc wierzcholkow
     CircleGraph(int n) {
         this.setPreferredSize(new Dimension(SIZE, SIZE));
-        this.n =n;
+        this.n = n;
         tabX = new int[n];
         tabY = new int[n];
     }
@@ -42,6 +44,7 @@ class CircleGraph extends JPanel {
         super.setBackground(Color.WHITE);
         g2d.setColor(Color.BLUE.darker());
         int num = 1;
+
         //generacja x,y wraz z zapisaniem do tablicy
         for (int i = 0; i < n; i++) {
             double t = 2 * Math.PI * i / n;
@@ -50,15 +53,15 @@ class CircleGraph extends JPanel {
             tabX[i] = x;
             tabY[i] = y;
             g2d.fillOval(x - r2, y - r2, 2 * r2, 2 * r2);
-            g2d.drawString( Integer.toString( num++ ), x + 2* r2, y + 2 * r2);
+            g2d.drawString(Integer.toString(num++), x + 2 * r2, y + 2 * r2);
         }
+
         //macierz symetryczna wiec liczy górny trojkat
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
                 if (graphMatrix[i][j] == 1)
-                    g2d.drawLine( tabX[i], tabY[i], tabX[j], tabY[j] );
+                    g2d.drawLine(tabX[i], tabY[i], tabX[j], tabY[j]);
             }
         }
     }
 }
-
