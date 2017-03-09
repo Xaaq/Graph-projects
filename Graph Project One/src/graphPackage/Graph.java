@@ -12,7 +12,7 @@ public class Graph {
     private JPanel writePanel;
 
     //konstruktor przyjmujacy jako argument JFrame do ktorego bedzie wpisywana macierzowa reprezentacja grafu
-    public Graph(JPanel writePanel) {
+    Graph(JPanel writePanel) {
         this.writePanel = writePanel;
     }
 
@@ -43,11 +43,11 @@ public class Graph {
     }
 
     //generuje graf w postaci macierzy z podana liczba krawedzi
-    public void generateNumberMatrix(int size, double numberOfLines) {
+    void generateNumberMatrix(int size, double numberOfLines) {
         int number = (int) numberOfLines;
         graphMatrix = new int[size][size];
 
-        ArrayList<Point> pointList = new ArrayList<Point>();
+        ArrayList<Point> pointList = new ArrayList<>();
         int lineCount = 0;
 
         for (int i = 0; i < graphMatrix.length; i++) {
@@ -74,7 +74,7 @@ public class Graph {
     }
 
     //funkcja robiaca grid w JFramie (podanym w konstruktorze) i wpisujaca do niego macierz
-    public void writeMatrix() {
+    void writeMatrix() {
         if (graphMatrix == null)
             return;
 
@@ -91,6 +91,4 @@ public class Graph {
             }
         }
     }
-    //koment z klienta
-    //koment z serwa
 }
