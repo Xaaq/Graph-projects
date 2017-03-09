@@ -91,5 +91,4 @@ public class Graph {
             }
         }
     }
-    //koment z klienta
 }
