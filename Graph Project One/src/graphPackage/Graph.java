@@ -1,6 +1,5 @@
 package graphPackage;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -8,16 +7,18 @@ class Graph {
 
     //przechowuje graf w postaci macierzy
     private int[][] graphMatrix = null;
-    //odnosnik do panelu w ktorym bedzie wypisywac liczbowa reprezentacje grafu
-    private JPanel writePanel;
 
-    //konstruktor przyjmujacy jako argument JFrame do ktorego bedzie wpisywana macierzowa reprezentacja grafu
-    Graph(JPanel writePanel) {
-        this.writePanel = writePanel;
+    //konstruktor
+    Graph() {
+    }
+
+    //zwraca graf w postaci macierzy
+    int[][] getGraphMatrix() {
+        return graphMatrix;
     }
 
     //generuje graf w postaci macierzy z zadanym prawdopodobienstwem wstapienia krawedzi
-    public void generateProbabilityMatrix(int size, double probability) {
+    void generateProbabilityMatrix(int size, double probability) {
         graphMatrix = new int[size][size];
 
         for (int i = 0; i < graphMatrix.length; i++) {
@@ -26,7 +27,7 @@ class Graph {
                     graphMatrix[i][j] = 0;
                     continue;
                 }
-//lll
+
                 if (Math.random() <= probability)
                     graphMatrix[i][j] = 1;
                 else
@@ -46,7 +47,7 @@ class Graph {
         int number = (int) numberOfLines;
         graphMatrix = new int[size][size];
 
-        ArrayList<Point> pointList = new ArrayList<Point>();
+        ArrayList<Point> pointList = new ArrayList<>();
         int lineCount = 0;
 
         for (int i = 0; i < graphMatrix.length; i++) {
@@ -71,26 +72,4 @@ class Graph {
             }
         }
     }
-
-    //funkcja robiaca grid w JFramie (podanym w konstruktorze) i wpisujaca do niego macierz
-    public void writeMatrix() {
-        if (graphMatrix == null)
-            return;
-
-        writePanel.removeAll();
-        writePanel.setLayout(new GridLayout(graphMatrix.length, graphMatrix[0].length, 10, 10));
-
-        for (int i = 0; i < graphMatrix.length; i++) {
-            for (int j = 0; j < graphMatrix[i].length; j++) {
-                JLabel label = new JLabel(Integer.toString(graphMatrix[i][j]));
-                GridBagConstraints gridInfo = new GridBagConstraints();
-                gridInfo.gridx = i;
-                gridInfo.gridy = j;
-                writePanel.add(label, gridInfo);
-            }
-        }
-    }
 }
-//
-
-// TEstowy komentarz intellij

@@ -1,109 +1,84 @@
 package graphPackage;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
-class MainWindow extends JFrame {
+/**
+ * Created by pawel on 07.03.17.
+ */
+@SuppressWarnings("DefaultFileTemplate")
+class MainWindow {
+    private static JFrame frame;
+    private JComboBox comboBox2;
+    private JButton zapiszDoPlikuButton;
+    private JButton generujButton;
+    private CircleGraph circleGraph1;
+    private JPanel mainPanel;
+    private JPanel subPan1;
+    private JPanel subPan2;
+    private JPanel subPan21;
+    private JTextField wielkoscTextField;
+    private JTextField prawdopodobienstwoTextField;
+    private final Graph graph = new Graph();
 
-    private Graph graph;
-    private JTextField probabilityTextField;
-	private JTextField graphSizeTextField;
-
-	//stworzenie okna
     private MainWindow() {
-        //tworzy glowne okno
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBounds(100, 100, 858, 617);
-        JPanel contentPane = new JPanel();
-        contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+        generujButton.addActionListener(actionEvent -> {
+            try {
+                //graf
+                int size = Integer.parseInt(wielkoscTextField.getText());
+                double probability = Double.parseDouble(prawdopodobienstwoTextField.getText());
+                String choose = String.valueOf(comboBox2.getSelectedItem());
 
-		//tworzy pudelko w ktorym bedzie mozna wygenerowac macierz
-		JPanel matrixPanel = new JPanel();
-		matrixPanel.setBounds(1, 1, 552, 448);
-		contentPane.add(matrixPanel);
-
-		graph = new Graph(matrixPanel);
-
-		//tworzy paski do scrollowania pudelka w ktorym bedzie wygenerowana macierz grafu
-		JScrollPane matrixScrollPane = new JScrollPane(matrixPanel);
-		matrixScrollPane.setLocation(0, 0);
-		matrixScrollPane.setSize(619, 502);
-		contentPane.add(matrixScrollPane);
-
-		//tworzy label do textfielda wielkosci grafu
-		JLabel graphSizeLabel = new JLabel("wielkosc grafu");
-		graphSizeLabel.setBounds(627, 48, 96, 14);
-		contentPane.add(graphSizeLabel);
-
-		//tworzy textfield do wpisywania wielkosci grafu
-		graphSizeTextField = new JTextField();
-		graphSizeTextField.setBounds(627, 73, 186, 40);
-		contentPane.add(graphSizeTextField);
-		graphSizeTextField.setColumns(10);
-
-		//tworzy label do textfielda prawdopodobienstwa wystapienia / liczby krawedzi
-		JLabel probabilityLabel = new JLabel("prawdopodobienstwo (0 - 1)");
-		probabilityLabel.setBounds(640, 136, 173, 14);
-		contentPane.add(probabilityLabel);
-
-		//tworzy textfield do wpisywania prawdopodobienstwa wystapienia / liczby krawedzi
-		probabilityTextField = new JTextField();
-		probabilityTextField.setBounds(640, 161, 192, 47);
-		contentPane.add(probabilityTextField);
-		probabilityTextField.setColumns(10);
-
-		//tworzy przycisk do generowania grafu
-		JButton generateGraphButton = new JButton("Wygeneruj graf");
-		generateGraphButton.setBackground(Color.WHITE);
-		generateGraphButton.setBounds(684, 222, 109, 72);
-		contentPane.add(generateGraphButton);
-
-		//przypisuje akcje nacisniecia przycisku
-		generateGraphButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					int size = Integer.parseInt(graphSizeTextField.getText());
-					double probability = Double.parseDouble(probabilityTextField.getText());
-//
-//
-//					trzeba tu zrobic cos zeby mozna bylo wybrac
-//					czy chce sie zeby generowalo graf na podstawie prawdopodobienstwa
-//					czy sztwnej liczby wystapien
-//
-//
+                //generacja
+                if (choose.equals("Ilosc krawedzi")) {
                     graph.generateNumberMatrix(size, probability);
-					graph.writeMatrix();
-
-					SwingUtilities.updateComponentTreeUI(matrixPanel);
-				} catch (NumberFormatException exception) {
-					System.out.println(exception.getMessage());
-				}
-
-			}
-		});
-	}
-
-    //odpalenie aplikacji
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    MainWindow frame = new MainWindow();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    graph.generateProbabilityMatrix(size, probability);
                 }
+
+                subPan1.remove(circleGraph1);
+                circleGraph1 = new CircleGraph(graph);
+                subPan1.add(circleGraph1);
+
+                SwingUtilities.updateComponentTreeUI(mainPanel);
+                frame.pack();
+            } catch (NumberFormatException exception) {
+                System.out.println(exception.getMessage());
             }
         });
+        zapiszDoPlikuButton.addActionListener(actionEvent -> {
+            //pola tekstowe -- bedzie do zapisywania pliku
+            StringBuilder s = new StringBuilder();
+            for (int[] x : graph.getGraphMatrix()) {
+                s.append("|");
+                for (int y : x) {
+                    s.append(" ");
+                    s.append(y);
+                    s.append(" ");
+                }
+                s.append("|\n");
+            }
+
+            try (PrintWriter out = new PrintWriter("graf.txt")) {
+                out.println(s.toString());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    public static void main(String[] args) {
+        frame = new JFrame("MainWindow");
+        frame.setContentPane(new MainWindow().mainPanel);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+
+    private void createUIComponents() {
+        circleGraph1 = new CircleGraph(0); //potrzebny do wygenerowania programu - graf o 0 wierzcholkach
     }
 }
-//test
-// test ff
