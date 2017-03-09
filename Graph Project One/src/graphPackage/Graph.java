@@ -92,4 +92,5 @@ public class Graph {
         }
     }
     //koment z klienta
+    //koment z serwa
 }
