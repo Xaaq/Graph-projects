@@ -6,20 +6,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainWindow extends JFrame {
+class MainWindow extends JFrame {
 
-	private JPanel contentPane;
-	private Graph graph;
-	private JTextField probabilityTextField;
+    private Graph graph;
+    private JTextField probabilityTextField;
 	private JTextField graphSizeTextField;
 
 	//stworzenie okna
-	public MainWindow() {
-		//tworzy glowne okno
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 858, 617);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+    private MainWindow() {
+        //tworzy glowne okno
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setBounds(100, 100, 858, 617);
+        JPanel contentPane = new JPanel();
+        contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

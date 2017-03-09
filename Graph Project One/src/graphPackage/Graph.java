@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Graph {
+class Graph {
 
     //przechowuje graf w postaci macierzy
     private int[][] graphMatrix = null;
