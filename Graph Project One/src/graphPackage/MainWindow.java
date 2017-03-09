@@ -1,19 +1,10 @@
 package graphPackage;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 
 public class MainWindow extends JFrame {
 
@@ -21,20 +12,6 @@ public class MainWindow extends JFrame {
 	private Graph graph;
 	private JTextField probabilityTextField;
 	private JTextField graphSizeTextField;
-
-	//odpalenie aplikacji
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	//stworzenie okna
 	public MainWindow() {
@@ -75,7 +52,7 @@ public class MainWindow extends JFrame {
 		JLabel probabilityLabel = new JLabel("prawdopodobienstwo (0 - 1)");
 		probabilityLabel.setBounds(640, 136, 173, 14);
 		contentPane.add(probabilityLabel);
-		
+
 		//tworzy textfield do wpisywania prawdopodobienstwa wystapienia / liczby krawedzi
 		probabilityTextField = new JTextField();
 		probabilityTextField.setBounds(640, 161, 192, 47);
@@ -97,15 +74,15 @@ public class MainWindow extends JFrame {
 					int size = Integer.parseInt(graphSizeTextField.getText());
 					double probability = Double.parseDouble(probabilityTextField.getText());
 //
-//					
+//
 //					trzeba tu zrobic cos zeby mozna bylo wybrac
 //					czy chce sie zeby generowalo graf na podstawie prawdopodobienstwa
 //					czy sztwnej liczby wystapien
-//					
-//					
-					graph.generateNumberMatrix(size, probability);
+//
+//
+                    graph.generateNumberMatrix(size, probability);
 					graph.writeMatrix();
-					
+
 					SwingUtilities.updateComponentTreeUI(matrixPanel);
 				} catch (NumberFormatException exception) {
 					System.out.println(exception.getMessage());
@@ -114,5 +91,20 @@ public class MainWindow extends JFrame {
 			}
 		});
 	}
+
+    //odpalenie aplikacji
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    MainWindow frame = new MainWindow();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
 //test
+// test ff
