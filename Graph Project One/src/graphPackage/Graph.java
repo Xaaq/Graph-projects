@@ -18,6 +18,7 @@ public class Graph {
 
     //generuje graf w postaci macierzy z zadanym prawdopodobienstwem wstapienia krawedzi
     public void generateProbabilityMatrix(int size, double probability) {
+
         graphMatrix = new int[size][size];
 
         for (int i = 0; i < graphMatrix.length; i++) {
