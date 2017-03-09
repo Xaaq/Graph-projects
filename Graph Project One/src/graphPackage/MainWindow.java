@@ -7,7 +7,7 @@ import java.io.PrintWriter;
  * Created by pawel on 07.03.17.
  */
 @SuppressWarnings("DefaultFileTemplate")
-class MainWin {
+class MainWindow {
     private static JFrame frame;
     private JComboBox comboBox2;
     private JButton zapiszDoPlikuButton;
@@ -21,7 +21,7 @@ class MainWin {
     private JTextField prawdopodobienstwoTextField;
     private final Graph graph = new Graph();
 
-    private MainWin() {
+    private MainWindow() {
         generujButton.addActionListener( actionEvent -> {
             try {
                 //graf
@@ -65,9 +65,9 @@ class MainWin {
     }
 
     public static void main(String[] args) {
-        frame = new JFrame("MainWin");
-        frame.setContentPane(new MainWin().mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame = new JFrame("MainWindow");
+        frame.setContentPane(new MainWindow().mainPanel);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
