@@ -10,7 +10,6 @@ import java.awt.*;
 class CircleGraph extends JPanel {
 
     private static final int SIZE = 256;
-
     private final int n;
     private int[][] graphMatrix;
     private final int[] tabX;
