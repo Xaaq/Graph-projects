@@ -66,6 +66,7 @@ class MainWindow {
                 e.printStackTrace();
             }
         });
+
     }
 
     public static void main(String[] args) {
@@ -75,6 +76,7 @@ class MainWindow {
         frame.pack();
         frame.setVisible(true);
     }
+
 
     private void createUIComponents() {
         circleGraph1 = new CircleGraph(0); //potrzebny do wygenerowania programu - graf o 0 wierzcholkach
