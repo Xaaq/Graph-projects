@@ -16,6 +16,20 @@ public class GraphCanvas extends Canvas {
         loadFXML();
     }
 
+    //laduje plik .fxml
+    private void loadFXML() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraphCanvas.fxml"));
+
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     public void drawGraph(Graph graph) {
         double canvasWidth = getWidth();
         double canvasHeight = getHeight();
@@ -56,19 +70,4 @@ public class GraphCanvas extends Canvas {
             }
         }
     }
-
-
-    private void loadFXML() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraphCanvas.fxml"));
-
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
 }
