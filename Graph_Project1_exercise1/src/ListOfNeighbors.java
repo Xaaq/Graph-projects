@@ -3,9 +3,5 @@
  */
 public class ListOfNeighbors {
 
-    public ListOfNeighbors() {
     }
 
-
-
-}
