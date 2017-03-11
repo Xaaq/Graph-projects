@@ -59,9 +59,9 @@ public class Main {
     public static void main(String[] args) {
         createGraph();
         cMatrix.printMatrix();
-        System.out.println(nrOfVertices + ": nrOfVertices");
-        IncidenceMatrix incMatrix = new IncidenceMatrix(cMatrix, nrOfVertices, cMatrix.getNumberOfEdges());
-
+        int nrOfEdges = cMatrix.getNumberOfEdges();
+        IncidenceMatrix incMatrix = new IncidenceMatrix(cMatrix, nrOfVertices, nrOfEdges);
+        incMatrix.printIncidenceMatrix();
 
     }
 }

@@ -2,10 +2,10 @@
  * Created by Mateusz on 11.03.2017.
  */
 public class ConnectionMatrix {
-    //przechowuje graf w postaci macierzy
-    private int[][] graphMatrix = null;
     // liczba krawędzi
     private int numberOfEdges;
+    //przechowuje graf w postaci macierzy
+    public int[][] graphMatrix = null;
 
 
     public ConnectionMatrix(int size) {
@@ -15,6 +15,7 @@ public class ConnectionMatrix {
         graphMatrix[wsp1][wsp2] = neighbor;
     }
     public void printMatrix(){
+        System.out.println("Printing Connections Matrix");
         for(int i=0;i<graphMatrix.length;++i){
             System.out.print("|");
             for(int j=0;j<graphMatrix.length;++j){
