@@ -10,7 +10,7 @@ public class ListOfNeighbors {
     // Lista sąsiadów
     private List<List<Integer>> neighborsList;
 
-    public ListOfNeighbors(ConnectionMatrix cMatrix, int nrOfVertices) {
+    public ListOfNeighbors(ConnectionMatrix cMatrix,int nrOfVertices) {
         numberOfVertices = nrOfVertices;
         neighborsList = new ArrayList<List<Integer>>();
 
@@ -27,9 +27,9 @@ public class ListOfNeighbors {
     }
     public void printListOfNeighbors(){
         System.out.println("Printing List Of Neighbors");
-        for(int i = 0; i<numberOfVertices; ++i ){
+        for(int i = 0; i< numberOfVertices; ++i ){
             System.out.print((i+1)+": ");
-            for(int j=0; j<numberOfVertices; ++j){
+            for(int j=0; j< numberOfVertices; ++j){
                 int neighbor = neighborsList.get(i).get(j);
                 if(neighbor > -1){
                     // +1 bo indeksujemy w tablicy od 0, a wyświetlamy od 1
