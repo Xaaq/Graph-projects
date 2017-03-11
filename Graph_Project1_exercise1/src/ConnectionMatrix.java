@@ -29,8 +29,8 @@ public class ConnectionMatrix {
     }
     public int getNumberOfEdges(){
         int sum = 0;
-        for(int i=0;i<graphMatrix.length; ++i)
-            for (int j=0;j<graphMatrix.length; ++j)
+        for(int i=0;i< graphMatrix.length; ++i)
+            for (int j=0;j< graphMatrix.length; ++j)
                 sum += graphMatrix[i][j];
         return sum/2;
     }
