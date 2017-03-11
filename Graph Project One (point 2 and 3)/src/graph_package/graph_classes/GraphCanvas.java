@@ -40,6 +40,8 @@ public class GraphCanvas extends Canvas {
         GraphicsContext context = getGraphicsContext2D();
 
         context.setFill(Color.web("#673ab7"));
+        context.setStroke(Color.web("#673ab7"));
+        context.setLineWidth(3);
 
         //rysuje kolka
         for (int i = 0; i < dotCount; i++) {
@@ -49,9 +51,6 @@ public class GraphCanvas extends Canvas {
 
             context.fillOval(x, y, dotSize, dotSize);
         }
-
-        context.setStroke(Color.web("#673ab7"));
-        context.setLineWidth(3);
 
         //rysuje linie
         for (int i = 0; i < dotCount; i++) {
