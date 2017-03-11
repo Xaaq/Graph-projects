@@ -25,6 +25,7 @@ public class ConnectionMatrix {
             }
             System.out.print("|\n");
         }
+        System.out.println("");
     }
     public int getNumberOfEdges(){
         int sum = 0;

@@ -62,6 +62,8 @@ public class Main {
         int nrOfEdges = cMatrix.getNumberOfEdges();
         IncidenceMatrix incMatrix = new IncidenceMatrix(cMatrix, nrOfVertices, nrOfEdges);
         incMatrix.printIncidenceMatrix();
+        ListOfNeighbors listOfN = new ListOfNeighbors(cMatrix, nrOfVertices);
+        listOfN.printListOfNeighbors();
 
     }
 }

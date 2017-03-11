@@ -41,6 +41,7 @@ public class IncidenceMatrix {
             }
             System.out.print("|\n");
         }
+        System.out.println("");
     }
 
 }
