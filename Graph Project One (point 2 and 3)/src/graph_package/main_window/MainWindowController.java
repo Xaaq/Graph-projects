@@ -2,14 +2,17 @@ package graph_package.main_window;
 
 import graph_package.graph_classes.Graph;
 import graph_package.graph_classes.GraphCanvas;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainWindowController {
+public class MainWindowController implements Initializable {
 
     public Button saveButton;
     public Button generateMatrixButton;
@@ -20,8 +23,11 @@ public class MainWindowController {
 
     private Graph graph = new Graph();
 
-    //fucnkaj wywolujaca sie gdy cale okno zostalo zaladowane
-    public void initialize() {
+    //funkcja wywolujaca sie gdy cale okno zostalo zaladowane
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        graph.generateNumberMatrix(9, 5);
+        canvas.drawGraph(graph);
     }
 
     //obsluguje przycisniecie przycisku generowania grafu
