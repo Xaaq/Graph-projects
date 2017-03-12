@@ -39,6 +39,7 @@ public class GraphCanvas extends Canvas {
         int dotCount = graphMatrix.length;
         GraphicsContext context = getGraphicsContext2D();
 
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
         context.setFill(Color.web("#673ab7"));
         context.setStroke(Color.web("#673ab7"));
         context.setLineWidth(3);

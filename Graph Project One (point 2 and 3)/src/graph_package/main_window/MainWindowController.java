@@ -26,8 +26,6 @@ public class MainWindowController implements Initializable {
     //funkcja wywolujaca sie gdy cale okno zostalo zaladowane
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        graph.generateNumberMatrix(9, 5);
-        canvas.drawGraph(graph);
     }
 
     //obsluguje przycisniecie przycisku generowania grafu
@@ -45,12 +43,6 @@ public class MainWindowController implements Initializable {
                 graph.generateProbabilityMatrix(size, probability);
 
             canvas.drawGraph(graph);
-           /* subPan1.remove(circleGraph1);
-            circleGraph1 = new CircleGraph(graph);
-            subPan1.add(circleGraph1);
-
-            SwingUtilities.updateComponentTreeUI(mainPanel);
-            frame.pack();*/
         } catch (NumberFormatException exception) {
         }
     }

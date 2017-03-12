@@ -3,7 +3,6 @@ package graph_package.main_window;
 import graph_package.graph_classes.Graph;
 import graph_package.graph_classes.GraphCanvas;
 import javafx.fxml.Initializable;
-import javafx.scene.canvas.Canvas;
 
 import java.net.URL;
 import java.util.ResourceBundle;
