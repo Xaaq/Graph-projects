@@ -6,6 +6,7 @@ import java.util.Collections;
 /**
  * Created by Xaaq333 on 2017-03-11.
  */
+//przechowuje graf w postaci macierzy i funkcje z nim zwiazane
 public class Graph {
 
     private int[][] graphMatrix;
