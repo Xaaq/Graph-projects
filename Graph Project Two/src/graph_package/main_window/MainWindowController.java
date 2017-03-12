@@ -1,23 +1,25 @@
 package graph_package.main_window;
 
 import graph_package.graph_classes.Graph;
-import graph_package.graph_classes.HelperClass;
+import graph_package.graph_classes.GraphCanvas;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
 
+    public GraphCanvas canvas;
+
     private Graph graph = new Graph();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        int[] al = new int[]{0, 0, 0, 0};
-        int[][] al1 = new int[][]{{3, 0, 3, 0}, {0, 3, 0, 3}};
-        int[][] al2 = new int[][]{{0, 3, 0}, {3, 0, 3}, {1, 1, 1}};
-        int[][] output = HelperClass.addMatrixes(al1, al2);
+        int[] al = new int[]{0, 0, 1, 1, 3, 3, 2};
 
-        System.out.print(graph.checkNumberSeqence(al));
+        graph.checkNumberSequence(al);
+
+        canvas.drawGraph(graph);
     }
 }

@@ -6,28 +6,27 @@ package graph_package.graph_classes;
 //klasa majace metody do wykorzystania w innych miejscach
 public class HelperClass {
 
-    //dodaje dwie macierze (jesli sa roznych rozmiarow wyrownuje je do lewego gornego rogu i dodaje)
-    public static int[][] addMatrixes(final int[][] inputFirstMatrix, final int[][] inputSecondMatrix) {
+    //dodaje dwie macierze kwadratowe (jesli sa roznych rozmiarow wyrownuje je do lewego gornego rogu i dodaje)
+    public static int[][] addSquareMatrixes(final int[][] inputFirstMatrix, final int[][] inputSecondMatrix) {
         int[][] firstMatrix = inputFirstMatrix.clone();
         int[][] secondMatrix = inputSecondMatrix.clone();
-        int width = (firstMatrix.length > secondMatrix.length) ? firstMatrix.length : secondMatrix.length;
-        int height = (firstMatrix[0].length > secondMatrix[0].length) ? firstMatrix[0].length : secondMatrix[0].length;
-        int[][] outputMatrix = new int[width][height];
+        int size = (firstMatrix.length > secondMatrix.length) ? firstMatrix.length : secondMatrix.length;
+        int[][] outputMatrix = new int[size][size];
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 outputMatrix[i][j] = 0;
             }
         }
 
         for (int i = 0; i < firstMatrix.length; i++) {
-            for (int j = 0; j < firstMatrix[0].length; j++) {
+            for (int j = 0; j < firstMatrix.length; j++) {
                 outputMatrix[i][j] += firstMatrix[i][j];
             }
         }
 
         for (int i = 0; i < secondMatrix.length; i++) {
-            for (int j = 0; j < secondMatrix[0].length; j++) {
+            for (int j = 0; j < secondMatrix.length; j++) {
                 outputMatrix[i][j] += secondMatrix[i][j];
             }
         }

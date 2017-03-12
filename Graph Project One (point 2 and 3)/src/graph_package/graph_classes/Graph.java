@@ -14,7 +14,7 @@ public class Graph {
 
     //zwraca graf w postaci macierzy
     public int[][] getGraphMatrix() {
-        return graphMatrix;
+        return graphMatrix.clone();
     }
 
     //generuje graf w postaci macierzy z zadanym prawdopodobienstwem wstapienia krawedzi
