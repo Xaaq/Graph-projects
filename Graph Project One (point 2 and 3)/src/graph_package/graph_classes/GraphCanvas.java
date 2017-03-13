@@ -45,12 +45,14 @@ public class GraphCanvas extends Canvas {
         context.setLineWidth(3);
 
         //rysuje kolka
-        for (int i = 0; i < dotCount; i++) {
+        for (int i = 0, j = 1; i < dotCount; i++, j++) {
             double angle = i * 360 / dotCount * Math.PI / 180;
             double x = canvasWidth / 2 + Math.sin(angle) * graphSize * 2 / 5 - dotSize / 2;
             double y = canvasHeight / 2 + Math.cos(angle) * graphSize * 2 / 5 - dotSize / 2;
 
             context.fillOval(x, y, dotSize, dotSize);
+
+            context.fillText(Integer.toString(j), x + dotSize, y + dotSize);
         }
 
         //rysuje linie
