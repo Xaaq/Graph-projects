@@ -11,15 +11,27 @@ public class Graph {
 
     //przechowuje graf w formie macierzy
     private int[][] graphMatrix;
+    //przechowywuje graf w postaci wezlow
+    private ArrayList<GraphNode> nodeGraph;
 
     //konstruktor
     public Graph() {
 
     }
 
+    //ustawia macierz tego grafu na podana
+    public void setGraphMatrix(int[][] inputMatrix) {
+        graphMatrix = inputMatrix.clone();
+    }
+
     //zwraca graf w posatci macierzy
     public int[][] getGraphMatrix() {
         return graphMatrix.clone();
+    }
+
+    //ustawia graf w postaci wezlow na podany
+    public void setNodeGraph(ArrayList<GraphNode> inputNodeGraph) {
+        nodeGraph = inputNodeGraph;
     }
 
     //sub-klasa ktora opakowywuje wierzcholek i liczbe polaczonych z nim krawedzi (potrzebna do tworzenia grafu)
@@ -46,17 +58,14 @@ public class Graph {
     }
 
     //robi graf z podanej sekwencji liczb jesli sie da
-    public void checkNumberSequence(int[] inputNumberSequence) {
+    public int[][] checkNumberSequence(int[] inputNumberSequence) {
         ArrayList<Verticle> verticleSequece = new ArrayList<>();
 
         for (int i = 0; i < inputNumberSequence.length; i++) {
             verticleSequece.add(new Verticle(i, inputNumberSequence[i]));
         }
 
-        int[][] tempMatrix = checkNumberSequence(verticleSequece);
-
-        if (tempMatrix != null)
-            graphMatrix = tempMatrix;
+        return checkNumberSequence(verticleSequece);
     }
 
     //sprawdza czy mozna zrobic graf z podanej sekwencji liczb
@@ -113,5 +122,23 @@ public class Graph {
             return HelperClass.addSquareMatrixes(outputArray, recursiveArray);
         else
             return null;
+    }
+
+    //funkcja ktora generuje tablice na podstawie macierzy
+    public ArrayList<GraphNode> generateNodeArray() {
+        ArrayList<GraphNode> nodeArray = new ArrayList<>();
+
+        for (int i = 0; i < graphMatrix.length; i++) {
+            GraphNode node = new GraphNode(i);
+
+            for (int j = 0; j < graphMatrix[i].length; j++) {
+                if (graphMatrix[i][j] == 1)
+                    node.addConnection(j);
+            }
+
+            nodeArray.add(node);
+        }
+
+        return nodeArray;
     }
 }
