@@ -11,18 +11,21 @@ public class GraphNode {
 
     //id tego wezla
     private int id;
-    //lista id innych wezlow z ktorymi jest polaczony
-    private ArrayList<Integer> connectionList = new ArrayList<>();
+    //tablica sasiadow - referencje do wszystkich wezlow z ktorymi jest polaczony
+    private ArrayList<GraphNode> connectionList = new ArrayList<>();
 
-    GraphNode(int id) {
+    //konstruktor ktory ustawia id tego wezla
+    public GraphNode(int id) {
         this.id = id;
     }
 
-    public void addConnection(int connectionId) {
-        connectionList.add(connectionId);
+    //dodaje referencje do innego wezla do tablicy sasiadow
+    public void addConnection(GraphNode connectionNode) {
+        connectionList.add(connectionNode);
     }
 
-    public ArrayList<Integer> getConnectionList() {
-        return (ArrayList<Integer>) connectionList.clone();
+    //zwraca tablice sasiadow
+    public ArrayList<GraphNode> getConnectionList() {
+        return (ArrayList<GraphNode>) connectionList.clone();
     }
 }

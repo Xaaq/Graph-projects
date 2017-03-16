@@ -34,6 +34,10 @@ public class Graph {
         nodeGraph = inputNodeGraph;
     }
 
+    public int getNodeGraphLength() {
+        return nodeGraph.size();
+    }
+
     //sub-klasa ktora opakowywuje wierzcholek i liczbe polaczonych z nim krawedzi (potrzebna do tworzenia grafu)
     private class Verticle {
         public final int verticleNumber;
@@ -124,21 +128,64 @@ public class Graph {
             return null;
     }
 
-    //funkcja ktora generuje tablice na podstawie macierzy
+    //funkcja ktora generuje tablice wezlow na podstawie macierzy
     public ArrayList<GraphNode> generateNodeArray() {
         ArrayList<GraphNode> nodeArray = new ArrayList<>();
 
         for (int i = 0; i < graphMatrix.length; i++) {
-            GraphNode node = new GraphNode(i);
+            nodeArray.add(new GraphNode(i));
+        }
 
+        for (int i = 0; i < graphMatrix.length; i++) {
             for (int j = 0; j < graphMatrix[i].length; j++) {
                 if (graphMatrix[i][j] == 1)
-                    node.addConnection(j);
+                    nodeArray.get(i).addConnection(nodeArray.get(j));
             }
-
-            nodeArray.add(node);
         }
 
         return nodeArray;
+    }
+
+    //sprawdza najwieksza skladowa grafu i zwraca tablice wezlow ktore do niej naleza
+    public ArrayList<GraphNode> checkBiggestConsistentComponent() {
+        ArrayList<ArrayList<GraphNode>> consistentComponentsList = new ArrayList<>();
+        ArrayList<GraphNode> tempNodeList = (ArrayList<GraphNode>) nodeGraph.clone();
+
+        while (tempNodeList.size() != 0) {
+            consistentComponentsList.add(new ArrayList<>());
+            ArrayList<GraphNode> nodeQueue = new ArrayList<>();
+            nodeQueue.add(tempNodeList.get(0));
+            tempNodeList.remove(tempNodeList.get(0));
+
+            while (nodeQueue.size() != 0) {
+                int lastArrayIndex = consistentComponentsList.size() - 1;
+                consistentComponentsList.get(lastArrayIndex).add(nodeQueue.get(0));
+
+                for (GraphNode tempNode : nodeQueue.get(0).getConnectionList()) {
+                    if (!consistentComponentsList.get(lastArrayIndex).contains(tempNode) && !nodeQueue.contains(tempNode)) {
+                        nodeQueue.add(tempNode);
+                        tempNodeList.remove(tempNode);
+                    }
+                }
+
+
+                nodeQueue.remove(0);
+            }
+        }
+
+        int biggestCountId = -1;
+        int biggestCount = -1;
+
+        for (int i = 0; i < consistentComponentsList.size(); i++) {
+            if (consistentComponentsList.get(i).size() > biggestCount) {
+                biggestCount = consistentComponentsList.get(i).size();
+                biggestCountId = i;
+            }
+        }
+
+        if (biggestCountId >= 0)
+            return consistentComponentsList.get(biggestCountId);
+        else
+            return null;
     }
 }
