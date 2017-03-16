@@ -11,15 +11,31 @@ public class Graph {
 
     //przechowuje graf w formie macierzy
     private int[][] graphMatrix;
+    //przechowywuje graf w postaci wezlow
+    private ArrayList<GraphNode> nodeGraph;
 
     //konstruktor
     public Graph() {
 
     }
 
+    //ustawia macierz tego grafu na podana
+    public void setGraphMatrix(int[][] inputMatrix) {
+        graphMatrix = inputMatrix.clone();
+    }
+
     //zwraca graf w posatci macierzy
     public int[][] getGraphMatrix() {
         return graphMatrix.clone();
+    }
+
+    //ustawia graf w postaci wezlow na podany
+    public void setNodeGraph(ArrayList<GraphNode> inputNodeGraph) {
+        nodeGraph = inputNodeGraph;
+    }
+
+    public int getNodeGraphLength() {
+        return nodeGraph.size();
     }
 
     //sub-klasa ktora opakowywuje wierzcholek i liczbe polaczonych z nim krawedzi (potrzebna do tworzenia grafu)
@@ -46,17 +62,14 @@ public class Graph {
     }
 
     //robi graf z podanej sekwencji liczb jesli sie da
-    public void checkNumberSequence(int[] inputNumberSequence) {
+    public int[][] checkNumberSequence(int[] inputNumberSequence) {
         ArrayList<Verticle> verticleSequece = new ArrayList<>();
 
         for (int i = 0; i < inputNumberSequence.length; i++) {
             verticleSequece.add(new Verticle(i, inputNumberSequence[i]));
         }
 
-        int[][] tempMatrix = checkNumberSequence(verticleSequece);
-
-        if (tempMatrix != null)
-            graphMatrix = tempMatrix;
+        return checkNumberSequence(verticleSequece);
     }
 
     //sprawdza czy mozna zrobic graf z podanej sekwencji liczb
@@ -111,6 +124,67 @@ public class Graph {
         //jesli otrzymano tablice z funkcji rekurencyjnej - dodaj do biezacej tablicy i zwroc wynik
         if (recursiveArray != null)
             return HelperClass.addSquareMatrixes(outputArray, recursiveArray);
+        else
+            return null;
+    }
+
+    //funkcja ktora generuje tablice wezlow na podstawie macierzy
+    public ArrayList<GraphNode> generateNodeArray() {
+        ArrayList<GraphNode> nodeArray = new ArrayList<>();
+
+        for (int i = 0; i < graphMatrix.length; i++) {
+            nodeArray.add(new GraphNode(i));
+        }
+
+        for (int i = 0; i < graphMatrix.length; i++) {
+            for (int j = 0; j < graphMatrix[i].length; j++) {
+                if (graphMatrix[i][j] == 1)
+                    nodeArray.get(i).addConnection(nodeArray.get(j));
+            }
+        }
+
+        return nodeArray;
+    }
+
+    //sprawdza najwieksza skladowa grafu i zwraca tablice wezlow ktore do niej naleza
+    public ArrayList<GraphNode> checkBiggestConsistentComponent() {
+        ArrayList<ArrayList<GraphNode>> consistentComponentsList = new ArrayList<>();
+        ArrayList<GraphNode> tempNodeList = (ArrayList<GraphNode>) nodeGraph.clone();
+
+        while (tempNodeList.size() != 0) {
+            consistentComponentsList.add(new ArrayList<>());
+            ArrayList<GraphNode> nodeQueue = new ArrayList<>();
+            nodeQueue.add(tempNodeList.get(0));
+            tempNodeList.remove(tempNodeList.get(0));
+
+            while (nodeQueue.size() != 0) {
+                int lastArrayIndex = consistentComponentsList.size() - 1;
+                consistentComponentsList.get(lastArrayIndex).add(nodeQueue.get(0));
+
+                for (GraphNode tempNode : nodeQueue.get(0).getConnectionList()) {
+                    if (!consistentComponentsList.get(lastArrayIndex).contains(tempNode) && !nodeQueue.contains(tempNode)) {
+                        nodeQueue.add(tempNode);
+                        tempNodeList.remove(tempNode);
+                    }
+                }
+
+
+                nodeQueue.remove(0);
+            }
+        }
+
+        int biggestCountId = -1;
+        int biggestCount = -1;
+
+        for (int i = 0; i < consistentComponentsList.size(); i++) {
+            if (consistentComponentsList.get(i).size() > biggestCount) {
+                biggestCount = consistentComponentsList.get(i).size();
+                biggestCountId = i;
+            }
+        }
+
+        if (biggestCountId >= 0)
+            return consistentComponentsList.get(biggestCountId);
         else
             return null;
     }
