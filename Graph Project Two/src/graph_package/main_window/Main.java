@@ -23,7 +23,6 @@ public class Main extends Application {
         //Testowy graf
         Graph graph = new Graph();
         //int[] numberSequence = new int[]{0, 0, 1, 1, 3, 3, 2};
-        //dla sekwencji {2,2,2,2,2,2} - pokazało false
         int[] numberSequence = new int[]{2,2,3,3};
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
         graph.setGraphMatrix(tempMatrix);
