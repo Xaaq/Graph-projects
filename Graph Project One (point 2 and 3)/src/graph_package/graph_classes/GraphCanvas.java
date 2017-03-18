@@ -39,19 +39,21 @@ public class GraphCanvas extends Canvas {
         int dotCount = graphMatrix.length;
         GraphicsContext context = getGraphicsContext2D();
 
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
         context.setFill(Color.web("#673ab7"));
+        context.setStroke(Color.web("#673ab7"));
+        context.setLineWidth(3);
 
         //rysuje kolka
-        for (int i = 0; i < dotCount; i++) {
+        for (int i = 0, j = 1; i < dotCount; i++, j++) {
             double angle = i * 360 / dotCount * Math.PI / 180;
             double x = canvasWidth / 2 + Math.sin(angle) * graphSize * 2 / 5 - dotSize / 2;
             double y = canvasHeight / 2 + Math.cos(angle) * graphSize * 2 / 5 - dotSize / 2;
 
             context.fillOval(x, y, dotSize, dotSize);
-        }
 
-        context.setStroke(Color.web("#673ab7"));
-        context.setLineWidth(3);
+            context.fillText(Integer.toString(j), x + dotSize, y + dotSize);
+        }
 
         //rysuje linie
         for (int i = 0; i < dotCount; i++) {
