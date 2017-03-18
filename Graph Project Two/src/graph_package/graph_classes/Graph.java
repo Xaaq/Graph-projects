@@ -18,6 +18,17 @@ public class Graph {
     public Graph() {
 
     }
+    //Zwraca węzeł według id
+    public GraphNode getGraphNode(int id){
+        for(GraphNode eachNode: nodeGraph){
+            if(eachNode.getId() == id){
+                System.out.print("Znalezniono ");
+                System.out.println(id);
+                return eachNode;
+            }
+        }
+        return null;
+    }
 
     //ustawia macierz tego grafu na podana
     public void setGraphMatrix(int[][] inputMatrix) {
@@ -33,6 +44,10 @@ public class Graph {
     public void setNodeGraph(ArrayList<GraphNode> inputNodeGraph) {
         nodeGraph = inputNodeGraph;
     }
+
+    //zwraca graf w postaci węzłów
+    public ArrayList<GraphNode> getNodeGraph(){return (ArrayList<GraphNode>)nodeGraph; }
+
 
     public int getNodeGraphLength() {
         return nodeGraph.size();
@@ -188,4 +203,24 @@ public class Graph {
         else
             return null;
     }
+
+/* **** Mateusz */
+// Program do sprawdzania (dla małych grafów) czy graf jest hamiltonowski.
+
+public boolean isHamiltonianGraph(Graph graph){
+    DFSPaths dfs = new DFSPaths(graph,0);
+
+    return dfs.isHamiltonianGraph();
 }
+}
+
+
+
+
+
+
+
+
+
+
+

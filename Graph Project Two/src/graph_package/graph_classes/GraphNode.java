@@ -24,8 +24,13 @@ public class GraphNode {
         connectionList.add(connectionNode);
     }
 
+    //zwraca id węzła
+    public int getId(){return id;}
+
     //zwraca tablice sasiadow
     public ArrayList<GraphNode> getConnectionList() {
         return (ArrayList<GraphNode>) connectionList.clone();
     }
+
+
 }
