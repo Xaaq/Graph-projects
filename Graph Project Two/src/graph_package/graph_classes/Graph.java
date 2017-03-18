@@ -22,8 +22,6 @@ public class Graph {
     public GraphNode getGraphNode(int id){
         for(GraphNode eachNode: nodeGraph){
             if(eachNode.getId() == id){
-                System.out.print("Znalezniono ");
-                System.out.println(id);
                 return eachNode;
             }
         }
@@ -204,10 +202,10 @@ public class Graph {
             return null;
     }
 
-/* **** Mateusz */
 // Program do sprawdzania (dla małych grafów) czy graf jest hamiltonowski.
 
 public boolean isHamiltonianGraph(Graph graph){
+    //Wystarczy sprawdzić od wierzchołka 0. Jak jest hamiltonowski to nie ważne od którego wierzchołka zaczniemy
     DFSPaths dfs = new DFSPaths(graph,0);
 
     return dfs.isHamiltonianGraph();

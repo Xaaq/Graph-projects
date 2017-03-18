@@ -13,12 +13,10 @@ public class DFSPaths {
     private int startedVertex;
     // czy jest to cykl Hamiltona
     private boolean isHamilton;
-    private int flaga;
-    // wierzchołek na którym się skończyło
-    private int endVertex;
+
+
     public DFSPaths(Graph graph, int startedVertex){
         isHamilton = false;
-        flaga = 0;
         this.startedVertex = startedVertex;
         edgeTo = new int[graph.getNodeGraphLength()];
         marked = new boolean[graph.getNodeGraphLength()];
@@ -26,28 +24,24 @@ public class DFSPaths {
     }
 
     private void dfs_recursive(Graph graph, int vertex){
-        // sprawdzamy czy udało się wrócić do punktu startowego
-        // jeśli tak to jest to cykl Hamiltona
-        // Musi minąć przynajmniej jedna iteracja
-        System.out.print(flaga);
-        System.out.print(" :");
-        System.out.println(vertex);
-
         // oznaczamy wierzchołek, jako oznaczony
         marked[vertex] = true;
+        //Pobieramy wierzchołek
         GraphNode node = graph.getGraphNode(vertex);
         // odwiedzamy każdy sąsiedni nieodwiedzony wierzchołek i zapisujemy trase
         for (GraphNode eachVertex: node.getConnectionList()){
-            ++flaga;
-            //jeżeli nieodwiedzony
+        // sprawdzamy czy sąsiadem naszego wierzchołka jest punkt startowy,
+            // oraz czy wszystkie wierzchołki są już odwiedzone
             if(eachVertex.getId() == startedVertex && isAllMarked())
                 isHamilton = true;
+            //jeżeli nieodwiedzony
             if(!marked[eachVertex.getId()]){
                 edgeTo[eachVertex.getId()] = vertex;
                 dfs_recursive(graph, eachVertex.getId());
             }
         }
     }
+    // Sprawdza, czy wszystkie węzły zostały odwiedzone
     private boolean isAllMarked(){
         for(boolean check: marked){
             if(!check)

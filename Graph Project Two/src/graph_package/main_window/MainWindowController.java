@@ -18,7 +18,7 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         int[] numberSequence = new int[]{0, 0, 1, 1, 3, 3, 2};
-
+        //int[] numberSequence = new int[]{2,2,2,2,2,2}; <-- tutaj robi dwa oddzielne grafy
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
         graph.setGraphMatrix(tempMatrix);
 

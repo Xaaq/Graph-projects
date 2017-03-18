@@ -17,13 +17,14 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         primaryStage.setTitle("Graph application");
         primaryStage.setScene(new Scene(root, 500, 500));
-       // primaryStage.show();
+        primaryStage.show();
 
         // **** Testy Mateusz
         //Testowy graf
         Graph graph = new Graph();
-        int[] numberSequence = new int[]{0, 0, 1, 1, 3, 3, 2};
-        //int[] numberSequence = new int[]{2,2,2};
+        //int[] numberSequence = new int[]{0, 0, 1, 1, 3, 3, 2};
+        //dla sekwencji {2,2,2,2,2,2} - pokazało false
+        int[] numberSequence = new int[]{0,1,1,2};
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
         graph.setGraphMatrix(tempMatrix);
         ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
