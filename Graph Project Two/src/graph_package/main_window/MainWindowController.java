@@ -13,11 +13,14 @@ public class MainWindowController implements Initializable {
 
     public GraphCanvas canvas;
 
+    //glowny gosc programu - nasz graf
     private Graph graph = new Graph();
+    //flaga mowiaca czy zostal wygenerowany graf (jesli nie to nie przeprowadzamy na nim operacji)
+    private boolean wasGraphGenerated = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        int[] numberSequence = new int[]{2, 2, 2, 2};
+        int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
 
         //jesli sie udalo znalesc graf o takiej sekwencji
@@ -27,8 +30,16 @@ public class MainWindowController implements Initializable {
             ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
             graph.setNodeGraph(tempGraph);
 
-            //JAK CHCECIE WSTAWIC JAKIES AKCJE ZWIĄZANE Z GRAFEM (CHCECIE NP PRZETESTOWAC CZY DZIALA TO TUTAJ POD TYM KOMENTARZEM)
+            //JAK CHCECIE WSTAWIC JAKIES AKCJE ZWIĄZANE Z GRAFEM (CHCECIE NP PRZETESTOWAC CZY DZIALA) TO TUTAJ POD TYM KOMENTARZEM
 
+            canvas.drawGraph(graph);
+            wasGraphGenerated = true;
+        }
+    }
+
+    public void randomizeGraphButtonClick() {
+        if (wasGraphGenerated) {
+            graph.randomizeGraph();
             canvas.drawGraph(graph);
         }
     }
