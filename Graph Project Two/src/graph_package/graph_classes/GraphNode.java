@@ -24,13 +24,18 @@ public class GraphNode {
         connectionList.add(connectionNode);
     }
 
+    //usuwa polaczenie pod podanym indeksem
+    public void removeConnection(GraphNode connectionNode) {
+        connectionList.remove(connectionNode);
+    }
+
     //zwraca id węzła
-    public int getId(){return id;}
+    public int getId() {
+        return id;
+    }
 
     //zwraca tablice sasiadow
     public ArrayList<GraphNode> getConnectionList() {
-        return (ArrayList<GraphNode>) connectionList.clone();
+        return (ArrayList<GraphNode>) connectionList;
     }
-
-
 }
