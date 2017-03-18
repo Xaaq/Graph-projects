@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Xaaq333 on 2017-03-10.
@@ -35,8 +36,8 @@ public class GraphCanvas extends Canvas {
         double canvasHeight = getHeight();
         double graphSize = (canvasWidth < canvasHeight) ? canvasWidth : canvasHeight;
         int dotSize = 15;
-        int[][] graphMatrix = graph.getGraphMatrix();
-        int dotCount = graphMatrix.length;
+        ArrayList<GraphNode> nodeGraph = graph.getNodeGraph();
+        int dotCount = nodeGraph.size();
         GraphicsContext context = getGraphicsContext2D();
 
         context.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -55,18 +56,16 @@ public class GraphCanvas extends Canvas {
 
         //rysuje linie
         for (int i = 0; i < dotCount; i++) {
-            for (int j = i; j < dotCount; j++) {
-                if (graphMatrix[i][j] == 1) {
-                    double angle1 = i * 360 / dotCount * Math.PI / 180;
-                    double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
-                    double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
+            for (GraphNode node : nodeGraph.get(i).getConnectionList()) {
+                double angle1 = i * 360 / dotCount * Math.PI / 180;
+                double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
+                double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
 
-                    double angle2 = j * 360 / dotCount * Math.PI / 180;
-                    double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
-                    double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
+                double angle2 = node.getId() * 360 / dotCount * Math.PI / 180;
+                double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
+                double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
 
-                    context.strokeLine(x1, y1, x2, y2);
-                }
+                context.strokeLine(x1, y1, x2, y2);
             }
         }
     }

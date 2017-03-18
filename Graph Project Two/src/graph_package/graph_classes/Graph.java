@@ -18,10 +18,11 @@ public class Graph {
     public Graph() {
 
     }
+
     //Zwraca węzeł według id
-    public GraphNode getGraphNode(int id){
-        for(GraphNode eachNode: nodeGraph){
-            if(eachNode.getId() == id){
+    public GraphNode getGraphNode(int id) {
+        for (GraphNode eachNode : nodeGraph) {
+            if (eachNode.getId() == id) {
                 return eachNode;
             }
         }
@@ -44,7 +45,9 @@ public class Graph {
     }
 
     //zwraca graf w postaci węzłów
-    public ArrayList<GraphNode> getNodeGraph(){return (ArrayList<GraphNode>)nodeGraph; }
+    public ArrayList<GraphNode> getNodeGraph() {
+        return (ArrayList<GraphNode>) nodeGraph;
+    }
 
 
     public int getNodeGraphLength() {
@@ -181,7 +184,6 @@ public class Graph {
                     }
                 }
 
-
                 nodeQueue.remove(0);
             }
         }
@@ -202,23 +204,73 @@ public class Graph {
             return null;
     }
 
-// Program do sprawdzania (dla małych grafów) czy graf jest hamiltonowski.
+    //Program do sprawdzania (dla małych grafów) czy graf jest hamiltonowski.
+    public boolean isHamiltonianGraph(Graph graph) {
+        //Wystarczy sprawdzić od wierzchołka 0. Jak jest hamiltonowski to nie ważne od którego wierzchołka zaczniemy
+        DFSPaths dfs = new DFSPaths(graph, 0);
 
-public boolean isHamiltonianGraph(Graph graph){
-    //Wystarczy sprawdzić od wierzchołka 0. Jak jest hamiltonowski to nie ważne od którego wierzchołka zaczniemy
-    DFSPaths dfs = new DFSPaths(graph,0);
+        return dfs.isHamiltonianGraph();
+    }
 
-    return dfs.isHamiltonianGraph();
+    //randomizuje graf
+//    public void randomizeGraph() {
+//        int randomIndexA = (int) ((nodeGraph.size() - 1) * Math.random());
+//        int randomIndexB = (int) ((nodeGraph.size() - 1) * Math.random());
+//        //TODO: zrobic sprawdzenie jesli graf ma mniej niz iles tam krawedzi
+//
+//        while (nodeGraph.get(randomIndexA).getConnectionList().size() == 0) {
+//            randomIndexA = (int) ((nodeGraph.size() - 1) * Math.random());
+//        }
+//
+//        while (nodeGraph.get(randomIndexB).getConnectionList().size() == 0 || randomIndexB == randomIndexA) {
+//            randomIndexB = (int) ((nodeGraph.size() - 1) * Math.random());
+//        }
+//
+//        GraphNode nodeA = nodeGraph.get(randomIndexA);
+//        GraphNode nodeB = nodeGraph.get(randomIndexB);
+//
+//        int randomIndexC = (int) ((nodeA.getConnectionList().size() - 1) * Math.random());
+//        int randomIndexD = (int) ((nodeB.getConnectionList().size() - 1) * Math.random());
+//
+//        boolean areNodesCBColliding = true;
+//        boolean areNodesDAColliding = true;
+//
+//
+//        for (int i = 0; i < nodeA.getConnectionList().size(); i++) {
+//            if (!nodeA.getConnectionList().get(i).getConnectionList().contains(nodeB)) {
+//                randomIndexC = i;
+//                areNodesCBColliding = false;
+//                break;
+//            }
+//        }
+//
+//        for (int i = 0; i < nodeB.getConnectionList().size(); i++) {
+//            if (!nodeB.getConnectionList().get(i).getConnectionList().contains(nodeA)) {
+//                randomIndexD = i;
+//                areNodesDAColliding = false;
+//                break;
+//            }
+//        }
+//
+//        if (areNodesCBColliding || areNodesDAColliding) {
+//            randomizeGraph();
+//            return;
+//        }
+//
+//        GraphNode nodeC = nodeA.getConnectionList().get(randomIndexC);
+//        GraphNode nodeD = nodeB.getConnectionList().get(randomIndexD);
+//
+//        //odrywa A od C
+//        nodeA.removeConnection(nodeC);
+//        nodeC.removeConnection(nodeA);
+//        //odrywa B od D
+//        nodeB.removeConnection(nodeD);
+//        nodeD.removeConnection(nodeB);
+//        //przylacza A do D
+//        nodeA.addConnection(nodeD);
+//        nodeD.addConnection(nodeA);
+//        //przylacza B do C
+//        nodeB.addConnection(nodeC);
+//        nodeC.addConnection(nodeB);
+//    }
 }
-}
-
-
-
-
-
-
-
-
-
-
-

@@ -17,13 +17,19 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        int[] numberSequence = new int[]{0, 0, 1, 1, 3, 3, 2};
+        int[] numberSequence = new int[]{2, 2, 2, 2};
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
-        graph.setGraphMatrix(tempMatrix);
 
-        ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
-        graph.setNodeGraph(tempGraph);
+        //jesli sie udalo znalesc graf o takiej sekwencji
+        if (tempMatrix != null) {
+            graph.setGraphMatrix(tempMatrix);
 
-        canvas.drawGraph(graph);
+            ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
+            graph.setNodeGraph(tempGraph);
+
+            //JAK CHCECIE WSTAWIC JAKIES AKCJE ZWIĄZANE Z GRAFEM (CHCECIE NP PRZETESTOWAC CZY DZIALA TO TUTAJ POD TYM KOMENTARZEM)
+
+            canvas.drawGraph(graph);
+        }
     }
 }
