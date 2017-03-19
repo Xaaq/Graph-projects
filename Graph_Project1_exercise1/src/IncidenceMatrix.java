@@ -9,6 +9,7 @@ public class IncidenceMatrix {
     // Krawędzie
     private int[][] edges;
 
+    // z macierzy połączeń na macierz incydencji
     public IncidenceMatrix(ConnectionMatrix cMatrix, int nrOfVertices, int nrOfEdges) {
         numberOfVertices = nrOfVertices;
         numberOfEdges = nrOfEdges;
@@ -25,6 +26,11 @@ public class IncidenceMatrix {
                 }
             }
     }
+    public int[][] getEdges(){
+        return edges.clone();
+    }
+
+
     public void printIncidenceMatrix(){
         System.out.println("Printing Incidence Matrix");
         System.out.print("  | ");

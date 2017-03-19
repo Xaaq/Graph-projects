@@ -64,10 +64,18 @@ public class Main {
         createGraph();
         cMatrix.printMatrix();
         int nrOfEdges = cMatrix.getNumberOfEdges();
+
+        // Macierz incydencji z macierzy połączeń
         IncidenceMatrix incMatrix = new IncidenceMatrix(cMatrix, nrOfVertices, nrOfEdges);
         incMatrix.printIncidenceMatrix();
+        // Lista sąsiadów z macierzy połączeń
         ListOfNeighbors listOfN = new ListOfNeighbors(cMatrix, nrOfVertices);
         listOfN.printListOfNeighbors();
-
+        // Macierz połączeń z listy sąsiadów
+        ConnectionMatrix connectionMatrixFromListOfNeighbors = new ConnectionMatrix(listOfN, nrOfVertices);
+        connectionMatrixFromListOfNeighbors.printMatrix();
+        // Macierz połączeń z macierzy incydencji
+        ConnectionMatrix connectionMatrixFromIncidenceList = new ConnectionMatrix(incMatrix,nrOfVertices,nrOfEdges);
+        connectionMatrixFromIncidenceList.printMatrix();
     }
 }

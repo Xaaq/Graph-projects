@@ -10,6 +10,7 @@ public class ListOfNeighbors {
     // Lista sąsiadów
     private List<List<Integer>> neighborsList;
 
+    // z macierzy połączeń na listę sąsiadów
     public ListOfNeighbors(ConnectionMatrix cMatrix,int nrOfVertices) {
         numberOfVertices = nrOfVertices;
         neighborsList = new ArrayList<List<Integer>>();
@@ -25,6 +26,10 @@ public class ListOfNeighbors {
             neighborsList.add(row);
         }
     }
+    public List<List<Integer>> getNeighborsList(){
+        return neighborsList;
+    }
+
     public void printListOfNeighbors(){
         System.out.println("Printing List Of Neighbors");
         for(int i = 0; i< numberOfVertices; ++i ){
