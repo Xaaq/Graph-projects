@@ -18,6 +18,7 @@ public class Main extends Application {
         primaryStage.setTitle("Graph application");
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {
