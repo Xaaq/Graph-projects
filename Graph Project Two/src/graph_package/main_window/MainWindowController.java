@@ -21,7 +21,7 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
-        int[] numberSequence = new int[]{1, 2, 2, 2, 3};
+        int[] numberSequence = new int[]{0, 0, 1, 2, 2, 2, 3};
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
 
         //jesli sie udalo znalesc graf o takiej sekwencji

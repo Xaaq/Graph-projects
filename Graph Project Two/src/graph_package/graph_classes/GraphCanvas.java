@@ -61,7 +61,7 @@ public class GraphCanvas extends Canvas {
                 double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
                 double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
 
-                double angle2 = node.getId() * 360 / dotCount * Math.PI / 180;
+                double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
                 double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
                 double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
 
