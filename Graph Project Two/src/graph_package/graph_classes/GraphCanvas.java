@@ -50,7 +50,7 @@ public class GraphCanvas extends Canvas {
             double angle = i * 360 / dotCount * Math.PI / 180;
             double x = canvasWidth / 2 + Math.sin(angle) * graphSize * 2 / 5 - dotSize / 2;
             double y = canvasHeight / 2 + Math.cos(angle) * graphSize * 2 / 5 - dotSize / 2;
-
+            context.fillText(Integer.toString(graph.getNodeGraph().get(i).getId()),x + dotSize,y + dotSize);
             context.fillOval(x, y, dotSize, dotSize);
         }
 
