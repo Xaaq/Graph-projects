@@ -23,8 +23,9 @@ public class MainWindowController implements Initializable {
 //        int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
 //        int[] numberSequence = new int[]{0, 0, 1, 2, 2, 2, 3};
         //        int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
-        int[] numberSequence = new int[]{1,1,2,2,3,3,4,4,6};
-//        int[] numberSequence = new int[]{1,1,1,2,3,3,4,4,5};
+       // int[] numberSequence = new int[]{1,1,2,2,3,3,4,4,6};
+        //int[] numberSequence = new int[]{1,1,1,2,3,3,4,4,5};
+        int[] numberSequence = new int[]{3,3,3,3,3,3};
 //        int[] numberSequence = new int[]{1, 2, 2, 2, 3};
 //        int[] numberSequence = new int[]{1,1,2,2,3,3,3,5,5,7};
 //        int[] numberSequence = new int[]{1,1,2,2,2,3,3,3,3,5,5,5,8};
@@ -38,11 +39,13 @@ public class MainWindowController implements Initializable {
             graph.setNodeGraph(tempGraph);
 
             //JAK CHCECIE WSTAWIC JAKIES AKCJE ZWIĄZANE Z GRAFEM (CHCECIE NP PRZETESTOWAC CZY DZIALA) TO TUTAJ POD TYM KOMENTARZEM
-            graph.createAndFindEulerGraph();
+            //graph.createAndFindEulerGraph();
+            graph.kReguralGraphs(6,4);
             canvas.drawGraph(graph);
             canvas.drawGraph(graph);
             wasGraphGenerated = true;
-//            System.out.println(graph.isHamiltonianGraph(graph));
+            System.out.println(graph.isHamiltonianGraph(graph));
+            //System.out.println(graph.getNumberOfVertices());
         }
     }
 
