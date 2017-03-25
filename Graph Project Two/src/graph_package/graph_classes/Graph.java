@@ -14,10 +14,12 @@ public class Graph {
     //przechowywuje graf w postaci wezlow
     private ArrayList<GraphNode> nodeGraph;
 
+
     //konstruktor
     public Graph() {
 
     }
+
 
     //Zwraca węzeł według id
     public GraphNode getGraphNode(int id) {
@@ -27,6 +29,10 @@ public class Graph {
             }
         }
         return null;
+    }
+    // Zwraca liczbę wierzchołków grafu z postaci macierzowej
+    public int getNumberOfVertices(){
+        return graphMatrix.length;
     }
 
     //ustawia macierz tego grafu na podana
@@ -481,4 +487,32 @@ public class Graph {
             System.out.printf("%d ", cycle.pop());
         }
     }
+
+    // Generowanie losowych grafów k-reguralnych
+
+    public void kReguralGraphs(int numberOfVertices, int k){
+        if (numberOfVertices*k % 2 != 0){
+            System.out.println("Błąd! Liczba wierzchołków * k musi być liczbą parzysta!");
+            return;
+        }
+        // nasza sekwencja
+        int[] numberSequence = new int[numberOfVertices];
+        for(int element=0; element<numberSequence.length; ++element){
+            numberSequence[element] = k;
+        }
+        // z tej sekwencji tworzymy macierz
+        int[][] tempMatrix = checkNumberSequence(numberSequence);
+        if(tempMatrix == null){
+            System.out.println("Błąd! Z podanej sekwencji nie możemy stworzyć grafu k-reguralnego!");
+            return;
+        }
+        setGraphMatrix(tempMatrix);
+        ArrayList<GraphNode> tempGraph = generateNodeArray();
+        setNodeGraph(tempGraph);
+        //randomizujemy
+        randomizeGraph();
+    }
+
+
+
 }
