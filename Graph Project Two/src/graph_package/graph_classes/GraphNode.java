@@ -1,13 +1,14 @@
 package graph_package.graph_classes;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Xaaq333 on 2017-03-16.
  */
 
 //opakowywuje pojedynczy wezel grafu
-public class GraphNode {
+public class GraphNode{
 
     //id tego wezla
     private int id;
@@ -18,6 +19,7 @@ public class GraphNode {
     public GraphNode(int id) {
         this.id = id;
     }
+
 
     //dodaje referencje do innego wezla do tablicy sasiadow
     public void addConnection(GraphNode connectionNode) {

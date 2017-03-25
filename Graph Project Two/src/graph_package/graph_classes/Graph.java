@@ -1,7 +1,7 @@
 package graph_package.graph_classes;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Created by Xaaq333 on 2017-03-11.
@@ -271,6 +271,214 @@ public class Graph {
             //przylacza B do C
             nodeB.addConnection(nodeC);
             nodeC.addConnection(nodeB);
+        }
+    }
+
+    //funkcja ktora tworzy graf z cyklem eulera, podmienia starą liste sąsiadow z nową zawierającą ten cykl i znajduje go.
+    public void createAndFindEulerGraph() {
+        ArrayList<GraphNode> nodes = checkBiggestConsistentComponent();
+        int count = 0;
+
+        while (count < 100 && (nodes.size()) != nodeGraph.size()) {
+            randomizeGraph();
+            nodes = checkBiggestConsistentComponent();
+            count++;
+        }
+        if (nodes.size() != nodeGraph.size()) {
+            System.out.println("Graf nie spójny: (ilosc wierzcholkow max spojnej po randomizacjach != ilosc wierzcholkow calkowita) " + nodes.size() + " != " + nodeGraph.size());
+        } else {
+            System.out.println("Graf spójny");
+            Random rand = new Random();
+            int randNodeIndex;
+            //szuka wierzcholkow nie parzystych
+            for (int i = 0; i < nodes.size() - 1; i++) {
+                // jezeli znajdzie jeden to szuka kolejnego nieparzystego
+                if (nodes.get(i).getConnectionList().size() % 2 != 0) {
+                    for (int j = i + 1; j < nodes.size(); j++) {
+                        if (nodes.get(j).getConnectionList().size() % 2 != 0) {
+                            //jezeli nie sa polaczone ta sama krawedzia
+                            if (!(nodes.get(i).getConnectionList().contains(nodes.get(j)) && nodes.get(j).getConnectionList().contains(nodes.get(i)))) {
+                                // polacz wiezcholki nie parzyste nie bedace sasiadami
+                                nodes.get(i).addConnection(nodes.get(j));
+                                nodes.get(j).addConnection(nodes.get(i));
+                            }
+                        }
+                    }
+                }
+            }
+            //wszystkie nie parzyste wierzcholki nie sasiadujace polaczone
+            //szukaj nieparzystych i sasiadujacych wierzcholkow
+            for (int i = 0; i < nodes.size() - 1; i++) {
+                //jezeli znajdziesz jeden to szukaj kolejnego nieparzystego
+                if (nodes.get(i).getConnectionList().size() % 2 != 0) {
+                    for (int j = i + 1; j < nodes.size(); j++) {
+                        if (nodes.get(i).getConnectionList().size() % 2 != 0) {
+                            //jezeli sa polaczone ta sama krawedzia
+                            if (nodes.get(i).getConnectionList().contains(nodes.get(j)) && nodes.get(j).getConnectionList().contains(nodes.get(i))) {
+                                int icount = 0;
+                                int jcount = 100;
+                                randNodeIndex = rand.nextInt(nodes.size());
+                                while (icount < 100 && (nodes.get(randNodeIndex).getConnectionList().size() % 2 != 0 || nodes.get(i).getConnectionList().contains(nodes.get(randNodeIndex))) || nodes.get(j).getConnectionList().contains(nodes.get(randNodeIndex))) {
+                                    randNodeIndex = rand.nextInt(nodes.size());
+                                    icount++;
+                                }
+                                if (icount == 100) {
+                                    jcount = 0;
+                                }
+                                while (jcount < 100 && (nodes.get(randNodeIndex).getConnectionList().size() % 2 != 0 || nodes.get(j).getConnectionList().contains(nodes.get(randNodeIndex)) || nodes.get(i).getConnectionList().contains(nodes.get(randNodeIndex)))) {
+                                    randNodeIndex = rand.nextInt(nodes.size());
+                                    jcount++;
+                                }
+                                if (icount < 100) {
+                                    nodes.get(i).addConnection(nodes.get(randNodeIndex));
+                                    nodes.get(randNodeIndex).addConnection(nodes.get(i));
+                                    //polacz drugi stary z nowym
+                                    nodes.get(j).addConnection(nodes.get(randNodeIndex));
+                                    nodes.get(randNodeIndex).addConnection(nodes.get(j));
+                                } else if (jcount < 100) {
+                                    nodes.get(j).addConnection(nodes.get(randNodeIndex));
+                                    nodes.get(randNodeIndex).addConnection(nodes.get(j));
+                                    //polacz drugi stary z nowym
+                                    nodes.get(i).addConnection(nodes.get(randNodeIndex));
+                                    nodes.get(randNodeIndex).addConnection(nodes.get(i));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (nodes.get(nodes.size() - 1).getConnectionList().size() % 2 != 0) {
+                System.out.println("Zostały dwa wierzcholki nie parzyste polaczone ta sama krawedzia, nie mozna utworzyc grafu z cyklem Eulera");
+            } else {
+                System.out.println("Utworzono graf z cyklem Eulera");
+            }
+
+            Collections.sort(nodes, (o1, o2) -> Integer.compare(o1.getId(), o2.getId()));
+            nodeGraph.clear();
+            nodeGraph.addAll(nodes);
+//            // losuj cykl eulera dla kazdego wierzcholka
+//            for (GraphNode n : nodeGraph) {
+//                EulerianCycle(nodeGraph,n.getId());
+//            }
+            //losuj cykl eulera dla losowego wierzcholka
+            EulerianCycle(nodeGraph, rand.nextInt(nodeGraph.size()));
+        }
+    }
+
+    // klasa krawedz skladajaca sie z wierzcholkow i flagi isUsed mowiaca czy krawedz juz byla uzyta
+    private static class Edge {
+        private GraphNode v;
+        private GraphNode w;
+        private boolean isUsed;
+
+        public void setUsed(boolean used) {
+            isUsed = used;
+        }
+
+        public GraphNode getV() {
+
+            return v;
+        }
+
+        public GraphNode getW() {
+            return w;
+        }
+
+        public boolean isUsed() {
+            return isUsed;
+        }
+
+        public Edge(GraphNode v, GraphNode w) {
+            this.v = v;
+            this.w = w;
+            isUsed = false;
+        }
+
+        // zwraca drugi wierzcholek
+        public int other(int node) {
+            if (node == v.getId())
+                return w.getId();
+            else
+                return v.getId();
+        }
+    }
+
+    //tworzy głeboką kopie arraylist sasiednich wierzcholkow
+    public ArrayList<GraphNode> deepNodeArrayListCopy(ArrayList<GraphNode> from) {
+        ArrayList<GraphNode> to = new ArrayList<>();
+        for (int i = 0; i < from.size(); i++) {
+            to.add(new GraphNode(from.get(i).getId()));
+        }
+        for (int i = 0; i < to.size(); i++) {
+            for (int j = 0; j < to.size(); j++) {
+                for (int k = 0; k < from.get(i).getConnectionList().size(); k++) {
+                    if (to.get(j).getId() == from.get(i).getConnectionList().get(k).getId())
+                        to.get(i).addConnection(to.get(j));
+                }
+            }
+        }
+        return to;
+    }
+
+    //konwertuje pary wierzcholkow z listy siasiedztwa na krawedzie
+    public ArrayList<Edge> convertNodesToEdges(ArrayList<GraphNode> nodesCopy) {
+        ArrayList<Edge> edges = new ArrayList<>();
+        for (int i = 0; i < nodesCopy.size(); i++) {
+            for (int j = 0; j < nodesCopy.get(i).getConnectionList().size(); j++) {
+                //dodaj krawedz i, j
+                edges.add(new Edge(nodesCopy.get(i), nodesCopy.get(i).getConnectionList().get(j)));
+            }
+        }
+        nodesCopy.clear();
+        return edges;
+    }
+
+    public void EulerianCycle(ArrayList<GraphNode> nodes, int startVertice) {
+        //zrob gleboka kopie wierzcholkow
+        ArrayList<GraphNode> nodesCopy = deepNodeArrayListCopy(nodes);
+//        stworz tablice krawedzi
+        ArrayList<Edge> edges = new ArrayList<>();
+        edges = convertNodesToEdges(nodesCopy);
+//        stworz liste sasiadujacych krawedzi
+        Queue<Edge>[] adj = (Queue<Edge>[]) new Queue[nodes.size()];
+        for (int v = 0; v < nodes.size(); v++)
+            adj[v] = new LinkedList<>();
+//        dodaj sasiadujace krawedzie dla kazdego wierzcholka
+        for (int v = 0; v < nodes.size(); v++) {
+            for (Edge e : edges) {
+                if (nodes.get(v).getId() == e.getV().getId()) {
+                    adj[v].add(e);
+                }
+            }
+        }
+
+        //dodaje stos wierzholkow - punkty z ktorych mozna isc
+        Stack<Integer> stack = new Stack<Integer>();
+        stack.push(startVertice);
+
+//        //stos cyklu
+        Stack<Integer> cycle = new Stack<Integer>();
+        //algorytm hierholzera - DFS
+        while (!stack.isEmpty()) {
+            int v = stack.pop();
+            while (!adj[v].isEmpty()) {
+                Edge edge = adj[v].poll();
+                if (edge.isUsed()) continue;
+                for (Edge e : edges) {
+                    if ((edge.getV() == e.getV() && edge.getW() == e.getW()) || (edge.getV() == e.getW() && edge.getW() == e.getV())) {
+                        e.setUsed(true);
+                    }
+                }
+                stack.push(v);
+                v = edge.other(v);
+            }
+            // wrzuc wierzcholek na stos cyklu
+            cycle.push(v);
+        }
+        //drukuj cykl
+        System.out.println("Cykl Eulera:");
+        while (!cycle.isEmpty()) {
+            System.out.printf("%d ", cycle.pop());
         }
     }
 }
