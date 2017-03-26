@@ -1,6 +1,5 @@
 package graph_package.graph_classes;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -14,12 +13,10 @@ public class Graph {
     //przechowywuje graf w postaci wezlow
     private ArrayList<GraphNode> nodeGraph;
 
-
     //konstruktor
     public Graph() {
 
     }
-
 
     //Zwraca węzeł według id
     public GraphNode getGraphNode(int id) {
@@ -30,8 +27,9 @@ public class Graph {
         }
         return null;
     }
+
     // Zwraca liczbę wierzchołków grafu z postaci macierzowej
-    public int getNumberOfVertices(){
+    public int getNumberOfVertices() {
         return graphMatrix.length;
     }
 
@@ -490,19 +488,19 @@ public class Graph {
 
     // Generowanie losowych grafów k-reguralnych
 
-    public void kReguralGraphs(int numberOfVertices, int k){
-        if (numberOfVertices*k % 2 != 0){
+    public void kReguralGraphs(int numberOfVertices, int k) {
+        if (numberOfVertices * k % 2 != 0) {
             System.out.println("Błąd! Liczba wierzchołków * k musi być liczbą parzysta!");
             return;
         }
         // nasza sekwencja
         int[] numberSequence = new int[numberOfVertices];
-        for(int element=0; element<numberSequence.length; ++element){
+        for (int element = 0; element < numberSequence.length; ++element) {
             numberSequence[element] = k;
         }
         // z tej sekwencji tworzymy macierz
         int[][] tempMatrix = checkNumberSequence(numberSequence);
-        if(tempMatrix == null){
+        if (tempMatrix == null) {
             System.out.println("Błąd! Z podanej sekwencji nie możemy stworzyć grafu k-reguralnego!");
             return;
         }
@@ -512,7 +510,6 @@ public class Graph {
         //randomizujemy
         randomizeGraph();
     }
-
 
 
 }
