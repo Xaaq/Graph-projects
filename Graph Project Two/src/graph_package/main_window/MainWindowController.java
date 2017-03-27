@@ -14,6 +14,8 @@ public class MainWindowController implements Initializable {
 
     public GraphCanvas canvas;
     public TextField numberSequenceInput;
+    public TextField kValueInput;
+    public TextField numbersOfVerctices;
 
     //glowny gosc programu - nasz graf
     private Graph graph = new Graph();
@@ -35,7 +37,7 @@ public class MainWindowController implements Initializable {
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
 
         //jesli sie udalo znalesc graf o takiej sekwencji
-       if (tempMatrix != null) {
+        if (tempMatrix != null) {
             graph.setGraphMatrix(tempMatrix);
             ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
             graph.setNodeGraph(tempGraph);
@@ -43,13 +45,20 @@ public class MainWindowController implements Initializable {
             wasGraphGenerated = true;
             //JAK CHCECIE WSTAWIC JAKIES AKCJE ZWIĄZANE Z GRAFEM (CHCECIE NP PRZETESTOWAC CZY DZIALA) TO TUTAJ POD TYM KOMENTARZEM
             //graph.createAndFindEulerGraph();
-            graph.kReguralGraphs(6, 4);
+            graph.kReguralGraphs(6, 3);
             canvas.drawGraph(graph);
             canvas.drawGraph(graph);
 
             System.out.println(graph.isHamiltonianGraph(graph));
             //System.out.println(graph.getNumberOfVertices());
         }
+    }
+
+    public void createKReguralGraphButtonClick() {
+        int KValueInput = Integer.parseInt(kValueInput.getText());
+        int numbersOfVercices = Integer.parseInt(numbersOfVerctices.getText());
+        graph.kReguralGraphs(numbersOfVercices, KValueInput);
+        canvas.drawGraph(graph);
     }
 
     public void createGraphFromNumberSequenceButtonClick() {
