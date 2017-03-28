@@ -278,8 +278,25 @@ public class Graph {
         }
     }
 
+    public String getIsEulerLabelTrue() {
+        return isEulerLabelTrue;
+    }
+
+    public String getEulerianCycle() {
+        return eulerianCycle;
+    }
+
+    public void setIsEulerLabelTrue(String isEulerLabelTrue) {
+        this.isEulerLabelTrue = isEulerLabelTrue;
+    }
+
+    private String isEulerLabelTrue;
+    private String eulerianCycle;
+
     //funkcja ktora tworzy graf z cyklem eulera, podmienia starą liste sąsiadow z nową zawierającą ten cykl i znajduje go.
-    public void createAndFindEulerGraph() {
+    public void createAndFindEulerGraph(int beginEulerNode) {
+        isEulerLabelTrue = "";
+        eulerianCycle = "";
         ArrayList<GraphNode> nodes = checkBiggestConsistentComponent();
         int count = 0;
 
@@ -289,9 +306,9 @@ public class Graph {
             count++;
         }
         if (nodes.size() != nodeGraph.size()) {
-            System.out.println("Graf nie spójny: (ilosc wierzcholkow max spojnej po randomizacjach != ilosc wierzcholkow calkowita) " + nodes.size() + " != " + nodeGraph.size());
+            isEulerLabelTrue = "Nie można utworzyć grafu z cyklem Eulera, graf nie jest spójny.";
         } else {
-            System.out.println("Graf spójny");
+//            System.out.println("Graf spójny");
             Random rand = new Random();
             int randNodeIndex;
             //szuka wierzcholkow nie parzystych
@@ -352,20 +369,21 @@ public class Graph {
                 }
             }
             if (nodes.get(nodes.size() - 1).getConnectionList().size() % 2 != 0) {
-                System.out.println("Zostały dwa wierzcholki nie parzyste polaczone ta sama krawedzia, nie mozna utworzyc grafu z cyklem Eulera");
+                isEulerLabelTrue = "Nie można utworzyć grafu z cyklem Eulera, zostały 2 wierzchołki nieparzyste połączone tą samą krawędzią.";
             } else {
-                System.out.println("Utworzono graf z cyklem Eulera");
-            }
-
-            Collections.sort(nodes, (o1, o2) -> Integer.compare(o1.getId(), o2.getId()));
-            nodeGraph.clear();
-            nodeGraph.addAll(nodes);
+                isEulerLabelTrue = "Utworzono graf z cyklem Eulera";
+                Collections.sort(nodes, (o1, o2) -> Integer.compare(o1.getId(), o2.getId()));
+                nodeGraph.clear();
+                nodeGraph.addAll(nodes);
 //            // losuj cykl eulera dla kazdego wierzcholka
 //            for (GraphNode n : nodeGraph) {
 //                EulerianCycle(nodeGraph,n.getId());
 //            }
-            //losuj cykl eulera dla losowego wierzcholka
-            EulerianCycle(nodeGraph, rand.nextInt(nodeGraph.size()));
+//                eulerianCycle += "\n";
+
+//                //losuj cykl eulera dla losowego wierzcholka
+                EulerianCycle(nodeGraph, beginEulerNode);
+            }
         }
     }
 
@@ -480,10 +498,12 @@ public class Graph {
             cycle.push(v);
         }
         //drukuj cykl
-        System.out.println("Cykl Eulera:");
+
         while (!cycle.isEmpty()) {
-            System.out.printf("%d ", cycle.pop());
+            eulerianCycle += Integer.toString(cycle.pop());
+            eulerianCycle += "->";
         }
+        eulerianCycle = eulerianCycle.substring(0,eulerianCycle.length()-2);
     }
 
     // Generowanie losowych grafów k-reguralnych

@@ -4,6 +4,7 @@ import graph_package.graph_classes.Graph;
 import graph_package.graph_classes.GraphCanvas;
 import graph_package.graph_classes.GraphNode;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -16,6 +17,9 @@ public class MainWindowController implements Initializable {
     public TextField numberSequenceInput;
     public TextField kValueInput;
     public TextField numbersOfVerctices;
+    public TextField nodeInput;
+    public Label isEulerianGraphLabel;
+    public Label eulerCycleLabel;
 
     //glowny gosc programu - nasz graf
     private Graph graph = new Graph();
@@ -24,16 +28,16 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
+//        int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
         //int[] numberSequence = new int[]{0, 0, 1, 2, 2, 2, 3};
         //int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
-        //int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 4, 4, 6};
+//        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 4, 4, 6};
         //int[] numberSequence = new int[]{1, 1, 1, 2, 3, 3, 4, 4, 5};
-        //int[] numberSequence = new int[]{1, 2, 2, 2, 3};
-        //int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 3, 5, 5, 7};
+//        int[] numberSequence = new int[]{1, 2, 2, 2, 3};
+        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 3, 5, 5, 7};
         //int[] numberSequence = new int[]{1, 1, 2, 2, 2, 3, 3, 3, 3, 5, 5, 5, 8};
 
-        int[] numberSequence = new int[]{3, 3, 3, 3, 3, 3};
+//        int[] numberSequence = new int[]{3, 3, 3, 3, 3, 3};
         int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
 
         //jesli sie udalo znalesc graf o takiej sekwencji
@@ -44,12 +48,14 @@ public class MainWindowController implements Initializable {
 
             wasGraphGenerated = true;
             //JAK CHCECIE WSTAWIC JAKIES AKCJE ZWIĄZANE Z GRAFEM (CHCECIE NP PRZETESTOWAC CZY DZIALA) TO TUTAJ POD TYM KOMENTARZEM
+            eulerCycleLabel.setWrapText(true);
+            isEulerianGraphLabel.setWrapText(true);
             //graph.createAndFindEulerGraph();
-            graph.kReguralGraphs(6, 3);
-            canvas.drawGraph(graph);
+//            graph.kReguralGraphs(6, 3);
+//            canvas.drawGraph(graph);
             canvas.drawGraph(graph);
 
-            System.out.println(graph.isHamiltonianGraph(graph));
+//            System.out.println(graph.isHamiltonianGraph(graph));
             //System.out.println(graph.getNumberOfVertices());
         }
     }
@@ -89,5 +95,26 @@ public class MainWindowController implements Initializable {
         ArrayList<GraphNode> consistentGraph = graph.checkBiggestConsistentComponent();
         graph.setNodeGraph(consistentGraph);
         canvas.drawGraph(graph);
+    }
+
+    public void generateEulerAndFindCycleButtonClick() {
+//        eulerCycleLabel.setText("dupa");
+//        eulerCycleLabel.setAccessibleText("dupa");\
+//        System.out.println(nodeINput.getText().toString());
+//        graph.createAndFindEulerGraph(Integer.parseInt(nodeInput.getText().toString()));
+        try {
+            String t = nodeInput.getText().toString();
+            graph.createAndFindEulerGraph(Integer.parseInt(t));
+            isEulerianGraphLabel.setText(graph.getIsEulerLabelTrue());
+            eulerCycleLabel.setText(graph.getEulerianCycle());
+            canvas.drawGraph(graph);
+        } catch (NumberFormatException e) {
+            graph.setIsEulerLabelTrue("Nie podałeś wierzchołka!");
+            isEulerianGraphLabel.setText(graph.getIsEulerLabelTrue());
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            graph.setIsEulerLabelTrue("Nie podałeś dobrego wierzchołka!");
+            isEulerianGraphLabel.setText(graph.getIsEulerLabelTrue());
+        }
     }
 }
