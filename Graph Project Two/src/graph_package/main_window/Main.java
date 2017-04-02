@@ -16,7 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         primaryStage.setTitle("Graph application");
-        primaryStage.setScene(new Scene(root, 750, 650));
+        primaryStage.setScene(new Scene(root, 750, 700));
         primaryStage.show();
 
     }
