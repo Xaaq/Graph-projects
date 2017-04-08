@@ -1,6 +1,7 @@
 package main_window;
 
 import graph_classes.Graph;
+import graph_classes.GraphEdge;
 import graph_classes.GraphNode;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -47,9 +48,10 @@ public class MainWindowController implements Initializable {
     public void drawGraph(Graph graph) {
         double canvasWidth = graphCanvas.getWidth();
         double canvasHeight = graphCanvas.getHeight();
-        double graphSize = (canvasWidth < canvasHeight) ? canvasWidth : canvasHeight;
+        double graphSize = (canvasWidth <= canvasHeight) ? canvasWidth : canvasHeight;
         int dotSize = 15;
         ArrayList<GraphNode> nodeGraph = graph.getNodeGraph();
+        ArrayList<GraphEdge> edgeGraph = graph.getEdgeGraph();
         int dotCount = nodeGraph.size();
         GraphicsContext context = graphCanvas.getGraphicsContext2D();
 
@@ -73,11 +75,12 @@ public class MainWindowController implements Initializable {
                 double angle1 = i * 360 / dotCount * Math.PI / 180;
                 double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
                 double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
-
+                int index = nodeGraph.indexOf(node);
                 double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
                 double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
                 double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
                 context.strokeLine(x1, y1, x2, y2);
+//            ??    context.fillText(Integer.toString(edgeGraph.get(i).getConnectionEdgeList().get(0).getWeight()),(x1+x2)/2, (y1+y2)/2);
             }
         }
     }

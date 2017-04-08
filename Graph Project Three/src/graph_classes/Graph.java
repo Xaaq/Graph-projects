@@ -2,6 +2,7 @@ package graph_classes;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 /**
@@ -330,7 +331,7 @@ public class Graph {
                 for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                     //sprawdz czy jakas krawedz nie byla juz oznaczona
                     for (int k = 0; k < edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().size(); k++) {
-                        if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).getFirst().getId() == edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()) {
+                        if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).equals(edgeGraph.get(i).getConnectionEdgeList().get(j))) {
                             int temp = r.nextInt(10) + 1;
                             edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).setWeight(temp);
                             edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp);
@@ -347,8 +348,19 @@ public class Graph {
                 }
                 System.out.println(" ");
             }
+            for (int i = 0; i < nodeGraph.size(); i++) {
+                System.out.printf("%d -> ", nodeGraph.get(i).getId());
+                for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+                    System.out.printf("%d ", nodeGraph.get(i).getConnectionList().get(j).getId());
+                }
+                System.out.println(" ");
+            }
         }
     }
 
+    public void Dijkstra(int beginIndex) {
+        PriorityQueue<GraphNode> availableNodes;
+
+    }
 
 }

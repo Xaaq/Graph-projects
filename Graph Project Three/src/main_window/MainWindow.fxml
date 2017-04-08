@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+
 <GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1" fx:controller="main_window.MainWindowController">
     <columnConstraints>
@@ -12,5 +13,5 @@
     <rowConstraints>
         <RowConstraints/>
     </rowConstraints>
-    <Canvas fx:id="graphCanvas" height="200.0" width="200.0"/>
+    <Canvas fx:id="graphCanvas" height="481.0" width="565.0"/>
 </GridPane>
