@@ -209,9 +209,9 @@ public class Graph {
     }
 
     //Program do sprawdzania (dla małych grafów) czy graf jest hamiltonowski.
-    public boolean isHamiltonianGraph(Graph graph) {
+    public boolean isHamiltonianGraph(){
         //Wystarczy sprawdzić od wierzchołka 0. Jak jest hamiltonowski to nie ważne od którego wierzchołka zaczniemy
-        DFSPaths dfs = new DFSPaths(graph, 0);
+        DFSPaths dfs = new DFSPaths(this, 0);
 
         return dfs.isHamiltonianGraph();
     }
