@@ -14,9 +14,29 @@ import java.util.ResourceBundle;
 public class MainWindowController implements Initializable {
 
     public Canvas graphCanvas;
-
+    private Graph graph = new Graph();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+//        int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
+//        int[] numberSequence = new int[]{0, 0, 1, 2, 2, 2, 3};
+        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 4, 4, 6};
+        //int[] numberSequence = new int[]{1, 1, 1, 2, 3, 3, 4, 4, 5};
+//        int[] numberSequence = new int[]{1, 2, 2, 2, 3};
+//        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 3, 5, 5, 7};
+        //int[] numberSequence = new int[]{1, 1, 2, 2, 2, 3, 3, 3, 3, 5, 5, 5, 8};
+
+//        int[] numberSequence = new int[]{3, 3, 3, 3, 3, 3};
+        int[][] tempMatrix = graph.checkNumberSequence(numberSequence);
+
+        //jesli sie udalo znalesc graf o takiej sekwencji
+        if (tempMatrix != null) {
+            graph.setGraphMatrix(tempMatrix);
+            ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
+            graph.setNodeGraph(tempGraph);
+            graph.createConsistentGraphWithWeights();
+            drawGraph(graph);
+        }
     }
 
     /**
@@ -47,7 +67,7 @@ public class MainWindowController implements Initializable {
             context.fillOval(x, y, dotSize, dotSize);
         }
 
-        //rysuje linie
+        //rysuje linie i wagi
         for (int i = 0; i < dotCount; i++) {
             for (GraphNode node : nodeGraph.get(i).getConnectionList()) {
                 double angle1 = i * 360 / dotCount * Math.PI / 180;
@@ -57,7 +77,6 @@ public class MainWindowController implements Initializable {
                 double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
                 double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
                 double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
-
                 context.strokeLine(x1, y1, x2, y2);
             }
         }

@@ -13,6 +13,10 @@ public class GraphNode {
      * Numer identyfikacyjny węzła.
      */
     private int id;
+//    /**
+//     * Waga węzła.
+//     */
+//    private int weight = 0; //zmienic
 
     /**
      * Tablica sąsiadów - lista węzłów, z którymi jest połączony.
@@ -62,5 +66,27 @@ public class GraphNode {
      */
     public ArrayList<GraphNode> getConnectionList() {
         return connectionList;
+    }
+
+    /**
+     * tworzy głeboką kopie arraylist sasiednich wierzcholkow
+     *
+     * @param from lista sasiednich wierzcholkow
+     * @return gleboko sklonowana lsita sasiednich wierzcholkow
+     */
+    public ArrayList<GraphNode> deepNodeArrayListCopy(ArrayList<GraphNode> from) {
+        ArrayList<GraphNode> to = new ArrayList<>();
+        for (int i = 0; i < from.size(); i++) {
+            to.add(new GraphNode(from.get(i).getId()));
+        }
+        for (int i = 0; i < to.size(); i++) {
+            for (int j = 0; j < to.size(); j++) {
+                for (int k = 0; k < from.get(i).getConnectionList().size(); k++) {
+                    if (to.get(j).getId() == from.get(i).getConnectionList().get(k).getId())
+                        to.get(i).addConnection(to.get(j));
+                }
+            }
+        }
+        return to;
     }
 }
