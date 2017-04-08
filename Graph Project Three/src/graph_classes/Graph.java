@@ -355,10 +355,12 @@ public class Graph {
         }
     }
 
-    public void Dijkstra(int beginIndex) {
+    private HashMap<Integer, Integer> distances = new HashMap<>();
+
+    public void dijkstra(int beginIndex) {
+        ;
         int initialNodeIndex = nodeGraph.get(beginIndex).getId();
         HashMap<Integer, Integer> predecessors = new HashMap<>();
-        HashMap<Integer, Integer> distances = new HashMap<>();
         PriorityQueue<GraphNode> availableNodes = new PriorityQueue(nodeGraph.size(), new Comparator<GraphNode>() {
 
             public int compare(GraphNode one, GraphNode two) {
@@ -429,4 +431,28 @@ public class Graph {
         }
     }
 
+    int[][] distanceMatrix;
+
+    /**
+     * tworzy macierz odleglosci
+     */
+    public void createDistanceMatrix() {
+        distanceMatrix = new int[nodeGraph.size()][nodeGraph.size()];
+
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            dijkstra(i);
+            for (int j = 0; j < distanceMatrix[i].length; j++) {
+                distanceMatrix[i][j] = distances.get(j);
+            }
+        }
+
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            System.out.printf("[");
+            for (int j = 0; j < distanceMatrix[i].length; j++) {
+                System.out.printf("%d, ", distanceMatrix[i][j]);
+            }
+            System.out.printf("]\n");
+        }
+    }
 }
+
