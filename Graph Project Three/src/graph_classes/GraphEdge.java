@@ -66,6 +66,19 @@ public class GraphEdge {
         second = w;
     }
 
+    /**
+     * zwraca drugi wierzcholek
+     *
+     * @param node pierwszy wierzcholek
+     * @return drugi wierzcholek
+     */
+    public GraphNode getOther(int node) {
+        if (node == first.getId())
+            return second;
+        else
+            return first;
+    }
+
 
     /**
      * konwertuje pary wierzcholkow z listy siasiednich wierzcholkow sasiednich krawedzi

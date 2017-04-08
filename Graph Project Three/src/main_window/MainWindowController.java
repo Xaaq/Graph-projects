@@ -36,6 +36,7 @@ public class MainWindowController implements Initializable {
             ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
             graph.setNodeGraph(tempGraph);
             graph.createConsistentGraphWithWeights();
+            graph.Dijkstra(0);
             drawGraph(graph);
         }
     }

@@ -1,9 +1,6 @@
 package graph_classes;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Xaaq333 on 2017-03-11.
@@ -359,8 +356,76 @@ public class Graph {
     }
 
     public void Dijkstra(int beginIndex) {
-        PriorityQueue<GraphNode> availableNodes;
+        int initialNodeIndex = nodeGraph.get(beginIndex).getId();
+        HashMap<Integer, Integer> predecessors = new HashMap<>();
+        HashMap<Integer, Integer> distances = new HashMap<>();
+        PriorityQueue<GraphNode> availableNodes = new PriorityQueue(nodeGraph.size(), new Comparator<GraphNode>() {
 
+            public int compare(GraphNode one, GraphNode two) {
+                int weightOne = distances.get(one.getId());
+                int weightTwo = distances.get(two.getId());
+                return weightOne - weightTwo;
+            }
+        });
+        HashSet<GraphNode> visitedNodes = new HashSet<>();
+        //oznacz wszystkich poprzednikow wartoscia null, a wszystkich sasaidow inf (MAX_VALUE)
+        for (GraphNode key : nodeGraph) {
+            predecessors.put(key.getId(), null);
+            distances.put(key.getId(), Integer.MAX_VALUE);
+        }
+        //odleglosc do siebie =  0
+        distances.put(initialNodeIndex, 0);
+
+        //reszta inicjalizacji - ustaw poprzednikow wierzcholkow sasiadujacych, odleglosci do nich i dodaj do mozliwych wierzcholkow
+        GraphNode initialNode = nodeGraph.get(beginIndex);
+        ArrayList<GraphEdge> initialNodeNeighbors = edgeGraph.get(beginIndex).getConnectionEdgeList();
+        for (GraphEdge e : initialNodeNeighbors) {
+            GraphNode other = e.getOther(initialNode.getId());
+            predecessors.put(other.getId(), initialNodeIndex);
+            distances.put(other.getId(), e.getWeight());
+            availableNodes.add(other);
+        }
+        //oznacz wierzcholek(beginIndex) jako odwiedzony
+        visitedNodes.add(initialNode);
+
+        //gdy sa jeszcze mozliwe wierzcholki, sciagnij ten o najmniejszej wadze i konynuuj dijkstre dla nieodwiedzonych wierzcholkow
+        while (availableNodes.size() > 0) {
+            GraphNode next = availableNodes.poll();
+            int distanceToNext = distances.get(next.getId());
+            List<GraphEdge> nextNeighbors = edgeGraph.get(next.getId()).getConnectionEdgeList();
+            for (GraphEdge e : nextNeighbors) {
+                GraphNode other = e.getSecond();
+                if (visitedNodes.contains(other)) {
+                    continue;
+                }
+                //proces relaksacji
+                int currentWeight = distances.get(other.getId());
+                int newWeight = distanceToNext + e.getWeight();
+                if (newWeight < currentWeight) {
+                    predecessors.put(other.getId(), next.getId());
+                    distances.put(other.getId(), newWeight);
+                    availableNodes.remove(other);
+                    availableNodes.add(other);
+                }
+            }
+            visitedNodes.add(next);
+        }
+        //drukuj najkrotsze odleglosci od wierzcholek(beginIndex)
+        for (int i = 0; i < nodeGraph.size(); i++) {
+            int destinationLabel = nodeGraph.get(i).getId();
+            LinkedList<GraphNode> path = new LinkedList<>();
+            path.add(nodeGraph.get(destinationLabel));
+
+            while (destinationLabel != initialNodeIndex) {
+                GraphNode predecessor = nodeGraph.get((predecessors.get(destinationLabel)));
+                destinationLabel = predecessor.getId();
+                path.add(0, predecessor);
+            }
+            for (GraphNode g : path) {
+                System.out.printf("%d->", g.getId());
+            }
+            System.out.println(" ");
+        }
     }
 
 }
