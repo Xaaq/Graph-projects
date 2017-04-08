@@ -20,6 +20,8 @@ public class MainWindowController implements Initializable {
     public TextField nodeInput;
     public Label isEulerianGraphLabel;
     public Label eulerCycleLabel;
+    public Label isHamiltonLabel;
+    public Label KRegularLabel;
 
     //glowny gosc programu - nasz graf
     private Graph graph = new Graph();
@@ -63,9 +65,20 @@ public class MainWindowController implements Initializable {
     public void createKReguralGraphButtonClick() {
         int KValueInput = Integer.parseInt(kValueInput.getText());
         int numbersOfVercices = Integer.parseInt(numbersOfVerctices.getText());
+        if (numbersOfVercices * KValueInput % 2 != 0) {
+            KRegularLabel.setText("Błąd! Liczba wierzchołków * k musi być liczbą parzysta!");
+        }
         graph.kReguralGraphs(numbersOfVercices, KValueInput);
         canvas.drawGraph(graph);
     }
+
+    public void checkIfGraphIsHamiltonianButtonClick(){
+        if(graph.isHamiltonianGraph())
+            isHamiltonLabel.setText("Graf jest hamiltonowski");
+        else
+            isHamiltonLabel.setText("Graf nie jest hamiltonowski");
+    }
+
 
     public void createGraphFromNumberSequenceButtonClick() {
         String[] inputStringArray = numberSequenceInput.getText().replaceAll(" ", "").split(",");
