@@ -412,18 +412,19 @@ public class Graph {
         }
         //drukuj najkrotsze odleglosci od wierzcholek(beginIndex)
         for (int i = 0; i < nodeGraph.size(); i++) {
-            int destinationLabel = nodeGraph.get(i).getId();
+            int destination = nodeGraph.get(i).getId();
             LinkedList<GraphNode> path = new LinkedList<>();
-            path.add(nodeGraph.get(destinationLabel));
+            path.add(nodeGraph.get(destination));
 
-            while (destinationLabel != initialNodeIndex) {
-                GraphNode predecessor = nodeGraph.get((predecessors.get(destinationLabel)));
-                destinationLabel = predecessor.getId();
+            while (destination != initialNodeIndex) {
+                GraphNode predecessor = nodeGraph.get((predecessors.get(destination)));
+                destination = predecessor.getId();
                 path.add(0, predecessor);
             }
             for (GraphNode g : path) {
                 System.out.printf("%d->", g.getId());
             }
+            System.out.printf(" | Odleglosc: %d", distances.get(i));
             System.out.println(" ");
         }
     }
