@@ -422,9 +422,7 @@ public class Graph {
                 destination = predecessor.getId();
                 path.add(0, predecessor);
             }
-            for (GraphNode g : path) {
-                System.out.printf("%d->", g.getId());
-            }
+            path.forEach(g -> System.out.printf("%d->", g.getId()));
             System.out.printf(" | Odleglosc: %d", distances.get(i));
             System.out.println(" ");
         }
@@ -486,9 +484,7 @@ public class Graph {
         }
         System.out.println(" ");
 
-        for (int centre : centres) {
-            System.out.println("Centrum grafu: " + centre + " - " + distanceSum[centre]);
-        }
+        centres.forEach(centre -> System.out.println("Centrum grafu: " + centre + " - " + distanceSum[centre]));
     }
 
     /**
