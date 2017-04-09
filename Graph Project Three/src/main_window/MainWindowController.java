@@ -22,9 +22,9 @@ public class MainWindowController implements Initializable {
 //        int[] numberSequence = new int[]{0, 2, 2, 2, 5, 4, 2, 3, 4, 2, 1, 4, 3, 4, 3, 4, 5};
 //        int[] numberSequence = new int[]{0, 0, 1, 2, 2, 2, 3};
 //        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 4, 4, 6};
-        int[] numberSequence = new int[]{1, 1, 1, 2, 3, 3, 4, 4, 5};
+//        int[] numberSequence = new int[]{1, 1, 1, 2, 3, 3, 4, 4, 5};
 //        int[] numberSequence = new int[]{1, 2, 2, 2, 3};
-//        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 3, 5, 5, 7};
+        int[] numberSequence = new int[]{1, 1, 2, 2, 3, 3, 3, 5, 5, 7};
 //        int[] numberSequence = new int[]{1, 1, 2, 2, 2, 3, 3, 3, 3, 5, 5, 5, 8};
 
 //        int[] numberSequence = new int[]{3, 3, 3, 3, 3, 3};
@@ -36,9 +36,11 @@ public class MainWindowController implements Initializable {
             ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
             graph.setNodeGraph(tempGraph);
             graph.createConsistentGraphWithWeights();
+            graph.dijkstra(0);
             graph.createDistanceMatrix();
             graph.findDistanceCentre();
             graph.findMinMaxCentre();
+            graph.prim(0);
             drawGraph(graph);
         }
     }

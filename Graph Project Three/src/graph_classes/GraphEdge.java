@@ -66,6 +66,11 @@ public class GraphEdge {
         second = w;
     }
 
+    @Override
+    public String toString() {
+        return "(" + getFirst().getId() + "," + getSecond().getId() + ")";
+    }
+
     /**
      * zwraca drugi wierzcholek
      *

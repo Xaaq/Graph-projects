@@ -358,7 +358,6 @@ public class Graph {
     private HashMap<Integer, Integer> distances = new HashMap<>();
 
     public void dijkstra(int beginIndex) {
-        ;
         int initialNodeIndex = nodeGraph.get(beginIndex).getId();
         HashMap<Integer, Integer> predecessors = new HashMap<>();
         PriorityQueue<GraphNode> availableNodes = new PriorityQueue(nodeGraph.size(), new Comparator<GraphNode>() {
@@ -431,7 +430,7 @@ public class Graph {
         }
     }
 
-    int[][] distanceMatrix;
+    private int[][] distanceMatrix;
 
     /**
      * tworzy macierz odleglosci
@@ -467,7 +466,6 @@ public class Graph {
             for (int j = 1; j < distanceMatrix[i].length; j++) {
                 distanceSum[i] += distanceMatrix[i][j];
             }
-            System.out.printf("%d ", distanceSum[i]);
         }
 
         //znajdz najmniejsza sume - centrum
@@ -534,6 +532,59 @@ public class Graph {
             Integer value = entry.getValue();
             System.out.println("Centrum MIN-MAX: " + key + " - " + distanceMatrix[key][value]);
         }
+    }
+
+    /**
+     * implementacja algorytmu prima - znajdowanie najmniejszych drzew rozpinajacych
+     *
+     * @param beginIndex poczatkowy index szukanego MST
+     */
+    public void prim(int beginIndex) {
+        int initialNodeIndex = nodeGraph.get(beginIndex).getId();
+        //kolejka priorytetowa krawedzi ktore mozemy wybrac z danego wierzhcolka
+        PriorityQueue<GraphEdge> avaliableEdges = new PriorityQueue<>(new Comparator<GraphEdge>() {
+            @Override
+            public int compare(GraphEdge o1, GraphEdge o2) {
+                return o1.getWeight() - o2.getWeight();
+            }
+        });
+        //odwiedzone wiezcholki
+        HashSet<GraphNode> visitedNodes = new HashSet<>();
+
+        for (GraphEdge edge : edgeGraph.get(beginIndex).getConnectionEdgeList()) {
+            avaliableEdges.add(edge);
+        }
+
+        //oznacz wierzcholek(beginIndex) jako odwiedzony
+        GraphNode initialNode = nodeGraph.get(beginIndex);
+        visitedNodes.add(initialNode);
+
+        LinkedList<GraphEdge> mst = new LinkedList<>();
+        int overallWeight = 0;
+        //poki sa wolne krawedzie wykonuj prima
+        while (!avaliableEdges.isEmpty()) {
+            GraphEdge edge = avaliableEdges.poll();
+            GraphNode first = edge.getFirst();
+            GraphNode second = edge.getSecond();
+            if (!visitedNodes.contains(first) || !visitedNodes.contains(second)) {
+                GraphNode node = (visitedNodes.contains(second)) ? first : second;
+                visitedNodes.add(node);
+                overallWeight += edge.getWeight();
+                mst.add(edge);
+                for (GraphEdge e : edgeGraph.get(node.getId()).getConnectionEdgeList()) {
+                    if (visitedNodes.contains(e.getSecond())) {
+                        continue;
+                    }
+                    avaliableEdges.add(e);
+                }
+            }
+        }
+        //wypisywanie
+        System.out.println("Krawedzie MST:\n");
+        mst.forEach(name -> System.out.printf("%s -", name.toString()));
+        System.out.println("\nWagi krawędzi MST:\n");
+        mst.forEach(name -> System.out.printf("%d - ", name.getWeight()));
+        System.out.println("\nWaga drzewa MST:\n" + overallWeight);
     }
 }
 
