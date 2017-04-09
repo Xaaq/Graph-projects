@@ -454,5 +454,86 @@ public class Graph {
             System.out.printf("]\n");
         }
     }
+
+    /**
+     * znajduje centra odleglosci i je wypisuje
+     */
+    public void findDistanceCentre() {
+        //sumuj odleglosci wierszami
+        int distanceSum[] = new int[distanceMatrix.length];
+
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            distanceSum[i] = distanceMatrix[i][0];
+            for (int j = 1; j < distanceMatrix[i].length; j++) {
+                distanceSum[i] += distanceMatrix[i][j];
+            }
+            System.out.printf("%d ", distanceSum[i]);
+        }
+
+        //znajdz najmniejsza sume - centrum
+        int min = 0;
+        int minTemp;
+        for (int i = 1; i < distanceSum.length; i++) {
+            minTemp = (distanceSum[i - 1] < distanceSum[i]) ? i - 1 : i;
+            min = (distanceSum[min] < distanceSum[minTemp]) ? min : minTemp;
+        }
+
+        //jezeli jest wiele center to dodaj
+        ArrayList<Integer> centres = new ArrayList<>(1);
+        centres.add(min);
+        for (int i = 0; i < distanceSum.length; i++) {
+            if (i != min && distanceSum[i] == distanceSum[min]) {
+                centres.add(i);
+            }
+        }
+        System.out.println(" ");
+
+        for (int centre : centres) {
+            System.out.println("Centrum grafu: " + centre + " - " + distanceSum[centre]);
+        }
+    }
+
+    /**
+     * Znajduje centra Min-Max i je wypisuje
+     */
+    public void findMinMaxCentre() {
+        //znajdz max w wierszu
+        // mapa -> klucz : index wierszu, wartosc: indeks kolumny
+        HashMap<Integer, Integer> max = new HashMap<>(distanceMatrix.length);
+
+        //dodaj najwieksze elementy w wierszu
+        int maxTemp;
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            max.put(i, 0);
+            for (int j = 1; j < distanceMatrix[i].length; j++) {
+                maxTemp = (distanceMatrix[i][j] > distanceMatrix[i][j - 1]) ? j : j - 1;
+                max.replace(i, max.get(i), (distanceMatrix[i][max.get(i)] > distanceMatrix[i][maxTemp]) ? max.get(i) : maxTemp);
+            }
+        }
+
+////        znajdz min wsrod maksimum i sprawdz czy nie ma ich wiecej
+        int min = 0;
+        int minTemp;
+        for (int i = 1; i < max.size(); i++) {
+            minTemp = (distanceMatrix[i - 1][max.get(i - 1)] < distanceMatrix[i][max.get(i)]) ? i - 1 : i;
+            min = (distanceMatrix[min][max.get(min)] < distanceMatrix[minTemp][max.get(minTemp)]) ? min : minTemp;
+        }
+
+        //jezeli jest wiele center minamx to dodaj
+        HashMap<Integer, Integer> minMap = new HashMap<>();
+        minMap.put(min, max.get(min));
+        for (int i = 0; i < max.size(); i++) {
+            if (i != min && distanceMatrix[i][max.get(i)] == distanceMatrix[min][max.get(min)]) {
+                minMap.put(i, max.get(i));
+            }
+        }
+
+        //iteruj przez kazde centrum min-max i wypisz
+        for (Map.Entry<Integer, Integer> entry : minMap.entrySet()) {
+            Integer key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println("Centrum MIN-MAX: " + key + " - " + distanceMatrix[key][value]);
+        }
+    }
 }
 
