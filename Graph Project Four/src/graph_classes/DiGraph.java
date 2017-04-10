@@ -16,13 +16,25 @@ public class DiGraph {
     public DiGraph() {
         //Testowo
         graphMatrix = new int[][]{
-                {0, 0, 0, 0},
+                {0, 1, 0, 0},
                 {1, 0, 0, 0},
-                {0, 1, 0, 1},
+                {1, 0, 0, 0},
                 {0, 0, 1, 0},
         };
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
 //        graphMatrix[1][0] = graphMatrix[2][1] = graphMatrix[2][3] = graphMatrix[3][2] = 1;
+    }
+
+    /**
+     * Zwraca węzeł według id
+     */
+    public GraphNode getGraphNode(int id) {
+        for (GraphNode eachNode : nodeGraph) {
+            if (eachNode.getId() == id) {
+                return eachNode;
+            }
+        }
+        return null;
     }
 
     /**
@@ -180,11 +192,13 @@ public class DiGraph {
                 }
                 if (Math.random() <= probability) {
                     graphMatrix[i][j] = 1;
-                }
-                else
-                graphMatrix[i][j] = 0;
+                } else
+                    graphMatrix[i][j] = 0;
             }
         }
+        // musimy zaaktualizować naszą listę
+        generateNodeArray();
+        // wypisuje, dla testów!
         printMatrix();
     }
 
