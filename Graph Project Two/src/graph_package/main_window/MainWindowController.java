@@ -111,10 +111,6 @@ public class MainWindowController implements Initializable {
     }
 
     public void generateEulerAndFindCycleButtonClick() {
-//        eulerCycleLabel.setText("dupa");
-//        eulerCycleLabel.setAccessibleText("dupa");\
-//        System.out.println(nodeINput.getText().toString());
-//        graph.createAndFindEulerGraph(Integer.parseInt(nodeInput.getText().toString()));
         try {
             String t = nodeInput.getText().toString();
             graph.createAndFindEulerGraph(Integer.parseInt(t));

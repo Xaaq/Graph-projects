@@ -6,6 +6,7 @@ import graph_classes.GraphNode;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -13,6 +14,10 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
+
+    public TextField numberSequenceInput;
+    public TextField beginIndexInput;
+
 
     public Canvas graphCanvas;
     private Graph graph = new Graph();
