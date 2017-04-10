@@ -13,6 +13,18 @@ import java.util.StringTokenizer;
  */
 public class DiGraph {
 
+    public DiGraph() {
+        //Testowo
+        graphMatrix = new int[][]{
+                {0, 0, 0, 0},
+                {1, 0, 0, 0},
+                {0, 1, 0, 1},
+                {0, 0, 1, 0},
+        };
+//        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
+//        graphMatrix[1][0] = graphMatrix[2][1] = graphMatrix[2][3] = graphMatrix[3][2] = 1;
+    }
+
     /**
      * DiGraf w formie macierzy
      */
@@ -44,11 +56,11 @@ public class DiGraph {
     /**
      * Wypisuje macierz sąsiedztwa digrafu
      */
-    public void printMatrix(){
+    public void printMatrix() {
         System.out.println("Wypisuje macierz sąsiedztwa digrafu:");
-        for(int i=0;i<graphMatrix.length;++i){
+        for (int i = 0; i < graphMatrix.length; ++i) {
             System.out.print("|");
-            for(int j=0;j<graphMatrix.length;++j){
+            for (int j = 0; j < graphMatrix.length; ++j) {
                 System.out.print(" ");
                 System.out.print(graphMatrix[i][j]);
                 System.out.print(" ");
@@ -57,7 +69,6 @@ public class DiGraph {
         }
         System.out.println("");
     }
-
 
     /**
      * Tworzy graf z inputu użytkownika i zapisuje do macierzy
@@ -80,6 +91,7 @@ public class DiGraph {
         }
 
 
+        graphMatrix = new int[numberOfVertices][numberOfVertices];
         array = new int[numberOfVertices];
         message();
 
@@ -110,7 +122,6 @@ public class DiGraph {
         }
     }
 
-
     /**
      * Przechowuje graf w formie wierzchołków.
      */
@@ -126,24 +137,33 @@ public class DiGraph {
     /**
      * metoda ktora generuje tablice wezlow na podstawie macierzy
      */
-    // poprawić
-    public ArrayList<GraphNode> generateNodeArray() {
-        ArrayList<GraphNode> nodeArray = new ArrayList<>();
+    public void generateNodeArray() {
+        nodeGraph = new ArrayList<>();
 
         for (int i = 0; i < graphMatrix.length; i++) {
-            nodeArray.add(new GraphNode(i));
+            nodeGraph.add(new GraphNode(i));
         }
 
         for (int i = 0; i < graphMatrix.length; i++) {
             for (int j = 0; j < graphMatrix[i].length; j++) {
                 if (graphMatrix[i][j] == 1)
-                    nodeArray.get(i).addConnection(nodeArray.get(j));
+                    nodeGraph.get(i).addConnection(nodeGraph.get(j));
             }
         }
-
-
-        return nodeArray;
     }
 
+    /**
+     * wyswietla liste sąsiedztwa
+     */
+    public void printNodeArray() {
+        for (GraphNode eachNode : nodeGraph) {
+            System.out.print(eachNode.getId() + 1 + ": ");
+            for (GraphNode e : eachNode.getConnectionList()) {
+                System.out.print(e.getId() + 1 + " -> ");
+            }
+            System.out.println("NULL");
+            System.out.println();
+        }
+    }
 
 }
