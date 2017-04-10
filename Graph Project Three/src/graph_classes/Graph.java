@@ -1,5 +1,6 @@
 package graph_classes;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -357,6 +358,11 @@ public class Graph {
 
     private HashMap<Integer, Integer> distances = new HashMap<>();
 
+    /**
+     * Implementacja dijkstry plus zapis do pliku Dijkstra najkrotszej sciezki plus odlegloscm iedzy wierzcholkami
+     *
+     * @param beginIndex poczatkowy indeks
+     */
     public void dijkstra(int beginIndex) {
         int initialNodeIndex = nodeGraph.get(beginIndex).getId();
         HashMap<Integer, Integer> predecessors = new HashMap<>();
@@ -411,6 +417,7 @@ public class Graph {
             }
             visitedNodes.add(next);
         }
+        StringBuilder s = new StringBuilder();
         //drukuj najkrotsze odleglosci od wierzcholek(beginIndex)
         for (int i = 0; i < nodeGraph.size(); i++) {
             int destination = nodeGraph.get(i).getId();
@@ -422,16 +429,31 @@ public class Graph {
                 destination = predecessor.getId();
                 path.add(0, predecessor);
             }
-            path.forEach(g -> System.out.printf("%d->", g.getId()));
-            System.out.printf(" | Odleglosc: %d", distances.get(i));
-            System.out.println(" ");
+
+            path.forEach(g -> {
+                s.append(g.getId());
+                s.append("->");
+            });
+            s.append(" | Odleglosc: ");
+            s.append(distances.get(i));
+            s.append("\n");
+        }
+
+        try (FileWriter fw = new FileWriter("Dijkstra.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     private int[][] distanceMatrix;
 
     /**
-     * tworzy macierz odleglosci
+     * tworzy macierz odleglosci i zapisuje ja do pliku distanceMatrix
      */
     public void createDistanceMatrix() {
         distanceMatrix = new int[nodeGraph.size()][nodeGraph.size()];
@@ -442,18 +464,32 @@ public class Graph {
                 distanceMatrix[i][j] = distances.get(j);
             }
         }
-
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < distanceMatrix.length; i++) {
-            System.out.printf("[");
+//            System.out.printf("[");
+            s.append("[");
             for (int j = 0; j < distanceMatrix[i].length; j++) {
-                System.out.printf("%d, ", distanceMatrix[i][j]);
+//                System.out.printf("%d, ", distanceMatrix[i][j]);
+                s.append(distanceMatrix[i][j]);
+                if (j < distanceMatrix[i].length - 1) s.append(", ");
             }
-            System.out.printf("]\n");
+//            System.out.printf("]\n");
+            s.append("]\n");
+        }
+
+        try (FileWriter fw = new FileWriter("DistanceMatrix.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * znajduje centra odleglosci i je wypisuje
+     * znajduje centra odleglosci i je dopisuje do distanceMatrix
      */
     public void findDistanceCentre() {
         //sumuj odleglosci wierszami
@@ -482,13 +518,29 @@ public class Graph {
                 centres.add(i);
             }
         }
-        System.out.println(" ");
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
 
-        centres.forEach(centre -> System.out.println("Centrum grafu: " + centre + " - " + distanceSum[centre]));
+        centres.forEach(centre -> {
+            s.append("Centrum grafu: ");
+            s.append(centre);
+            s.append(" - ");
+            s.append(distanceSum[centre]);
+        });
+
+        try (FileWriter fw = new FileWriter("DistanceMatrix.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Znajduje centra Min-Max i je wypisuje
+     * Znajduje centra Min-Max i je dopisuje do distanceMatrix
      */
     public void findMinMaxCentre() {
         //znajdz max w wierszu
@@ -521,17 +573,32 @@ public class Graph {
                 minMap.put(i, max.get(i));
             }
         }
-
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
         //iteruj przez kazde centrum min-max i wypisz
         for (Map.Entry<Integer, Integer> entry : minMap.entrySet()) {
             Integer key = entry.getKey();
             Integer value = entry.getValue();
-            System.out.println("Centrum MIN-MAX: " + key + " - " + distanceMatrix[key][value]);
+            s.append("Centrum MIN-MAX: ");
+            s.append(key);
+            s.append(" - ");
+            s.append(distanceMatrix[key][value]);
+            s.append("\n");
+        }
+
+        try (FileWriter fw = new FileWriter("DistanceMatrix.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     /**
-     * implementacja algorytmu prima - znajdowanie najmniejszych drzew rozpinajacych
+     * implementacja algorytmu prima - znajdowanie najmniejszych drzew rozpinajacych, zapisuje krawedzie do pliku MST
      *
      * @param beginIndex poczatkowy index szukanego MST
      */
@@ -575,12 +642,31 @@ public class Graph {
                 }
             }
         }
-        //wypisywanie
-        System.out.println("Krawedzie MST:\n");
-        mst.forEach(name -> System.out.printf("%s -", name.toString()));
-        System.out.println("\nWagi krawędzi MST:\n");
-        mst.forEach(name -> System.out.printf("%d - ", name.getWeight()));
-        System.out.println("\nWaga drzewa MST:\n" + overallWeight);
+
+        StringBuilder s = new StringBuilder();
+        s.append("\nKrawedzie MST\n");
+        mst.forEach(name -> {
+            s.append(name.toString());
+            s.append(" -");
+        });
+        s.append("\n\nWagi krawędzi MST:\n");
+        mst.forEach(name -> {
+            s.append(name.getWeight());
+            s.append(" -");
+        });
+        s.append("\nWaga drzewa MST: ");
+        s.append(overallWeight);
+        s.append("\n");
+
+        try (FileWriter fw = new FileWriter("MST.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

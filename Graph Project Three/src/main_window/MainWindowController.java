@@ -21,6 +21,7 @@ public class MainWindowController implements Initializable {
 
     public Canvas graphCanvas;
     private Graph graph = new Graph();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -41,11 +42,11 @@ public class MainWindowController implements Initializable {
             ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
             graph.setNodeGraph(tempGraph);
             graph.createConsistentGraphWithWeights();
-            graph.dijkstra(0);
-            graph.createDistanceMatrix();
-            graph.findDistanceCentre();
-            graph.findMinMaxCentre();
-            graph.prim(0);
+//            graph.dijkstra(0);
+//            graph.createDistanceMatrix();
+//            graph.findDistanceCentre();
+//            graph.findMinMaxCentre();
+//            graph.prim(0);
             drawGraph(graph);
         }
     }
@@ -95,4 +96,46 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    public void createGraphFromNumberSequenceButtonClick() {
+        String[] inputStringArray = numberSequenceInput.getText().replaceAll(" ", "").split(",");
+        int[] numberSequenceArray = new int[inputStringArray.length];
+
+        for (int i = 0; i < inputStringArray.length; i++) {
+            numberSequenceArray[i] = Integer.parseInt(inputStringArray[i]);
+        }
+
+        int[][] tempMatrix = graph.checkNumberSequence(numberSequenceArray);
+
+        if (tempMatrix != null) {
+            graph.setGraphMatrix(tempMatrix);
+            ArrayList<GraphNode> tempGraph = graph.generateNodeArray();
+            graph.setNodeGraph(tempGraph);
+            graph.createConsistentGraphWithWeights();
+        }
+
+        drawGraph(graph);
+    }
+
+    public void dijkstraClick() {
+        String t = beginIndexInput.getText().toString();
+        graph.dijkstra(Integer.parseInt(t));
+    }
+
+    public void distanceMatrixClick() {
+        graph.createDistanceMatrix();
+    }
+
+    public void centresClick() {
+        try {
+            graph.findDistanceCentre();
+            graph.findMinMaxCentre();
+        } catch (NullPointerException e) {
+            System.out.println("Nie zainicjowano tablicy odległości.");
+        }
+    }
+
+    public void mstClick() {
+        String t = beginIndexInput.getText().toString();
+        graph.prim(Integer.parseInt(t));
+    }
 }
