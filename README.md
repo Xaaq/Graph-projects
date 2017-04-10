@@ -1,2 +1,2 @@
 # Graph projects
-Here are group project for graph laboratories.
+Here are group projects for graph laboratories.
