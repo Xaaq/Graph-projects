@@ -45,15 +45,6 @@ public class DiGraph {
     }
 
     /**
-     * wiadomość wyświetlana dla użytkownika przy wpisywaniu DiGrafu
-     */
-    private static void message() {
-        System.out.println("Uzupełnij sąsiadów: wpisując 1, jeżeli dany wierzchołek wskazuje na inny, oraz 0 jeżeli nie.");
-        System.out.println("Zaczynamy od wierzchołka nr. 1. Każde cyfry oddziel spacją.");
-        System.out.println("0 kończy wpisywanie w danym wierzchołku.");
-    }
-
-    /**
      * Wypisuje macierz sąsiedztwa digrafu
      */
     public void printMatrix() {
@@ -68,6 +59,15 @@ public class DiGraph {
             System.out.print("|\n");
         }
         System.out.println("");
+    }
+
+    /**
+     * wiadomość wyświetlana dla użytkownika przy wpisywaniu DiGrafu
+     */
+    private static void message() {
+        System.out.println("Uzupełnij sąsiadów: wpisując 1, jeżeli dany wierzchołek wskazuje na inny, oraz 0 jeżeli nie.");
+        System.out.println("Zaczynamy od wierzchołka nr. 1. Każde cyfry oddziel spacją.");
+        System.out.println("0 kończy wpisywanie w danym wierzchołku.");
     }
 
     /**
@@ -165,5 +165,28 @@ public class DiGraph {
             System.out.println();
         }
     }
+
+    /**
+     * generuje graf w postaci macierzy z zadanym prawdopodobienstwem wstapienia krawedzi
+     */
+    public void generateProbabilityMatrix(int size, double probability) {
+        graphMatrix = new int[size][size];
+        for (int i = 0; i < graphMatrix.length; i++) {
+            for (int j = 0; j < graphMatrix[i].length; j++) {
+                // nie interesują nas pętle od wierzchołka skierowane na ten sam wierzchołek
+                if (i == j) {
+                    graphMatrix[i][j] = 0;
+                    continue;
+                }
+                if (Math.random() <= probability) {
+                    graphMatrix[i][j] = 1;
+                }
+                else
+                graphMatrix[i][j] = 0;
+            }
+        }
+        printMatrix();
+    }
+
 
 }

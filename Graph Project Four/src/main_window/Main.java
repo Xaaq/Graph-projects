@@ -24,7 +24,10 @@ public class Main extends Application {
         diGraph.printMatrix();
         diGraph.generateNodeArray();
         diGraph.printNodeArray();
-
+        for(int i=0;i<10;++i){
+            System.out.println(i + ": ------------------");
+            diGraph.generateProbabilityMatrix(4,0.5);
+        }
     }
 
 
