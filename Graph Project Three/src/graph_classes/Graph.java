@@ -19,6 +19,7 @@ public class Graph {
      */
     private ArrayList<GraphNode> nodeGraph;
 
+
     public ArrayList<GraphEdge> getEdgeGraph() {
         return edgeGraph;
     }
