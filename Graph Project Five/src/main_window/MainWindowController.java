@@ -19,7 +19,8 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        web = new Web(6);
+        drawGraph(web);
     }
 
     /**
@@ -27,20 +28,33 @@ public class MainWindowController implements Initializable {
      *
      * @param web graf do wyrysowania
      */
-    public void drawGraph(Web web) {
-//        double canvasWidth = canvas.getWidth();
-//        double canvasHeight = canvas.getHeight();
-//        double graphSize = (canvasWidth < canvasHeight) ? canvasWidth : canvasHeight;
-//        int dotSize = 15;
-//        ArrayList<WebNode> nodeGraph = web.getNodeGraph();
-//        int dotCount = nodeGraph.size();
-//        GraphicsContext context = canvas.getGraphicsContext2D();
-//
-//        context.clearRect(0, 0, canvasWidth, canvasHeight);
-//        context.setFill(Color.web("#673ab7"));
-//        context.setStroke(Color.web("#673ab7"));
-//        context.setLineWidth(3);
-//
+    private void drawGraph(Web web) {
+        int dotSize = 15;
+        double canvasWidth = canvas.getWidth() - dotSize;
+        double canvasHeight = canvas.getHeight() - dotSize;
+        double canvasSize = (canvasWidth < canvasHeight) ? canvasWidth : canvasHeight;
+        ArrayList<ArrayList<WebNode>> webLayerList = web.getLayerList();
+        int layerCount = webLayerList.size();
+        GraphicsContext context = canvas.getGraphicsContext2D();
+        int biggestLayerSize = 0;
+
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        context.setFill(Color.web("#673ab7"));
+        context.setStroke(Color.web("#673ab7"));
+        context.setLineWidth(3);
+
+        for (ArrayList<WebNode> nodeList : webLayerList) {
+            if (nodeList.size() > biggestLayerSize)
+                biggestLayerSize = nodeList.size();
+        }
+
+        for (int i = 0; i < webLayerList.size(); i++)
+            for (int j = 0; j < webLayerList.get(i).size(); j++) {
+                double x = i * canvasWidth / (layerCount - 1);
+                double y = j * canvasHeight / (biggestLayerSize - 1);
+                context.fillOval(x, y, dotSize, dotSize);
+            }
+
 //        //rysuje kolka
 //        for (int i = 0; i < dotCount; i++) {
 //            double angle = i * 360 / dotCount * Math.PI / 180;

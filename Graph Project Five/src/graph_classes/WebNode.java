@@ -3,13 +3,14 @@ package graph_classes;
 import java.util.ArrayList;
 
 /**
- * Created by Xaaq333 on 2017-03-16.
- */
-
-/**
  * Pojedyńczy węzeł sieci.
  */
 public class WebNode {
+
+    /**
+     * Licznik id.
+     */
+    private static int idCounter = 0;
 
     /**
      * Numer identyfikacyjny węzła.
@@ -17,17 +18,15 @@ public class WebNode {
     private int id;
 
     /**
-     * Tablica sąsiadów - lista węzłów, z którymi jest połączony.
+     * Lista krawędzi wychodzących.
      */
-    private ArrayList<WebNode> connectionList = new ArrayList<>();
+    private ArrayList<WebEdge> connectionList = new ArrayList<>();
 
     /**
      * Tworzy węzeł z podanym id.
-     *
-     * @param id numer identyfikacyjny węzła
      */
-    public WebNode(int id) {
-        this.id = id;
+    WebNode() {
+        this.id = idCounter++;
     }
 
     /**
@@ -36,7 +35,8 @@ public class WebNode {
      * @param connectionNode referencja do danego węzła
      */
     public void addConnection(WebNode connectionNode) {
-        connectionList.add(connectionNode);
+        //TODO: poprawic zeby funkcja dodawała krawędź
+//        connectionList.add(connectionNode);
     }
 
     /**
@@ -45,7 +45,8 @@ public class WebNode {
      * @param connectionNode referencja do danego węzła
      */
     public void removeConnection(WebNode connectionNode) {
-        connectionList.remove(connectionNode);
+        //TODO: poprawić tą funkcję zeby wyszukiwała edge a nie node (ewentualnie dopisac drugą ktora przyjume edge)
+//        connectionList.remove(connectionNode);
     }
 
     /**
@@ -62,7 +63,7 @@ public class WebNode {
      *
      * @return lista połączeń wierzchołka
      */
-    public ArrayList<WebNode> getConnectionList() {
+    public ArrayList<WebEdge> getConnectionList() {
         return connectionList;
     }
 }
