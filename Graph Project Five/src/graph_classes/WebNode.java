@@ -20,23 +20,36 @@ public class WebNode {
     /**
      * Lista krawędzi wychodzących.
      */
-    private ArrayList<WebEdge> connectionList = new ArrayList<>();
+    private ArrayList<WebEdge> outputConnectionList;
+
+    /**
+     * Lista krawędzi wchodzących.
+     */
+    private ArrayList<WebEdge> inputConnectionList;
 
     /**
      * Tworzy węzeł z podanym id.
      */
     WebNode() {
-        this.id = idCounter++;
+        id = idCounter++;
+        outputConnectionList = new ArrayList<>();
+        inputConnectionList = new ArrayList<>();
     }
 
     /**
      * Dodaje połączenie do danego węzła.
      *
      * @param connectionNode referencja do danego węzła
+     * @param value          waga krawędzi
      */
-    public void addConnection(WebNode connectionNode) {
-        //TODO: poprawic zeby funkcja dodawała krawędź
-//        connectionList.add(connectionNode);
+    public void addConnection(WebNode connectionNode, int value) {
+        WebEdge webEdge = new WebEdge(value, this, connectionNode);
+        outputConnectionList.add(webEdge);
+        connectionNode.addInputConnection(webEdge);
+    }
+
+    private void addInputConnection(WebEdge edgeToAdd) {
+        inputConnectionList.add(edgeToAdd);
     }
 
     /**
@@ -45,8 +58,29 @@ public class WebNode {
      * @param connectionNode referencja do danego węzła
      */
     public void removeConnection(WebNode connectionNode) {
-        //TODO: poprawić tą funkcję zeby wyszukiwała edge a nie node (ewentualnie dopisac drugą ktora przyjume edge)
-//        connectionList.remove(connectionNode);
+        for (WebEdge webEdge : outputConnectionList) {
+            if (webEdge.getOutputNode() == connectionNode) {
+                outputConnectionList.remove(webEdge);
+                webEdge.getOutputNode().inputConnectionList.remove(webEdge);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Przeszukuje liste sąsiadów w poszukiwaniu podanego węzła.
+     *
+     * @param connectionNode węzeł do zanalezienia
+     * @return czy znalazło węzeł
+     */
+    public boolean isThereConnection(WebNode connectionNode) {
+        for (WebEdge webEdge : outputConnectionList) {
+            if (webEdge.getOutputNode() == connectionNode) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -59,11 +93,20 @@ public class WebNode {
     }
 
     /**
-     * Zwraca listę połączeń tego wierzchołka.
+     * Zwraca listę połączeń wychodzących z tego wierzchołka.
      *
-     * @return lista połączeń wierzchołka
+     * @return lista połączeń wychodzących z tego wierzchołka
      */
-    public ArrayList<WebEdge> getConnectionList() {
-        return connectionList;
+    public ArrayList<WebEdge> getOutputConnectionList() {
+        return outputConnectionList;
+    }
+
+    /**
+     * Zwraca listę połączeń wchodzących do tego wierzchołka.
+     *
+     * @return lista połączeń wchodzących do tego wierzchołka
+     */
+    public ArrayList<WebEdge> getInputConnectionList() {
+        return inputConnectionList;
     }
 }

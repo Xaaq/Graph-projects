@@ -1,11 +1,13 @@
 package main_window;
 
 import graph_classes.Web;
+import graph_classes.WebEdge;
 import graph_classes.WebNode;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,16 +17,14 @@ public class MainWindowController implements Initializable {
 
     public Canvas canvas;
 
-    private Web web;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        web = new Web(6);
+        Web web = new Web(3);
         drawGraph(web);
     }
 
     /**
-     * Wyrysowwuje graf na canvasie.
+     * Wyrysowywuje graf na canvasie.
      *
      * @param web graf do wyrysowania
      */
@@ -32,15 +32,14 @@ public class MainWindowController implements Initializable {
         int dotSize = 15;
         double canvasWidth = canvas.getWidth() - dotSize;
         double canvasHeight = canvas.getHeight() - dotSize;
-        double canvasSize = (canvasWidth < canvasHeight) ? canvasWidth : canvasHeight;
         ArrayList<ArrayList<WebNode>> webLayerList = web.getLayerList();
         int layerCount = webLayerList.size();
         GraphicsContext context = canvas.getGraphicsContext2D();
         int biggestLayerSize = 0;
 
+        Font font = new Font(18);
+        context.setFont(font);
         context.clearRect(0, 0, canvasWidth, canvasHeight);
-        context.setFill(Color.web("#673ab7"));
-        context.setStroke(Color.web("#673ab7"));
         context.setLineWidth(3);
 
         for (ArrayList<WebNode> nodeList : webLayerList) {
@@ -50,33 +49,62 @@ public class MainWindowController implements Initializable {
 
         for (int i = 0; i < webLayerList.size(); i++)
             for (int j = 0; j < webLayerList.get(i).size(); j++) {
+                //rysuje kółka
+                context.setFill(Color.web("#673ab7"));
+                context.setStroke(Color.web("#673ab7"));
+
                 double x = i * canvasWidth / (layerCount - 1);
                 double y = j * canvasHeight / (biggestLayerSize - 1);
                 context.fillOval(x, y, dotSize, dotSize);
-            }
 
-//        //rysuje kolka
-//        for (int i = 0; i < dotCount; i++) {
-//            double angle = i * 360 / dotCount * Math.PI / 180;
-//            double x = canvasWidth / 2 + Math.sin(angle) * graphSize * 2 / 5 - dotSize / 2;
-//            double y = canvasHeight / 2 + Math.cos(angle) * graphSize * 2 / 5 - dotSize / 2;
-//            context.fillText(Integer.toString(web.getNodeGraph().get(i).getId()), x + dotSize, y + dotSize);
-//            context.fillOval(x, y, dotSize, dotSize);
-//        }
-//
-//        //rysuje linie
-//        for (int i = 0; i < dotCount; i++) {
-//            for (WebNode node : nodeGraph.get(i).getConnectionList()) {
-//                double angle1 = i * 360 / dotCount * Math.PI / 180;
-//                double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
-//                double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
-//
-//                double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
-//                double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
-//                double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
-//
-//                context.strokeLine(x1, y1, x2, y2);
-//            }
-//        }
+                //wypisuje id węzła
+                context.setFill(Color.web("#000000"));
+                context.setStroke(Color.web("#000000"));
+
+                context.fillText(String.valueOf(webLayerList.get(i).get(j).getId()), x+dotSize, y + dotSize);
+
+                //oblica i rysuje linie
+                ArrayList<WebEdge> edgeList = webLayerList.get(i).get(j).getOutputConnectionList();
+                double x1 = x + dotSize / 2;
+                double y1 = y + dotSize / 2;
+
+                for (WebEdge singleEdge : edgeList) {
+                    WebNode nodeToConnectTo = singleEdge.getOutputNode();
+                    int numberOfLayerOfNodeToConnectTo = web.getLayerOfNode(nodeToConnectTo);
+                    int indexOfNodeInLayer = -1;
+
+                    for (int k = 0; k < webLayerList.get(numberOfLayerOfNodeToConnectTo).size(); k++) {
+                        if (nodeToConnectTo == webLayerList.get(numberOfLayerOfNodeToConnectTo).get(k)) {
+                            indexOfNodeInLayer = k;
+                            break;
+                        }
+                    }
+
+                    double x2 = numberOfLayerOfNodeToConnectTo * canvasWidth / (layerCount - 1) + dotSize / 2;
+                    double y2 = indexOfNodeInLayer * canvasWidth / (biggestLayerSize - 1) + dotSize / 2;
+
+                    double textX = (x1 + x2) / 2;
+                    double textY = (y1 + y2) / 2;
+
+                    //rysuje linie
+                    context.setFill(Color.web("#673ab7"));
+                    context.setStroke(Color.web("#673ab7"));
+
+                    context.strokeLine(x1, y1, x2, y2);
+
+                    //rysuje grot strzałki
+                    double angle = Math.atan2(y2 - y1, x2 - x1);
+                    double angleDifference = Math.PI * 30 / 180;
+
+                    context.strokeLine(x2, y2, x2 - Math.cos(angle + angleDifference) * 15, y2 - Math.sin(angle + angleDifference) * 15);
+                    context.strokeLine(x2, y2, x2 - Math.cos(angle - angleDifference) * 15, y2 - Math.sin(angle - angleDifference) * 15);
+
+                    //wypisuje wagę połączenia
+                    context.setFill(Color.web("#000000"));
+                    context.setStroke(Color.web("#000000"));
+
+                    context.fillText(String.valueOf(singleEdge.getValue()), textX, textY);
+                }
+            }
     }
 }

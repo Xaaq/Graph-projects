@@ -33,6 +33,15 @@ public class WebEdge {
     }
 
     /**
+     * Zwraca węzeł wejściowy krawędzi.
+     *
+     * @return węzeł od którego prowadzi krawędź
+     */
+    public WebNode getInputNode() {
+        return inputNode;
+    }
+
+    /**
      * Zwraca węzeł wyjściowy krawędzi.
      *
      * @return węzeł do którego prowadzi krawędź
