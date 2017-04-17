@@ -1,8 +1,83 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="main_window.MainWindowController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main_window.MainWindowController">
+    <columnConstraints>
+        <ColumnConstraints minWidth="10.0" prefWidth="15.0" />
+        <ColumnConstraints />
+        <ColumnConstraints minWidth="10.0" prefWidth="300.0" />
+        <ColumnConstraints minWidth="10.0" prefWidth="15.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="15.0" />
+        <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+        <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+    </rowConstraints>
+    <Canvas fx:id="canvas" height="700.0" width="700.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="6" />
+    <Label fx:id="nodeArray" alignment="TOP_LEFT" prefHeight="500.0" prefWidth="300.0" wrapText="true" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+        <font>
+            <Font name="Calibri" size="16.0" />
+        </font>
+    </Label>
+   <Button cache="true" mnemonicParsing="false" onMouseClicked="#countFlowButtonClick" prefWidth="300.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="OBLICZ PRZEPŁYW" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
+       <font>
+           <Font name="Calibri" size="20.0" />
+       </font>
+       <opaqueInsets>
+           <Insets />
+       </opaqueInsets>
+       <effect>
+           <DropShadow blurType="GAUSSIAN" color="#00000080" height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
+       </effect>
+       <cursor>
+           <Cursor fx:constant="HAND" />
+       </cursor>
+       <padding>
+           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+       </padding>
+   </Button>
+   <Label fx:id="maximumFlow" text="Przepływ: " GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
+      <font>
+         <Font name="Calibri" size="18.0" />
+      </font>
+   </Label>
+   <Button cache="true" mnemonicParsing="false" onMouseClicked="#generateWebButtonClick" prefWidth="300.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="WYGENERUJ SIEĆ" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6">
+      <font>
+         <Font name="Calibri" size="20.0" />
+      </font>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <effect>
+         <DropShadow blurType="GAUSSIAN" color="#00000080" height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
+      </effect>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+   </Button>
+   <TextField fx:id="webSize" promptText="Wielkosc generowanej sieci" style="-fx-border-color: #673ab7; -fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 0 2 0; -fx-padding: 0;" GridPane.columnIndex="2" GridPane.rowIndex="5">
+       <font>
+           <Font name="Calibri" size="18.0" />
+       </font>
+   </TextField>
 </GridPane>
