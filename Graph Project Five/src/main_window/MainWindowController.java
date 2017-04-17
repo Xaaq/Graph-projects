@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -19,18 +20,23 @@ public class MainWindowController implements Initializable {
     public Canvas canvas;
     public Label nodeArray;
     public Label maximumFlow;
+    public TextField webSize;
 
     private Web web;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        web = new Web(3);
+
+    }
+
+    public void countFlowButtonClick() {
+        maximumFlow.setText("Przepływ: " + String.valueOf(web.countMaximumFlow()));
         printWebArray(web);
         drawGraph(web);
     }
 
-    public void coutFlowButtonClick() {
-        maximumFlow.setText("Przepływ: " + String.valueOf(web.countMaximumFlow()));
+    public void generateWebButtonClick() {
+        web = new Web(Integer.parseInt(webSize.getText()));
         printWebArray(web);
         drawGraph(web);
     }
@@ -73,7 +79,7 @@ public class MainWindowController implements Initializable {
         GraphicsContext context = canvas.getGraphicsContext2D();
         int biggestLayerSize = 0;
 
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        context.clearRect(0, 0, canvasWidth * 2, canvasHeight * 2);
         context.setLineWidth(3);
 
         for (ArrayList<WebNode> nodeList : webLayerList) {

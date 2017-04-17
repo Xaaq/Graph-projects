@@ -19,7 +19,7 @@ public class Web {
      */
     public Web(int numberOfLayers) {
         layerWeb = new ArrayList<>();
-
+        WebNode.idCounter = 0;
         initializeWeb(numberOfLayers);
     }
 
@@ -62,7 +62,7 @@ public class Web {
         int maximumFlow = 0;
 
         while (minimalPath != null) {
-            System.out.println(counter++);
+//            System.out.println(counter++);
             int minimumEdgeValue = Integer.MAX_VALUE;
 
             for (int i = 0; i < minimalPath.size() - 1; i++) {
@@ -81,6 +81,17 @@ public class Web {
 
                 int valueOfEdge = edgeBetweenFirstAndSecondNode.getCurrentValue();
                 edgeBetweenFirstAndSecondNode.setCurrentValue(valueOfEdge - minimumEdgeValue);
+
+                WebEdge reversedEdge = secondNode.getEdgeLeadingToNode(firstNode);
+
+                if (reversedEdge == null) {
+                    secondNode.addConnection(firstNode, edgeBetweenFirstAndSecondNode.getMaxValue());
+                    reversedEdge = secondNode.getEdgeLeadingToNode(firstNode);
+                    reversedEdge.setCurrentValue(0);
+                }
+
+                int reversedEdgeValue = reversedEdge.getCurrentValue();
+                reversedEdge.setCurrentValue(reversedEdgeValue + minimumEdgeValue);
             }
 
             maximumFlow += minimumEdgeValue;
@@ -100,6 +111,7 @@ public class Web {
         ArrayList<WebNode> minimalPath = new ArrayList<>();
         ArrayList<ArrayList<WebNode>> arrayOfPaths = new ArrayList<>();
         arrayOfPaths.add((ArrayList<WebNode>) layerWeb.get(0).clone());
+        int counter = 100000;
 
         while (!arrayOfPaths.isEmpty()) {
             ArrayList<WebNode> actualPath = arrayOfPaths.get(0);
@@ -118,6 +130,9 @@ public class Web {
                 if (nodeToAddToPath == finalNode)
                     return newPath;
             }
+
+            if (counter-- <= 0)
+                break;
         }
 
         return null;

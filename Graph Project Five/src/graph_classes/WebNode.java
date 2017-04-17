@@ -10,7 +10,7 @@ public class WebNode {
     /**
      * Licznik id.
      */
-    private static int idCounter = 0;
+    public static int idCounter = 0;
 
     /**
      * Numer identyfikacyjny węzła.
@@ -48,6 +48,11 @@ public class WebNode {
         connectionNode.addInputConnection(webEdge);
     }
 
+    /**
+     * Dodaje wchodzące połączenie do tego węzła
+     *
+     * @param edgeToAdd krawędź do dodania do tego węzła
+     */
     private void addInputConnection(WebEdge edgeToAdd) {
         inputConnectionList.add(edgeToAdd);
     }
@@ -87,7 +92,7 @@ public class WebNode {
      * Szuka krawędzi, która prowadzi do podanego węzła.
      *
      * @param connectionNode węzeł, do którego prowadzi krawędź
-     * @return krawędź, która prowadzi do danego węzła
+     * @return krawędź, która prowadzi do danego węzła (lub null jeśli jej nie ma)
      */
     public WebEdge getEdgeLeadingToNode(WebNode connectionNode) {
         for (WebEdge singleEdge : outputConnectionList) {
