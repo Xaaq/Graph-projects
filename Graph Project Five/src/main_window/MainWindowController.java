@@ -6,6 +6,7 @@ import graph_classes.WebNode;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -16,21 +17,52 @@ import java.util.ResourceBundle;
 public class MainWindowController implements Initializable {
 
     public Canvas canvas;
+    public Label nodeArray;
+    public Label maximumFlow;
+
+    private Web web;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Web web = new Web(3);
+        web = new Web(3);
+        printWebArray(web);
         drawGraph(web);
-        ArrayList<WebNode> minimalPath = web.searchMinimalPathFromStartToEnd();
-        for (WebNode node : minimalPath) {
-            System.out.println(node.getId());
+    }
+
+    public void coutFlowButtonClick() {
+        maximumFlow.setText("Przepływ: " + String.valueOf(web.countMaximumFlow()));
+        printWebArray(web);
+        drawGraph(web);
+    }
+
+    /**
+     * Wypisuje tablice wszystkich węzłów sieci.
+     *
+     * @param web sieć do wypiasnia
+     */
+    private void printWebArray(Web web) {
+        ArrayList<ArrayList<WebNode>> webLayerList = web.getLayerList();
+        String textToPrint = "Lista połączeń węzłów (w nawiasach są wagi połączeń):\n";
+
+        for (ArrayList<WebNode> nodeArray : webLayerList) {
+            for (WebNode singleNode : nodeArray) {
+                textToPrint += "Węzeł nr " + singleNode.getId() + ": ";
+
+                for (WebEdge singleEdge : singleNode.getOutputConnectionList()) {
+                    textToPrint += singleEdge.getOutputNode().getId() + "(" + singleEdge.getCurrentValue() + "/" + singleEdge.getMaxValue() + ") ";
+                }
+
+                textToPrint += "\n";
+            }
         }
+
+        nodeArray.setText(textToPrint);
     }
 
     /**
      * Wyrysowywuje graf na canvasie.
      *
-     * @param web graf do wyrysowania
+     * @param web sieć do wyrysowania
      */
     private void drawGraph(Web web) {
         int dotSize = 15;
@@ -80,8 +112,8 @@ public class MainWindowController implements Initializable {
                     double y2 = indexOfNodeInLayer * canvasWidth / (biggestLayerSize - 1) + dotSize / 2 + dotSize * 2;
 
                     double lineAngle = Math.atan2(y2 - y1, x2 - x1);
-                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2) * 10;
-                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2) * 10;
+                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2) * 20;
+                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2) * 20;
 
                     //rysuje linie
                     context.setFill(Color.web("#90caf9"));
@@ -100,7 +132,7 @@ public class MainWindowController implements Initializable {
 
                     Font font = new Font(16);
                     context.setFont(font);
-                    context.fillText(String.valueOf(singleEdge.getValue()), textX, textY);
+                    context.fillText(String.valueOf(singleEdge.getCurrentValue() + "/" + singleEdge.getMaxValue()), textX, textY);
                 }
 
                 //wypisuje id węzła

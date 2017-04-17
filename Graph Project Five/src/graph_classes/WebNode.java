@@ -84,6 +84,21 @@ public class WebNode {
     }
 
     /**
+     * Szuka krawędzi, która prowadzi do podanego węzła.
+     *
+     * @param connectionNode węzeł, do którego prowadzi krawędź
+     * @return krawędź, która prowadzi do danego węzła
+     */
+    public WebEdge getEdgeLeadingToNode(WebNode connectionNode) {
+        for (WebEdge singleEdge : outputConnectionList) {
+            if (singleEdge.getOutputNode() == connectionNode)
+                return singleEdge;
+        }
+
+        return null;
+    }
+
+    /**
      * Zwraca id węzła.
      *
      * @return id węzła

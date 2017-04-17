@@ -17,17 +17,23 @@ public class WebEdge {
     /**
      * Wartość tej krawędzi.
      */
-    private int value;
+    private int maxValue;
+
+    /**
+     * Aktualny przepływ przez tą krawędź
+     */
+    private int currentValue;
 
     /**
      * Konstruuje krawędź jednokierunkową pomiędzy dwoma węzłami.
      *
-     * @param value waga krawędzi
+     * @param maxValue waga krawędzi
      * @param inputNode węzeł, z którego wychodzi krawędź
      * @param outputNode węzeł, do którego prowadzi krawędź
      */
-    WebEdge(int value, WebNode inputNode, WebNode outputNode) {
-        this.value = value;
+    WebEdge(int maxValue, WebNode inputNode, WebNode outputNode) {
+        this.maxValue = maxValue;
+        currentValue = maxValue;
         this.inputNode = inputNode;
         this.outputNode = outputNode;
     }
@@ -55,7 +61,15 @@ public class WebEdge {
      *
      * @return waga krawędzi
      */
-    public int getValue() {
-        return value;
+    public int getMaxValue() {
+        return maxValue;
+    }
+
+    public int getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(int currentValue) {
+        this.currentValue = currentValue;
     }
 }

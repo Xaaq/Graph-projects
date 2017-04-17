@@ -52,11 +52,50 @@ public class Web {
     }
 
     /**
+     * Oblicza maksymalny przepływ w sieci.
+     *
+     * @return maksymalny przepływ w sieci
+     */
+    public int countMaximumFlow() {
+        int counter = 0;
+        ArrayList<WebNode> minimalPath = searchMinimalPathFromStartToEnd();
+        int maximumFlow = 0;
+
+        while (minimalPath != null) {
+            System.out.println(counter++);
+            int minimumEdgeValue = Integer.MAX_VALUE;
+
+            for (int i = 0; i < minimalPath.size() - 1; i++) {
+                WebNode firstNode = minimalPath.get(i);
+                WebNode secondNode = minimalPath.get(i + 1);
+                WebEdge edgeBetweenFirstAndSecondNode = firstNode.getEdgeLeadingToNode(secondNode);
+
+                if (edgeBetweenFirstAndSecondNode.getCurrentValue() < minimumEdgeValue)
+                    minimumEdgeValue = edgeBetweenFirstAndSecondNode.getCurrentValue();
+            }
+
+            for (int i = 0; i < minimalPath.size() - 1; i++) {
+                WebNode firstNode = minimalPath.get(i);
+                WebNode secondNode = minimalPath.get(i + 1);
+                WebEdge edgeBetweenFirstAndSecondNode = firstNode.getEdgeLeadingToNode(secondNode);
+
+                int valueOfEdge = edgeBetweenFirstAndSecondNode.getCurrentValue();
+                edgeBetweenFirstAndSecondNode.setCurrentValue(valueOfEdge - minimumEdgeValue);
+            }
+
+            maximumFlow += minimumEdgeValue;
+            minimalPath = searchMinimalPathFromStartToEnd();
+        }
+
+        return maximumFlow;
+    }
+
+    /**
      * Szuka minimalnej ścieżki (przechodzącej przez najmniejszą ilość węzłów) od początku do końca sieci.
      *
      * @return lista węzłów uczestniczących w minimalnej ścieżce
      */
-    public ArrayList<WebNode> searchMinimalPathFromStartToEnd() {
+    private ArrayList<WebNode> searchMinimalPathFromStartToEnd() {
         WebNode finalNode = layerWeb.get(layerWeb.size() - 1).get(0);
         ArrayList<WebNode> minimalPath = new ArrayList<>();
         ArrayList<ArrayList<WebNode>> arrayOfPaths = new ArrayList<>();
@@ -67,8 +106,8 @@ public class Web {
             arrayOfPaths.remove(0);
             WebNode actualPathLastNode = actualPath.get(actualPath.size() - 1);
 
-            for (WebEdge actualEdge: actualPathLastNode.getOutputConnectionList()) {
-                if (actualEdge.getValue() <= 0)
+            for (WebEdge actualEdge : actualPathLastNode.getOutputConnectionList()) {
+                if (actualEdge.getCurrentValue() <= 0)
                     continue;
 
                 WebNode nodeToAddToPath = actualEdge.getOutputNode();
@@ -97,7 +136,6 @@ public class Web {
 
         //dodanie węzłów początkowego i końcowego
         layerWeb.get(0).add(new WebNode());
-        layerWeb.get(numberOfLayers).add(new WebNode());
 
         //wylosowanie liczby węzłów w każdej warstwie
         for (int i = 1; i < numberOfLayers; i++) {
@@ -107,6 +145,8 @@ public class Web {
                 layerWeb.get(i).add(new WebNode());
             }
         }
+
+        layerWeb.get(numberOfLayers).add(new WebNode());
 
         for (int i = 0; i < layerWeb.size() - 1; i++) {
             ArrayList<WebNode> firstLayerNodeArray = layerWeb.get(i);
