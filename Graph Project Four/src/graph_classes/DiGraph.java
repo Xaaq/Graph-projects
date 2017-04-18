@@ -14,11 +14,10 @@ public class DiGraph {
     public DiGraph() {
         //Testowo
         graphMatrix = new int[][]{
-                {0, 0, 0, 0, 0},
-                {1, 0, 0, 0, 0},
-                {0, 1, 0, 1, 0},
-                {0, 0, 0, 0, 1},
-                {0, 0, 1, 0, 0}
+                {0, 0, 0, 1},
+                {1, 0, 1, 0},
+                {1, 1, 0, 0},
+                {0, 1, 0, 0}
         };
 //        graphMatrix = new int[][]{
 //                {0, 0, 0, 0},
@@ -188,7 +187,7 @@ public class DiGraph {
      */
     public void generateRandomSCCdigraphWithWages() {
         // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
-        //generateProbabilityMatrix(10, 0.45);
+        //generateProbabilityMatrix(5, 0.4);
         // uzywamy algorytmu Kosaraju do znalezienia najwiekszej spojna skladowej
         Kosaraju kosaraju = new Kosaraju(this);
         kosaraju.getSCComponents();
@@ -240,13 +239,13 @@ public class DiGraph {
         Random r = new Random();
 
         //dla testów
-        int tmptab[]={-1,3,-6};
+        int tmptab[]={2,-3,1,-2,8,-1};
         int counter=0;
 
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                         int temp = r.nextInt(16) - 5;
-                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(tmptab[counter++]); //(temp);
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(tmptab[counter++]); //(temp); //(tmptab[counter++]);
 
             }
         }

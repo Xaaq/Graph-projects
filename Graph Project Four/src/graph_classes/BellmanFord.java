@@ -12,6 +12,7 @@ public class BellmanFord {
     public static final int infinity = 999;
 
     public BellmanFord(int numberOfVertices) {
+        System.out.println("Number of Vertices: " + numberOfVertices);
         this.numberOfVertices = numberOfVertices;
         distances = new int[numberOfVertices + 1];
     }
@@ -27,8 +28,12 @@ public class BellmanFord {
             for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
                 for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
                     if (adjacencymatrix[sourcenode][destinationnode] != infinity) {
-                        if (distances[destinationnode] > distances[sourcenode] + adjacencymatrix[sourcenode][destinationnode])
+                        if (distances[destinationnode] > distances[sourcenode] + adjacencymatrix[sourcenode][destinationnode]) {
                             distances[destinationnode] = distances[sourcenode] + adjacencymatrix[sourcenode][destinationnode];
+                            distances[source] =0;
+                            System.out.println(distances[source]);
+                            System.out.println("sourcenode: " + sourcenode + " destnode: "+destinationnode+ "distance source: " + distances[source]);
+                        }
                     }
                 }
             }
@@ -41,7 +46,7 @@ public class BellmanFord {
 
     private void printDistancesFromSource(int source) {
         for (int vertex = 1; vertex <= numberOfVertices; vertex++) {
-            System.out.println("odległość od:  " + source + " do: " + vertex + " wynosi: " + distances[vertex]);
+            System.out.println("odległość od: " + source + " do: " + vertex + " wynosi: " + distances[vertex]);
         }
     }
 
