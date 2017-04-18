@@ -17,7 +17,7 @@ public class DiGraph {
                 {0, 0, 0, 0, 0},
                 {1, 0, 0, 0, 0},
                 {0, 1, 0, 1, 0},
-                {0, 0, 1, 0, 1},
+                {0, 0, 0, 0, 1},
                 {0, 0, 1, 0, 0}
         };
 //        graphMatrix = new int[][]{
@@ -174,13 +174,21 @@ public class DiGraph {
         }
     }
 
+    /**
+     * macierz która przechowuje odległości między wierzchołkami
+     */
+    private int[][] wagesMatrix;
+    public int[][] getWagesMatrix() {
+        return wagesMatrix.clone();
+    }
+
 
     /**
      * generuje losowy silnie spójny digraf z losowymi wagami z zakresu [-5,10]
      */
     public void generateRandomSCCdigraphWithWages() {
         // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
-        generateProbabilityMatrix(10, 0.45);
+        //generateProbabilityMatrix(10, 0.45);
         // uzywamy algorytmu Kosaraju do znalezienia najwiekszej spojna skladowej
         Kosaraju kosaraju = new Kosaraju(this);
         kosaraju.getSCComponents();
@@ -231,10 +239,14 @@ public class DiGraph {
         generateEdgeArray();
         Random r = new Random();
 
+        //dla testów
+        int tmptab[]={-1,3,-6};
+        int counter=0;
+
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                         int temp = r.nextInt(16) - 5;
-                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp);
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(tmptab[counter++]); //(temp);
 
             }
         }
@@ -254,8 +266,35 @@ public class DiGraph {
 //            }
 //            System.out.println(" ");
 //        }
+
+        //generujemy macierz do bellmana forda
+        generateWagesMatrix(graphMatrix.length);
+
         System.out.println("Koniec Generowania SCC digrafu z wagami");
     }
+
+    private void generateWagesMatrix(int size){
+        wagesMatrix = new int[size][size];
+        for (int i = 0; i < edgeGraph.size(); i++) {
+            for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+                int first = edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId();
+                int second = edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId();
+                wagesMatrix[first][second] = edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight();
+            }
+        }
+        System.out.println("Wypisuje macierz z wagami:");
+        for (int i = 0; i < wagesMatrix.length; ++i) {
+            System.out.print("|");
+            for (int j = 0; j < wagesMatrix.length; ++j) {
+                System.out.print(" ");
+                System.out.print(wagesMatrix[i][j]);
+                System.out.print(" ");
+            }
+            System.out.print("|\n");
+        }
+        System.out.println("");
+    }
+
 
 
     /**

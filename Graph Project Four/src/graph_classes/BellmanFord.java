@@ -3,31 +3,30 @@ package graph_classes;
 /**
  * Created by Mateusz on 18.04.2017.
  */
-public class BellmanFord {
-    // macierz odległości
-    private int distances[];
-    // liczba wierzchołków
-    private int numberofvertices;
-    public static final int MAX_VALUE = 999;
 
-    public BellmanFord(int numberofvertices) {
-        this.numberofvertices = numberofvertices;
-        distances = new int[numberofvertices ];
+public class BellmanFord {
+    //macierz odległości
+    private int distances[];
+    private int numberOfVertices;
+    // nasza wartośc nieskończoność
+    public static final int infinity = 999;
+
+    public BellmanFord(int numberOfVertices) {
+        this.numberOfVertices = numberOfVertices;
+        distances = new int[numberOfVertices + 1];
     }
 
-    public void BellmanFordEvaluation(int sourceVertex, int adjacencymatrix[][]) {
-        // inicjalizujemy na początku macierz odległości wartościami maksymalnymi
-        for (int i = 0; i < numberofvertices; ++i) {
-            distances[i] = MAX_VALUE;
+    public void BellmanFordEvaluation(int source, int adjacencymatrix[][]) {
+        for (int node = 1; node <= numberOfVertices; node++) {
+            distances[node] = infinity;
         }
 
-        distances[sourceVertex] = 0;
-
-        for (int node = 0; node < numberofvertices -1; node++) {
-            for (int sourcenode = 0; sourcenode < numberofvertices; sourcenode++) {
-                for (int destinationnode = 0; destinationnode < numberofvertices; destinationnode++) {
-
-                    if (adjacencymatrix[sourcenode][destinationnode] != MAX_VALUE) {
+        distances[source] = 0;
+                                // moze byc bez tego -1?
+        for (int node = 1; node <= numberOfVertices - 1; node++) {
+            for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
+                for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
+                    if (adjacencymatrix[sourcenode][destinationnode] != infinity) {
                         if (distances[destinationnode] > distances[sourcenode] + adjacencymatrix[sourcenode][destinationnode])
                             distances[destinationnode] = distances[sourcenode] + adjacencymatrix[sourcenode][destinationnode];
                     }
@@ -35,19 +34,15 @@ public class BellmanFord {
             }
         }
 
-//        for (int sourcenode = 1; sourcenode <= numberofvertices; sourcenode++) {
-//            for (int destinationnode = 1; destinationnode <= numberofvertices; destinationnode++) {
-//                if (adjacencymatrix[sourcenode][destinationnode] != MAX_VALUE) {
-//                    if (distances[destinationnode] > distances[sourcenode]
-//                            + adjacencymatrix[sourcenode][destinationnode])
-//                        System.out.println("The Graph contains negative egde cycle");
-//                }
-//            }
-//        }
 
-        for (int vertex = 0; vertex <= numberofvertices; vertex++) {
-            System.out.println("distance of source  " + sourceVertex + " to "
-                                + vertex + " is " + distances[vertex]);
+        // Wypisujemy odległości
+        printDistancesFromSource(source);
+    }
+
+    private void printDistancesFromSource(int source) {
+        for (int vertex = 1; vertex <= numberOfVertices; vertex++) {
+            System.out.println("odległość od:  " + source + " do: " + vertex + " wynosi: " + distances[vertex]);
         }
     }
+
 }

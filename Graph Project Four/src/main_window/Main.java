@@ -1,11 +1,11 @@
 package main_window;
 
+import graph_classes.BellmanFord;
 import graph_classes.DiGraph;
 import graph_classes.GraphNode;
 import graph_classes.Kosaraju;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,6 +37,18 @@ public class Main extends Application {
 
         //Zadanie 3
         diGraph.generateRandomSCCdigraphWithWages();
+        BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
+
+        int[][] tab = new int[diGraph.getGraphMatrix().length+1][diGraph.getGraphMatrix().length+1];
+        for(int i=0;i<diGraph.getGraphMatrix().length;++i){
+            for(int j=0;j<diGraph.getGraphMatrix().length;++j){
+                tab[i+1][j+1]= diGraph.getWagesMatrix()[i][j];
+                if(tab[i+1][j+1] == 0)
+                    tab[i+1][j+1] = 999;
+            }
+        }
+
+        bellmanFord.BellmanFordEvaluation(2,tab);
 
     }
 
