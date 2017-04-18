@@ -33,8 +33,7 @@ public class Main extends Application {
 //        }
 
         Kosaraju kosaraju = new Kosaraju(diGraph);
-        System.out.println("\nSCC : ");
-        System.out.println(kosaraju.getSCComponents());
+        kosaraju.getSCComponents();
 
     }
 

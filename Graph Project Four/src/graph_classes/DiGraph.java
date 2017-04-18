@@ -16,9 +16,9 @@ public class DiGraph {
     public DiGraph() {
         //Testowo
         graphMatrix = new int[][]{
-                {0, 1, 0, 0},
+                {0, 0, 0, 0},
                 {1, 0, 0, 0},
-                {1, 0, 0, 0},
+                {0, 1, 0, 1},
                 {0, 0, 1, 0},
         };
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};

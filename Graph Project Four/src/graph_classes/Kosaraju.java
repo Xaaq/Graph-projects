@@ -11,7 +11,7 @@ public class Kosaraju {
     /**
      * konstruktor który tworzy obiekt do wykonania algorytmu Kosaraju dla danego digrafu
      */
-    public Kosaraju(DiGraph diGraph){
+    public Kosaraju(DiGraph diGraph) {
         graph = new List[diGraph.getGraphMatrix().length];
         ArrayList<GraphNode> graphNodes = diGraph.getNodeGraph();
 
@@ -19,7 +19,7 @@ public class Kosaraju {
             graph[i] = new ArrayList<Integer>();
         }
 
-        for(GraphNode eachNode: graphNodes){
+        for (GraphNode eachNode : graphNodes) {
             for (GraphNode e : eachNode.getConnectionList()) {
                 graph[eachNode.getId()].add(e.getId());
             }
@@ -94,10 +94,26 @@ public class Kosaraju {
                 SCComponents.add(tmpSSCList);
             }
         }
+        printSCComponents(SCComponents);
+
         return SCComponents;
     }
 
+    private void printSCComponents(List<List<Integer>> SCComponents) {
+        System.out.println("Silnie spójne składowe:");
+        for (List<Integer> l : SCComponents) {
+            System.out.print("[");
+            for (int a : l) {
+                // +1 bo zaczynamy od węzłą 1 a nie 0
+                System.out.print(" "+ (a+1));
+            }
+            System.out.print(" ]\n");
+
+        }
+    }
+
 }
+
 
 
 
