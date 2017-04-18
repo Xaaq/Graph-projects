@@ -13,10 +13,18 @@ public class GraphNode {
      * Numer identyfikacyjny węzła.
      */
     private int id;
-//    /**
-//     * Waga węzła.
-//     */
-//    private int weight = 0; //zmienic
+    /**
+     * Zmienna mówiąca o odwiedzeniu wierzcholka.
+     */
+    private boolean isVisited = false;
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void setVisited(boolean visited) {
+        isVisited = visited;
+    }
 
     /**
      * Tablica sąsiadów - lista węzłów, z którymi jest połączony.

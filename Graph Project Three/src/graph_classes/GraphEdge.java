@@ -4,6 +4,8 @@ package graph_classes;
  * Created by Paweł on 08.04.2017.
  */
 
+import com.sun.javafx.geom.Edge;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -41,6 +43,15 @@ public class GraphEdge {
 
     private ArrayList<GraphEdge> connectionEdgeList = new ArrayList<>();
 
+    @Override
+    public boolean equals(Object edge) {
+        GraphEdge edge2 = (GraphEdge) edge;
+        if (first.getId() == edge2.first.getId() && second.getId() == edge2.second.getId() || first.getId() == edge2.second.getId() && second.getId() == edge2.first.getId())
+            return true;
+        else
+            return false;
+    }
+
     public GraphNode getFirst() {
 
         return first;
@@ -53,6 +64,24 @@ public class GraphEdge {
     public GraphEdge(GraphNode v, GraphNode w) {
         first = v;
         second = w;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + getFirst().getId() + "," + getSecond().getId() + ")";
+    }
+
+    /**
+     * zwraca drugi wierzcholek
+     *
+     * @param node pierwszy wierzcholek
+     * @return drugi wierzcholek
+     */
+    public GraphNode getOther(int node) {
+        if (node == first.getId())
+            return second;
+        else
+            return first;
     }
 
 

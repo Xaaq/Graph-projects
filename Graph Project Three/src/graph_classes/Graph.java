@@ -1,8 +1,7 @@
 package graph_classes;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by Xaaq333 on 2017-03-11.
@@ -331,7 +330,7 @@ public class Graph {
                 for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                     //sprawdz czy jakas krawedz nie byla juz oznaczona
                     for (int k = 0; k < edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().size(); k++) {
-                        if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).getFirst().getId() == edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()) {
+                        if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).equals(edgeGraph.get(i).getConnectionEdgeList().get(j))) {
                             int temp = r.nextInt(10) + 1;
                             edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).setWeight(temp);
                             edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp);
@@ -348,8 +347,327 @@ public class Graph {
                 }
                 System.out.println(" ");
             }
+            for (int i = 0; i < nodeGraph.size(); i++) {
+                System.out.printf("%d -> ", nodeGraph.get(i).getId());
+                for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+                    System.out.printf("%d ", nodeGraph.get(i).getConnectionList().get(j).getId());
+                }
+                System.out.println(" ");
+            }
         }
     }
 
+    private HashMap<Integer, Integer> distances = new HashMap<>();
 
+    /**
+     * Implementacja dijkstry plus zapis do pliku Dijkstra najkrotszej sciezki plus odlegloscm iedzy wierzcholkami
+     *
+     * @param beginIndex poczatkowy indeks
+     */
+    public void dijkstra(int beginIndex) {
+        int initialNodeIndex = nodeGraph.get(beginIndex).getId();
+        HashMap<Integer, Integer> predecessors = new HashMap<>();
+        PriorityQueue<GraphNode> availableNodes = new PriorityQueue(nodeGraph.size(), new Comparator<GraphNode>() {
+
+            public int compare(GraphNode one, GraphNode two) {
+                int weightOne = distances.get(one.getId());
+                int weightTwo = distances.get(two.getId());
+                return weightOne - weightTwo;
+            }
+        });
+        HashSet<GraphNode> visitedNodes = new HashSet<>();
+        //oznacz wszystkich poprzednikow wartoscia null, a wszystkich sasaidow inf (MAX_VALUE)
+        for (GraphNode key : nodeGraph) {
+            predecessors.put(key.getId(), null);
+            distances.put(key.getId(), Integer.MAX_VALUE);
+        }
+        //odleglosc do siebie =  0
+        distances.put(initialNodeIndex, 0);
+
+        //reszta inicjalizacji - ustaw poprzednikow wierzcholkow sasiadujacych, odleglosci do nich i dodaj do mozliwych wierzcholkow
+        GraphNode initialNode = nodeGraph.get(beginIndex);
+        ArrayList<GraphEdge> initialNodeNeighbors = edgeGraph.get(beginIndex).getConnectionEdgeList();
+        for (GraphEdge e : initialNodeNeighbors) {
+            GraphNode other = e.getOther(initialNode.getId());
+            predecessors.put(other.getId(), initialNodeIndex);
+            distances.put(other.getId(), e.getWeight());
+            availableNodes.add(other);
+        }
+        //oznacz wierzcholek(beginIndex) jako odwiedzony
+        visitedNodes.add(initialNode);
+
+        //gdy sa jeszcze mozliwe wierzcholki, sciagnij ten o najmniejszej wadze i konynuuj dijkstre dla nieodwiedzonych wierzcholkow
+        while (availableNodes.size() > 0) {
+            GraphNode next = availableNodes.poll();
+            int distanceToNext = distances.get(next.getId());
+            List<GraphEdge> nextNeighbors = edgeGraph.get(next.getId()).getConnectionEdgeList();
+            for (GraphEdge e : nextNeighbors) {
+                GraphNode other = e.getSecond();
+                if (visitedNodes.contains(other)) {
+                    continue;
+                }
+                //proces relaksacji
+                int currentWeight = distances.get(other.getId());
+                int newWeight = distanceToNext + e.getWeight();
+                if (newWeight < currentWeight) {
+                    predecessors.put(other.getId(), next.getId());
+                    distances.put(other.getId(), newWeight);
+                    availableNodes.remove(other);
+                    availableNodes.add(other);
+                }
+            }
+            visitedNodes.add(next);
+        }
+        StringBuilder s = new StringBuilder();
+        //drukuj najkrotsze odleglosci od wierzcholek(beginIndex)
+        for (int i = 0; i < nodeGraph.size(); i++) {
+            int destination = nodeGraph.get(i).getId();
+            LinkedList<GraphNode> path = new LinkedList<>();
+            path.add(nodeGraph.get(destination));
+
+            while (destination != initialNodeIndex) {
+                GraphNode predecessor = nodeGraph.get((predecessors.get(destination)));
+                destination = predecessor.getId();
+                path.add(0, predecessor);
+            }
+
+            path.forEach(g -> {
+                s.append(g.getId());
+                s.append("->");
+            });
+            s.append(" | Odleglosc: ");
+            s.append(distances.get(i));
+            s.append("\n");
+        }
+
+        try (FileWriter fw = new FileWriter("Dijkstra.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int[][] distanceMatrix;
+
+    /**
+     * tworzy macierz odleglosci i zapisuje ja do pliku distanceMatrix
+     */
+    public void createDistanceMatrix() {
+        distanceMatrix = new int[nodeGraph.size()][nodeGraph.size()];
+
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            dijkstra(i);
+            for (int j = 0; j < distanceMatrix[i].length; j++) {
+                distanceMatrix[i][j] = distances.get(j);
+            }
+        }
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < distanceMatrix.length; i++) {
+//            System.out.printf("[");
+            s.append("[");
+            for (int j = 0; j < distanceMatrix[i].length; j++) {
+//                System.out.printf("%d, ", distanceMatrix[i][j]);
+                s.append(distanceMatrix[i][j]);
+                if (j < distanceMatrix[i].length - 1) s.append(", ");
+            }
+//            System.out.printf("]\n");
+            s.append("]\n");
+        }
+
+        try (FileWriter fw = new FileWriter("DistanceMatrix.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * znajduje centra odleglosci i je dopisuje do distanceMatrix
+     */
+    public void findDistanceCentre() {
+        //sumuj odleglosci wierszami
+        int distanceSum[] = new int[distanceMatrix.length];
+
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            distanceSum[i] = distanceMatrix[i][0];
+            for (int j = 1; j < distanceMatrix[i].length; j++) {
+                distanceSum[i] += distanceMatrix[i][j];
+            }
+        }
+
+        //znajdz najmniejsza sume - centrum
+        int min = 0;
+        int minTemp;
+        for (int i = 1; i < distanceSum.length; i++) {
+            minTemp = (distanceSum[i - 1] < distanceSum[i]) ? i - 1 : i;
+            min = (distanceSum[min] < distanceSum[minTemp]) ? min : minTemp;
+        }
+
+        //jezeli jest wiele center to dodaj
+        ArrayList<Integer> centres = new ArrayList<>(1);
+        centres.add(min);
+        for (int i = 0; i < distanceSum.length; i++) {
+            if (i != min && distanceSum[i] == distanceSum[min]) {
+                centres.add(i);
+            }
+        }
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
+
+        centres.forEach(centre -> {
+            s.append("Centrum grafu: ");
+            s.append(centre);
+            s.append(" - ");
+            s.append(distanceSum[centre]);
+        });
+
+        try (FileWriter fw = new FileWriter("DistanceMatrix.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Znajduje centra Min-Max i je dopisuje do distanceMatrix
+     */
+    public void findMinMaxCentre() {
+        //znajdz max w wierszu
+        // mapa -> klucz : index wierszu, wartosc: indeks kolumny
+        HashMap<Integer, Integer> max = new HashMap<>(distanceMatrix.length);
+
+        //dodaj najwieksze elementy w wierszu
+        int maxTemp;
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            max.put(i, 0);
+            for (int j = 1; j < distanceMatrix[i].length; j++) {
+                maxTemp = (distanceMatrix[i][j] > distanceMatrix[i][j - 1]) ? j : j - 1;
+                max.replace(i, max.get(i), (distanceMatrix[i][max.get(i)] > distanceMatrix[i][maxTemp]) ? max.get(i) : maxTemp);
+            }
+        }
+
+////        znajdz min wsrod maksimum i sprawdz czy nie ma ich wiecej
+        int min = 0;
+        int minTemp;
+        for (int i = 1; i < max.size(); i++) {
+            minTemp = (distanceMatrix[i - 1][max.get(i - 1)] < distanceMatrix[i][max.get(i)]) ? i - 1 : i;
+            min = (distanceMatrix[min][max.get(min)] < distanceMatrix[minTemp][max.get(minTemp)]) ? min : minTemp;
+        }
+
+        //jezeli jest wiele center minamx to dodaj
+        HashMap<Integer, Integer> minMap = new HashMap<>();
+        minMap.put(min, max.get(min));
+        for (int i = 0; i < max.size(); i++) {
+            if (i != min && distanceMatrix[i][max.get(i)] == distanceMatrix[min][max.get(min)]) {
+                minMap.put(i, max.get(i));
+            }
+        }
+        StringBuilder s = new StringBuilder();
+        s.append("\n");
+        //iteruj przez kazde centrum min-max i wypisz
+        for (Map.Entry<Integer, Integer> entry : minMap.entrySet()) {
+            Integer key = entry.getKey();
+            Integer value = entry.getValue();
+            s.append("Centrum MIN-MAX: ");
+            s.append(key);
+            s.append(" - ");
+            s.append(distanceMatrix[key][value]);
+            s.append("\n");
+        }
+
+        try (FileWriter fw = new FileWriter("DistanceMatrix.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * implementacja algorytmu prima - znajdowanie najmniejszych drzew rozpinajacych, zapisuje krawedzie do pliku MST
+     *
+     * @param beginIndex poczatkowy index szukanego MST
+     */
+    public void prim(int beginIndex) {
+        int initialNodeIndex = nodeGraph.get(beginIndex).getId();
+        //kolejka priorytetowa krawedzi ktore mozemy wybrac z danego wierzhcolka
+        PriorityQueue<GraphEdge> avaliableEdges = new PriorityQueue<>(new Comparator<GraphEdge>() {
+            @Override
+            public int compare(GraphEdge o1, GraphEdge o2) {
+                return o1.getWeight() - o2.getWeight();
+            }
+        });
+        //odwiedzone wiezcholki
+        HashSet<GraphNode> visitedNodes = new HashSet<>();
+
+        for (GraphEdge edge : edgeGraph.get(beginIndex).getConnectionEdgeList()) {
+            avaliableEdges.add(edge);
+        }
+
+        //oznacz wierzcholek(beginIndex) jako odwiedzony
+        GraphNode initialNode = nodeGraph.get(beginIndex);
+        visitedNodes.add(initialNode);
+
+        LinkedList<GraphEdge> mst = new LinkedList<>();
+        int overallWeight = 0;
+        //poki sa wolne krawedzie wykonuj prima
+        while (!avaliableEdges.isEmpty()) {
+            GraphEdge edge = avaliableEdges.poll();
+            GraphNode first = edge.getFirst();
+            GraphNode second = edge.getSecond();
+            if (!visitedNodes.contains(first) || !visitedNodes.contains(second)) {
+                GraphNode node = (visitedNodes.contains(second)) ? first : second;
+                visitedNodes.add(node);
+                overallWeight += edge.getWeight();
+                mst.add(edge);
+                for (GraphEdge e : edgeGraph.get(node.getId()).getConnectionEdgeList()) {
+                    if (visitedNodes.contains(e.getSecond())) {
+                        continue;
+                    }
+                    avaliableEdges.add(e);
+                }
+            }
+        }
+
+        StringBuilder s = new StringBuilder();
+        s.append("\nKrawedzie MST\n");
+        mst.forEach(name -> {
+            s.append(name.toString());
+            s.append(" -");
+        });
+        s.append("\n\nWagi krawędzi MST:\n");
+        mst.forEach(name -> {
+            s.append(name.getWeight());
+            s.append(" -");
+        });
+        s.append("\nWaga drzewa MST: ");
+        s.append(overallWeight);
+        s.append("\n");
+
+        try (FileWriter fw = new FileWriter("MST.txt", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(s.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
