@@ -14,11 +14,18 @@ public class DiGraph {
     public DiGraph() {
         //Testowo
         graphMatrix = new int[][]{
-                {0, 0, 0, 0},
-                {1, 0, 0, 0},
-                {0, 1, 0, 1},
-                {0, 0, 1, 0},
+                {0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0},
+                {0, 1, 0, 1, 0},
+                {0, 0, 1, 0, 1},
+                {0, 0, 1, 0, 0}
         };
+//        graphMatrix = new int[][]{
+//                {0, 0, 0, 0},
+//                {1, 0, 0, 0},
+//                {0, 1, 0, 1},
+//                {0, 0, 1, 0},
+//        };
         // generujemy tablice węzłów
         generateNodeArray();
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
@@ -173,7 +180,7 @@ public class DiGraph {
      */
     public void generateRandomSCCdigraphWithWages() {
         // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
-        generateProbabilityMatrix(5, 0.15);
+        generateProbabilityMatrix(10, 0.45);
         // uzywamy algorytmu Kosaraju do znalezienia najwiekszej spojna skladowej
         Kosaraju kosaraju = new Kosaraju(this);
         kosaraju.getSCComponents();
@@ -226,25 +233,15 @@ public class DiGraph {
 
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
-                //sprawdz czy jakas krawedz nie byla juz oznaczona
-                for (int k = 0; k < edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().size(); k++) {
-                    // ten if chyba nie potrzebny - u pawła jest
-                    //if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).equals(edgeGraph.get(i).getConnectionEdgeList().get(j)))
-                    {
-
-                        int temp = r.nextInt(11) - 5;
-                        edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).setWeight(temp);
+                        int temp = r.nextInt(16) - 5;
                         edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp);
-                        break;
-                    }
-                }
 
             }
         }
         //test wag (krawedz) - waga
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
-                System.out.printf("(%d, %d) - %d, ", edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId(),
+                System.out.printf("(%d, %d) : %d, ", edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId(),
                         edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId(),
                         edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight());
             }

@@ -15,7 +15,7 @@ import java.util.Random;
 public class GraphEdge {
     private GraphNode first;
     private GraphNode second;
-    private int weight = -1;
+    private int weight = -277;
 
     public int getWeight() {
         return weight;
