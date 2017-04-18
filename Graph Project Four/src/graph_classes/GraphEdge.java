@@ -15,6 +15,7 @@ import java.util.Random;
 public class GraphEdge {
     private GraphNode first;
     private GraphNode second;
+    private int weight = -1;
 
     public int getWeight() {
         return weight;
@@ -23,8 +24,6 @@ public class GraphEdge {
     public void setWeight(int weight) {
         this.weight = weight;
     }
-
-    private int weight = -1;
 
     /**
      * Tablica sąsiadów - lista krawedzi, z którymi jest połączony.

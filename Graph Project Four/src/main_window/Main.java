@@ -22,18 +22,21 @@ public class Main extends Application {
         /**
          * testy
          */
-
+        // Zadanie 1
         DiGraph diGraph = new DiGraph();
-//        diGraph.printMatrix();
-        diGraph.generateNodeArray();
+//        diGraph.createGraph();
+        diGraph.printMatrix();
         diGraph.printNodeArray();
 //        for (int i = 0; i < 1; ++i) {
 //            System.out.println(i + ": ------------------");
-//            diGraph.generateProbabilityMatrix(8, 0.1);
+//            diGraph.generateProbabilityMatrix(5, 0.35);
 //        }
-
+        //Zadanie 2
         Kosaraju kosaraju = new Kosaraju(diGraph);
         kosaraju.getSCComponents();
+
+        //Zadanie 3
+        diGraph.generateRandomSCCdigraphWithWages();
 
     }
 

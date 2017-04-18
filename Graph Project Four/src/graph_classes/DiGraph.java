@@ -5,6 +5,7 @@ package graph_classes;
  */
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -21,9 +22,28 @@ public class DiGraph {
                 {0, 1, 0, 1},
                 {0, 0, 1, 0},
         };
+        // generujemy tablice węzłów
+        generateNodeArray();
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
 //        graphMatrix[1][0] = graphMatrix[2][1] = graphMatrix[2][3] = graphMatrix[3][2] = 1;
     }
+
+    /**
+     * DiGraf w formie macierzy
+     */
+    private int[][] graphMatrix;
+
+    /**
+     * Przechowuje graf w formie krawedzi sasiadujacych z wierzcholkiem.
+     */
+    private ArrayList<GraphEdge> edgeGraph = new ArrayList<>();
+
+
+    /**
+     * Przechowuje graf w formie wierzchołków.
+     */
+    private ArrayList<GraphNode> nodeGraph;
+
 
     /**
      * Zwraca węzeł według id
@@ -37,10 +57,6 @@ public class DiGraph {
         return null;
     }
 
-    /**
-     * DiGraf w formie macierzy
-     */
-    private int[][] graphMatrix;
 
     /**
      * zwraca DiGraf w posatci macierzy
@@ -132,12 +148,10 @@ public class DiGraph {
                     array[x] = 0;
             }
         }
+        // generujemy tablice węzłów
+        generateNodeArray();
     }
 
-    /**
-     * Przechowuje graf w formie wierzchołków.
-     */
-    private ArrayList<GraphNode> nodeGraph;
 
     /**
      * Zwraca listę wierzchołków grafu.
@@ -145,6 +159,75 @@ public class DiGraph {
     public ArrayList<GraphNode> getNodeGraph() {
         return nodeGraph;
     }
+
+    /**
+     * funkcja ktora generuje tablice krawedzi na podstawie tablicy wierzcholkow
+     */
+    public void generateEdgeArray() {
+        for (int i = 0; i < nodeGraph.size(); i++) {
+            edgeGraph.add(new GraphEdge());
+            edgeGraph.get(i).convertNodesToEdges(nodeGraph, i);
+        }
+//        //test krawedzi
+//        System.out.println("edgeGraph.size(): " + edgeGraph.size());
+//        System.out.println("e  " + edgeGraph.get(0).getConnectionEdgeList().size());
+//        System.out.println("e  " + edgeGraph.get(1).getConnectionEdgeList().size());
+//        System.out.println("e  " + edgeGraph.get(2).getConnectionEdgeList().size());
+//        System.out.println("e  " + edgeGraph.get(3).getConnectionEdgeList().size());
+//        for (int i = 0; i < edgeGraph.size(); i++) {
+//            for(int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+//                System.out.printf("(%d, %d), ", edgeGraph.get(i).getConnectionEdgeList().get(j),
+//                                                edgeGraph.get(i).getConnectionEdgeList().get(j));
+//            }
+//            System.out.println(" ");
+//        }
+
+    }
+
+
+    /**
+     * generuje losowy silnie spójny digraf z losowymi wagami z zakresu [-5,10]
+     */
+    public void generateRandomSCCdigraphWithWages() {
+        // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
+        //generateProbabilityMatrix(5, 0.15);
+        generateEdgeArray();
+        Random r = new Random();
+
+        for (int i = 0; i < edgeGraph.size(); i++) {
+            for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+                //sprawdz czy jakas krawedz nie byla juz oznaczona
+                for (int k = 0; k < edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().size(); k++) {
+                    // ten if chyba nie potrzebny - u pawła jest
+                    //if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).equals(edgeGraph.get(i).getConnectionEdgeList().get(j)))
+                    {
+                        int temp = r.nextInt(10) + 1;
+                        edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).setWeight(temp);
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp);
+                        break;
+                    }
+                }
+
+            }
+        }
+        //test wag (krawedz) - waga
+        for (int i = 0; i < edgeGraph.size(); i++) {
+            for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+                System.out.printf("(%d, %d) - %d, ", edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId(),
+                                                     edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId(),
+                                                     edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight());
+            }
+            System.out.println(" ");
+        }
+        for (int i = 0; i < nodeGraph.size(); i++) {
+            System.out.printf("%d -> ", nodeGraph.get(i).getId());
+            for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+                System.out.printf("%d ", nodeGraph.get(i).getConnectionList().get(j).getId());
+            }
+            System.out.println(" ");
+        }
+    }
+
 
     /**
      * metoda ktora generuje tablice wezlow na podstawie macierzy
