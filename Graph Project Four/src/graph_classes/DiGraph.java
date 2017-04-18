@@ -4,10 +4,7 @@ package graph_classes;
  * Created by Mateusz on 10.04.2017.
  */
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * przechowuje DiGraf w postaci macierzy oraz listy sąsiedztwa i metody z nim związane
@@ -168,20 +165,6 @@ public class DiGraph {
             edgeGraph.add(new GraphEdge());
             edgeGraph.get(i).convertNodesToEdges(nodeGraph, i);
         }
-//        //test krawedzi
-//        System.out.println("edgeGraph.size(): " + edgeGraph.size());
-//        System.out.println("e  " + edgeGraph.get(0).getConnectionEdgeList().size());
-//        System.out.println("e  " + edgeGraph.get(1).getConnectionEdgeList().size());
-//        System.out.println("e  " + edgeGraph.get(2).getConnectionEdgeList().size());
-//        System.out.println("e  " + edgeGraph.get(3).getConnectionEdgeList().size());
-//        for (int i = 0; i < edgeGraph.size(); i++) {
-//            for(int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
-//                System.out.printf("(%d, %d), ", edgeGraph.get(i).getConnectionEdgeList().get(j),
-//                                                edgeGraph.get(i).getConnectionEdgeList().get(j));
-//            }
-//            System.out.println(" ");
-//        }
-
     }
 
 
@@ -190,7 +173,54 @@ public class DiGraph {
      */
     public void generateRandomSCCdigraphWithWages() {
         // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
-        //generateProbabilityMatrix(5, 0.15);
+        generateProbabilityMatrix(5, 0.15);
+        // uzywamy algorytmu Kosaraju do znalezienia najwiekszej spojna skladowej
+        Kosaraju kosaraju = new Kosaraju(this);
+        kosaraju.getSCComponents();
+        // tutaj zapisjemy najwieksza spojna skladowa
+        List<Integer> theBiggestSCCComponent = kosaraju.getTheBiggestSCComponent();
+
+
+        // robimy płytką kopie naszej macierzy
+        int[][] tmpGraphMatrix = graphMatrix.clone();
+        // tutaj modyfikujemy graph matrix
+        int size = theBiggestSCCComponent.size();
+
+        graphMatrix = new int[size][size];
+
+
+        //iteruje po macierzy
+        int first_index = 0;
+        int second_index = 0;
+        boolean flaga = false;
+
+        for (int i = 0; i < tmpGraphMatrix.length; ++i) {
+            for (int j = 0; j < tmpGraphMatrix.length; ++j) {
+                // iteruje po liscie
+                for (int k = 0; k < theBiggestSCCComponent.size(); ++k) {
+                    for (int l = 0; l < theBiggestSCCComponent.size(); ++l) {
+                        if (theBiggestSCCComponent.get(k) == i && theBiggestSCCComponent.get(l) == j) {
+//                            System.out.println("(" +i + " " + j + ")");
+//                            System.out.println("first, second (" +first_index + " " + second_index + ")");
+                            graphMatrix[first_index][second_index] = tmpGraphMatrix[i][j];
+                            second_index++;
+                            flaga = true;
+                        }
+                    }
+                }
+            }
+            if(flaga){
+                first_index++;
+                second_index = 0;
+                flaga = false;
+            }
+        }
+
+        printMatrix();
+
+        // aktualizujemy
+        generateNodeArray();
+
         generateEdgeArray();
         Random r = new Random();
 
@@ -201,7 +231,8 @@ public class DiGraph {
                     // ten if chyba nie potrzebny - u pawła jest
                     //if (edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).equals(edgeGraph.get(i).getConnectionEdgeList().get(j)))
                     {
-                        int temp = r.nextInt(10) + 1;
+
+                        int temp = r.nextInt(11) - 5;
                         edgeGraph.get(edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId()).getConnectionEdgeList().get(k).setWeight(temp);
                         edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp);
                         break;
@@ -214,18 +245,19 @@ public class DiGraph {
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                 System.out.printf("(%d, %d) - %d, ", edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId(),
-                                                     edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId(),
-                                                     edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight());
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId(),
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight());
             }
             System.out.println(" ");
         }
-        for (int i = 0; i < nodeGraph.size(); i++) {
-            System.out.printf("%d -> ", nodeGraph.get(i).getId());
-            for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
-                System.out.printf("%d ", nodeGraph.get(i).getConnectionList().get(j).getId());
-            }
-            System.out.println(" ");
-        }
+//        for (int i = 0; i < nodeGraph.size(); i++) {
+//            System.out.printf("%d -> ", nodeGraph.get(i).getId());
+//            for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+//                System.out.printf("%d ", nodeGraph.get(i).getConnectionList().get(j).getId());
+//            }
+//            System.out.println(" ");
+//        }
+        System.out.println("Koniec Generowania SCC digrafu z wagami");
     }
 
 

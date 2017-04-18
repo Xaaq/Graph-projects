@@ -113,8 +113,8 @@ public class Kosaraju {
         for (List<Integer> l : SCComponents) {
             System.out.print("[");
             for (int a : l) {
-                // +1 bo zaczynamy od węzłą 1 a nie 0
-                System.out.print(" " + (a + 1));
+                // +1 bo zaczynamy od węzłą 1 a nie 0 !!! poprawić potem
+                System.out.print(" " + (a));
             }
             System.out.print(" ]\n");
 
