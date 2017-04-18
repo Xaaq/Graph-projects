@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 //        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 //        primaryStage.setTitle("Hello World");
 //        primaryStage.setScene(new Scene(root, 300, 275));
@@ -27,10 +27,10 @@ public class Main extends Application {
 //        diGraph.printMatrix();
         diGraph.generateNodeArray();
         diGraph.printNodeArray();
-        for(int i=0;i<1;++i){
-            System.out.println(i + ": ------------------");
-            diGraph.generateProbabilityMatrix(8,0.1);
-        }
+//        for (int i = 0; i < 1; ++i) {
+//            System.out.println(i + ": ------------------");
+//            diGraph.generateProbabilityMatrix(8, 0.1);
+//        }
 
         Kosaraju kosaraju = new Kosaraju(diGraph);
         System.out.println("\nSCC : ");
@@ -38,5 +38,8 @@ public class Main extends Application {
 
     }
 
-    public static void main(String[] args) {launch(args);}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
+}
