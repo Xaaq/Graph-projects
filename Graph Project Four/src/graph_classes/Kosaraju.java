@@ -11,7 +11,7 @@ public class Kosaraju {
     /**
      * konstruktor który tworzy obiekt do wykonania algorytmu Kosaraju dla danego digrafu
      */
-    public Kosaraju(DiGraph diGraph){
+    public Kosaraju(DiGraph diGraph) {
         graph = new List[diGraph.getGraphMatrix().length];
         ArrayList<GraphNode> graphNodes = diGraph.getNodeGraph();
 
@@ -19,14 +19,21 @@ public class Kosaraju {
             graph[i] = new ArrayList<Integer>();
         }
 
-        for(GraphNode eachNode: graphNodes){
+        for (GraphNode eachNode : graphNodes) {
             for (GraphNode e : eachNode.getConnectionList()) {
                 graph[eachNode.getId()].add(e.getId());
             }
         }
     }
 
+    /**
+     * lista sąsiednich wierzchołków
+     */
     private List<Integer>[] graph;
+    /**
+     * przechowuje wszystkie silnie spójne składowe
+     */
+    private List<List<Integer>> kosarajuSCComponents;
 
     /**
      * DFS - przeszukiwanie w głąb
@@ -68,7 +75,7 @@ public class Kosaraju {
     }
 
     /**
-     * Funkcja która zwraca wszystki silnie spójne składowe grafu
+     * Funkcja która zwraca wszystkie silnie spójne składowe grafu
      **/
     public List<List<Integer>> getSCComponents() {
         int size = graph.length;
@@ -94,10 +101,46 @@ public class Kosaraju {
                 SCComponents.add(tmpSSCList);
             }
         }
+        kosarajuSCComponents = new ArrayList<>();
+        kosarajuSCComponents = SCComponents;
+
+        printSCComponents(kosarajuSCComponents);
         return SCComponents;
     }
 
+    private void printSCComponents(List<List<Integer>> SCComponents) {
+        System.out.println("Silnie spójne składowe:");
+        for (List<Integer> l : SCComponents) {
+            System.out.print("[");
+            for (int a : l) {
+                // +1 bo zaczynamy od węzłą 1 a nie 0 !!! poprawić potem
+                System.out.print(" " + (a));
+            }
+            System.out.print(" ]\n");
+
+        }
+    }
+
+    /**
+     * szukamy największej silnie spójnej składowej
+     */
+    public List<Integer> getTheBiggestSCComponent() {
+        int size_max = 0;
+        List<Integer> theBiggestSCComponent = new ArrayList<>();
+        for (List<Integer> l : kosarajuSCComponents) {
+            if (l.size() > size_max){
+                size_max = l.size();
+                theBiggestSCComponent = new ArrayList<>();
+                theBiggestSCComponent = l;
+            }
+        }
+        //System.out.println(size_max);
+        //System.out.println(theBiggestSCComponent);
+        return theBiggestSCComponent;
+    }
+
 }
+
 
 
 

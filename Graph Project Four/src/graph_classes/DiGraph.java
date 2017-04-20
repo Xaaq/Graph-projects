@@ -4,9 +4,7 @@ package graph_classes;
  * Created by Mateusz on 10.04.2017.
  */
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * przechowuje DiGraf w postaci macierzy oraz listy sąsiedztwa i metody z nim związane
@@ -16,14 +14,39 @@ public class DiGraph {
     public DiGraph() {
         //Testowo
         graphMatrix = new int[][]{
-                {0, 1, 0, 0},
-                {1, 0, 0, 0},
-                {1, 0, 0, 0},
-                {0, 0, 1, 0},
+                {0, 0, 0, 1},
+                {1, 0, 1, 0},
+                {1, 1, 0, 0},
+                {0, 1, 0, 0}
         };
+//        graphMatrix = new int[][]{
+//                {0, 0, 0, 0},
+//                {1, 0, 0, 0},
+//                {0, 1, 0, 1},
+//                {0, 0, 1, 0},
+//        };
+        // generujemy tablice węzłów
+        generateNodeArray();
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
 //        graphMatrix[1][0] = graphMatrix[2][1] = graphMatrix[2][3] = graphMatrix[3][2] = 1;
     }
+
+    /**
+     * DiGraf w formie macierzy
+     */
+    private int[][] graphMatrix;
+
+    /**
+     * Przechowuje graf w formie krawedzi sasiadujacych z wierzcholkiem.
+     */
+    private ArrayList<GraphEdge> edgeGraph = new ArrayList<>();
+
+
+    /**
+     * Przechowuje graf w formie wierzchołków.
+     */
+    private ArrayList<GraphNode> nodeGraph;
+
 
     /**
      * Zwraca węzeł według id
@@ -37,10 +60,6 @@ public class DiGraph {
         return null;
     }
 
-    /**
-     * DiGraf w formie macierzy
-     */
-    private int[][] graphMatrix;
 
     /**
      * zwraca DiGraf w posatci macierzy
@@ -132,12 +151,10 @@ public class DiGraph {
                     array[x] = 0;
             }
         }
+        // generujemy tablice węzłów
+        generateNodeArray();
     }
 
-    /**
-     * Przechowuje graf w formie wierzchołków.
-     */
-    private ArrayList<GraphNode> nodeGraph;
 
     /**
      * Zwraca listę wierzchołków grafu.
@@ -145,6 +162,139 @@ public class DiGraph {
     public ArrayList<GraphNode> getNodeGraph() {
         return nodeGraph;
     }
+
+    /**
+     * funkcja ktora generuje tablice krawedzi na podstawie tablicy wierzcholkow
+     */
+    public void generateEdgeArray() {
+        for (int i = 0; i < nodeGraph.size(); i++) {
+            edgeGraph.add(new GraphEdge());
+            edgeGraph.get(i).convertNodesToEdges(nodeGraph, i);
+        }
+    }
+
+    /**
+     * macierz która przechowuje odległości między wierzchołkami
+     */
+    private int[][] wagesMatrix;
+    public int[][] getWagesMatrix() {
+        return wagesMatrix.clone();
+    }
+
+
+    /**
+     * generuje losowy silnie spójny digraf z losowymi wagami z zakresu [-5,10]
+     */
+    public void generateRandomSCCdigraphWithWages() {
+        // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
+        //generateProbabilityMatrix(5, 0.4);
+        // uzywamy algorytmu Kosaraju do znalezienia najwiekszej spojna skladowej
+        Kosaraju kosaraju = new Kosaraju(this);
+        kosaraju.getSCComponents();
+        // tutaj zapisjemy najwieksza spojna skladowa
+        List<Integer> theBiggestSCCComponent = kosaraju.getTheBiggestSCComponent();
+
+
+        // robimy płytką kopie naszej macierzy
+        int[][] tmpGraphMatrix = graphMatrix.clone();
+        // tutaj modyfikujemy graph matrix
+        int size = theBiggestSCCComponent.size();
+
+        graphMatrix = new int[size][size];
+
+
+        //iteruje po macierzy
+        int first_index = 0;
+        int second_index = 0;
+        boolean flaga = false;
+
+        for (int i = 0; i < tmpGraphMatrix.length; ++i) {
+            for (int j = 0; j < tmpGraphMatrix.length; ++j) {
+                // iteruje po liscie
+                for (int k = 0; k < theBiggestSCCComponent.size(); ++k) {
+                    for (int l = 0; l < theBiggestSCCComponent.size(); ++l) {
+                        if (theBiggestSCCComponent.get(k) == i && theBiggestSCCComponent.get(l) == j) {
+//                            System.out.println("(" +i + " " + j + ")");
+//                            System.out.println("first, second (" +first_index + " " + second_index + ")");
+                            graphMatrix[first_index][second_index] = tmpGraphMatrix[i][j];
+                            second_index++;
+                            flaga = true;
+                        }
+                    }
+                }
+            }
+            if(flaga){
+                first_index++;
+                second_index = 0;
+                flaga = false;
+            }
+        }
+
+        printMatrix();
+
+        // aktualizujemy
+        generateNodeArray();
+
+        generateEdgeArray();
+        Random r = new Random();
+
+        //dla testów
+        int tmptab[]={2,-3,1,-2,8,-1};
+        int counter=0;
+
+        for (int i = 0; i < edgeGraph.size(); i++) {
+            for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+                        int temp = r.nextInt(16) - 5;
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(tmptab[counter++]); //(temp); //(tmptab[counter++]);
+
+            }
+        }
+        //test wag (krawedz) - waga
+        for (int i = 0; i < edgeGraph.size(); i++) {
+            for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+                System.out.printf("(%d, %d) : %d, ", edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId(),
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId(),
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight());
+            }
+            System.out.println(" ");
+        }
+//        for (int i = 0; i < nodeGraph.size(); i++) {
+//            System.out.printf("%d -> ", nodeGraph.get(i).getId());
+//            for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+//                System.out.printf("%d ", nodeGraph.get(i).getConnectionList().get(j).getId());
+//            }
+//            System.out.println(" ");
+//        }
+
+        //generujemy macierz do bellmana forda
+        generateWagesMatrix(graphMatrix.length);
+
+        System.out.println("Koniec Generowania SCC digrafu z wagami");
+    }
+
+    private void generateWagesMatrix(int size){
+        wagesMatrix = new int[size][size];
+        for (int i = 0; i < edgeGraph.size(); i++) {
+            for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
+                int first = edgeGraph.get(i).getConnectionEdgeList().get(j).getFirst().getId();
+                int second = edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId();
+                wagesMatrix[first][second] = edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight();
+            }
+        }
+        System.out.println("Wypisuje macierz z wagami:");
+        for (int i = 0; i < wagesMatrix.length; ++i) {
+            System.out.print("|");
+            for (int j = 0; j < wagesMatrix.length; ++j) {
+                System.out.print(" ");
+                System.out.print(wagesMatrix[i][j]);
+                System.out.print(" ");
+            }
+            System.out.print("|\n");
+        }
+        System.out.println("");
+    }
+
+
 
     /**
      * metoda ktora generuje tablice wezlow na podstawie macierzy
