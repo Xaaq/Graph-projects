@@ -136,7 +136,7 @@ public class MainWindowController implements Initializable {
     public void kosarajuButtonClick(){
         kosaraju = new Kosaraju(diGraph);
         String text = kosaraju.getSCComponents().toString();
-        showJohnson.setText(text);
+        SSComponents.setText(text);
     }
 
 
