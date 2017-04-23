@@ -4,6 +4,8 @@ package main_window;
 import graph_classes.BellmanFord;
 import graph_classes.DiGraph;
 import graph_classes.Johnson;
+import graph_classes.Kosaraju;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -18,34 +20,55 @@ import java.util.ResourceBundle;
  * Created by Mateusz on 10.04.2017.
  */
 public class MainWindowController implements Initializable {
-    Canvas canvas;
+    public Canvas canvas;
     // tutaj użytkownik poda zakodowany graf
 
-    TextArea codeGraph;
+    // ZADANIE 1
+
+    public TextArea codeGraph;
     // przycisk który użytkownik wciśnie jeśli zakoduje graf
-    Button buttonCodedGraph;
+    public Button buttonCodedGraph;
     //przechowywuje wartość p
-
-    TextField pValue;
+    public TextField pValue;
     // przechowywuje wartość n
-    TextField nValue;
+    public TextField nValue;
     //przycisk który generuje graf na podstawie wartości p oraz n
-    Button generateGgraph;
+    public Button generateGgraph;
 
-    // testowo
-    Label labelek;
-    Button testowyButton;
+    // ZADANIE 2
+
+    public Button runKosaraju;
+    public Label SSComponents;
+
+    // ZADANIE 3
+
+    // przechowywuje wartość w do Belmanna-Forda
+    public TextField wValueBelmanFord;
+    // wywołuje algorytm Belmanna-Forda po wciśnięciu
+    public Button runBelmannFord;
+    // wświetla najkrótszej ścieżki od danego wierzchołka
+    public Label shortestPathToVertex;
+
+    // ZADANIE 4
+
+    // do wyświetlenia wierzchołków wraz z najkrótymi wartościami dotarcia do nich
+    public TextArea showJohnson;
+    public Button runJohnson;
+
+    // Nasi goście specjalni
+    public DiGraph diGraph = new DiGraph();
+    public Kosaraju kosaraju;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-
         /**
          * testy
          */
-        // Zadanie 1
-        DiGraph diGraph = new DiGraph();
+
+//        diGraph.printMatrix();
+//      //   Zadanie 1
+//        DiGraph diGraph = new DiGraph();
 //        diGraph.createGraph();
 //        diGraph.printMatrix();
 //        diGraph.printNodeArray();
@@ -53,10 +76,10 @@ public class MainWindowController implements Initializable {
 //            System.out.println(i + ": ------------------");
 //            diGraph.generateProbabilityMatrix(5, 0.35);
 //        }
-        //Zadanie 2
+//      //  Zadanie 2
 //        Kosaraju kosaraju = new Kosaraju(diGraph);
 //        kosaraju.getSCComponents();
-
+//
 //        //Zadanie 3
 //        diGraph.generateRandomSCCdigraphWithWages();
 //        BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
@@ -98,15 +121,22 @@ public class MainWindowController implements Initializable {
 
     }
 
-    public void generateGgraphButtonClick(){
-        int p = Integer.parseInt(pValue.getText());
-        int n = Integer.parseInt(nValue.getText());
-        labelek.setText("p:");
-        System.out.println("p: " + p + " n: " + n);
+
+    public void generateGgraphButtonClick() {
+        float p = Float.parseFloat(pValue.getText());
+        int size = Integer.parseInt(nValue.getText());
+        System.out.println(size);
+        diGraph.generateProbabilityMatrix(size, p);
     }
 
-    public void generateCodedGraphButtonClick(){
-        labelek.setText("testowy text");
+    public void generateCodedGraphButtonClick() {
+        String test = "test";
+    }
+
+    public void kosarajuButtonClick(){
+        kosaraju = new Kosaraju(diGraph);
+        String text = kosaraju.getSCComponents().toString();
+        showJohnson.setText(text);
     }
 
 
@@ -120,10 +150,6 @@ public class MainWindowController implements Initializable {
 //        graph.kReguralGraphs(numbersOfVercices, KValueInput);
 //        canvas.drawGraph(graph);
 //    }
-
-
-
-
 
 
 }
