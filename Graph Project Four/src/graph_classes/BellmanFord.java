@@ -44,6 +44,18 @@ public class BellmanFord {
                 }
             }
         }
+        // (nie może jednak występować cykl o łącznej ujemnej wadze osiągalny ze źródła)
+
+        for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
+            for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
+                if (adjacencymatrix[sourcenode][destinationnode] != infinity) {
+                    if (distances[destinationnode] > distances[sourcenode]
+                            + adjacencymatrix[sourcenode][destinationnode])
+                        System.out.println("Graf zawiera cykl o łącznej ujemnej wadze osiągalny ze źródła!");
+                }
+            }
+        }
+
         // Wypisujemy odległości
         printDistancesFromSource(source);
         return distances;
@@ -51,7 +63,7 @@ public class BellmanFord {
 
     private void printDistancesFromSource(int source) {
         for (int vertex = 1; vertex <= numberOfVertices; vertex++) {
-            System.out.println("odległość od: " + (source-1) + " do: " + (vertex - 1) + " wynosi: " + distances[vertex]);
+            System.out.println("odległość od: " + (source - 1) + " do: " + (vertex - 1) + " wynosi: " + distances[vertex]);
         }
     }
 
