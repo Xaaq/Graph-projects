@@ -81,43 +81,45 @@ public class MainWindowController implements Initializable {
 //        kosaraju.getSCComponents();
 //
 //        //Zadanie 3
-//        diGraph.generateRandomSCCdigraphWithWages();
-//        BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
-//
-//        int infinity = 999;
-//        // tworze macierz która wypełniam od indeksu 1
-//        int[][] tab = new int[diGraph.getGraphMatrix().length+1][diGraph.getGraphMatrix().length+1];
-//        for(int i=0;i<diGraph.getGraphMatrix().length;++i){
-//            for(int j=0;j<diGraph.getGraphMatrix().length;++j){
-//                tab[i+1][j+1]= diGraph.getWagesMatrix()[i][j];
-//                //odległość do samego siebie równa 0
-//                if(i == j){
-//                    tab[i+1][j+1] = 0;
-//                    continue;
-//                }
-//                // brak połączenia - odległość równa 'nieskończoność'
-//                if(tab[i+1][j+1] == 0)
-//                    tab[i+1][j+1] = infinity;
-//            }
-//        }
-//        System.out.println("Wypisuje macierz z wagami:");
-//        for (int i = 1; i < tab.length; ++i) {
-//            System.out.print("|");
-//            for (int j = 1; j < tab.length; ++j) {
-//                System.out.print(" ");
-//                System.out.print(tab[i][j]);
-//                System.out.print(" ");
-//            }
-//            System.out.print("|\n");
-//        }
-//        System.out.println("");
-//
-//        bellmanFord.BellmanFordEvaluation(3,tab);
-//
-//        //Zadanie 4
-//        System.out.println("ZADANIE 4 ------------------");
-//        Johnson johnsonsAlgorithm = new Johnson(tab.length-1);
-//        johnsonsAlgorithm.johnsonsAlgorithms(tab);
+        diGraph.generateRandomSCCdigraphWithWages();
+        BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
+
+        int infinity = 999;
+        // tworze macierz która wypełniam od indeksu 1
+        int[][] tab = new int[diGraph.getGraphMatrix().length+1][diGraph.getGraphMatrix().length+1];
+        for(int i=0;i<diGraph.getGraphMatrix().length;++i){
+            for(int j=0;j<diGraph.getGraphMatrix().length;++j){
+                tab[i+1][j+1]= diGraph.getWagesMatrix()[i][j];
+                //odległość do samego siebie równa 0
+                if(i == j){
+                    tab[i+1][j+1] = 0;
+                    continue;
+                }
+                // brak połączenia - odległość równa 'nieskończoność'
+                if(tab[i+1][j+1] == 0)
+                    tab[i+1][j+1] = infinity;
+            }
+        }
+        System.out.println("Wypisuje macierz z wagami:");
+        for (int i = 1; i < tab.length; ++i) {
+            System.out.print("|");
+            for (int j = 1; j < tab.length; ++j) {
+                System.out.print(" ");
+                System.out.print(tab[i][j]);
+                System.out.print(" ");
+            }
+            System.out.print("|\n");
+        }
+        System.out.println("");
+
+        bellmanFord.BellmanFordEvaluation(1,tab);
+
+        //Zadanie 4
+        System.out.println("ZADANIE 4 ------------------");
+        Johnson johnsonsAlgorithm = new Johnson(tab.length-1);
+        johnsonsAlgorithm.johnsonsAlgorithms(tab);
+
+        System.out.println("---------------------------------------------");
 
     }
 
@@ -129,9 +131,38 @@ public class MainWindowController implements Initializable {
         diGraph.generateProbabilityMatrix(size, p);
     }
 
-    public void generateCodedGraphButtonClick() {
-        String test = "test";
+    public void generateCodedGraphButtonClick(){
+        int lenght = codeGraph.getText().split("\n").length;
+        String codedGraph[] = codeGraph.getText().split("\n");
+
+//         length * length = codedGraph.length
+//        System.out.println("l:" + codedGraph.length);
+//        System.out.println("lenght:" + lenght);
+
+        String codedGraphSplitted[][] = new String[lenght][lenght];
+
+        int counter = 0;
+        for(String x: codedGraph){
+            codedGraphSplitted[counter++] = x.split(" ");
+        }
+        //  tutaj przechowujemy tymczasową macierz sąsiedztwa
+        int[][] tmpMatrix = new int[lenght][lenght];
+        int row=0,column=0;
+        for(String x[]: codedGraphSplitted){
+            for(String y: x){
+                tmpMatrix[row][column] = Integer.parseInt(y);
+                column++;
+            }
+            row++;
+            column =0;
+        }
+        // Aktualizujemy nasz graf
+        diGraph.updateDigraph(tmpMatrix);
+        diGraph.printMatrix();
+        diGraph.printNodeArray();
     }
+
+
 
     public void kosarajuButtonClick(){
         kosaraju = new Kosaraju(diGraph);
@@ -139,7 +170,7 @@ public class MainWindowController implements Initializable {
         SSComponents.setText(text);
     }
 
-
+// Labela zamiast TextArea do wyswietlania Johnsona, przeciagnac kontrolki na dol apki i pousuwac niepotrzebne linie
 
 //    public void generateCodedGraphButtonClick() {
 //        int KValueInput = Integer.parseInt(kValueInput.getText());

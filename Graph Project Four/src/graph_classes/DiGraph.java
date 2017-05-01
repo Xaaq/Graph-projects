@@ -27,9 +27,22 @@ public class DiGraph {
 //        };
         // generujemy tablice węzłów
         generateNodeArray();
+
+
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
 //        graphMatrix[1][0] = graphMatrix[2][1] = graphMatrix[2][3] = graphMatrix[3][2] = 1;
     }
+
+    /**
+     * Aktualizujemy digraf mając nową macierz sąsiedztwa
+     * @param matrix macierz sąsiedztwa
+     */
+    public void updateDigraph(int[][] matrix){
+        setGraphMatrix(matrix);
+        generateNodeArray();
+        generateEdgeArray();
+    }
+
 
     /**
      * DiGraf w formie macierzy
@@ -41,11 +54,14 @@ public class DiGraph {
      */
     private ArrayList<GraphEdge> edgeGraph = new ArrayList<>();
 
-
     /**
      * Przechowuje graf w formie wierzchołków.
      */
     private ArrayList<GraphNode> nodeGraph;
+    /**
+     * macierz która przechowuje odległości między wierzchołkami
+     */
+    private int[][] wagesMatrix;
 
 
     /**
@@ -173,10 +189,7 @@ public class DiGraph {
         }
     }
 
-    /**
-     * macierz która przechowuje odległości między wierzchołkami
-     */
-    private int[][] wagesMatrix;
+
     public int[][] getWagesMatrix() {
         return wagesMatrix.clone();
     }
@@ -293,7 +306,6 @@ public class DiGraph {
         }
         System.out.println("");
     }
-
 
 
     /**
