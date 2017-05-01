@@ -66,7 +66,7 @@ public class MainWindowController implements Initializable {
     public Kosaraju kosaraju;
     //
 //    public BellmanFord bellmanFord;
-    public BellmanFord bellmanFord;
+    public xBellmanFord bellmanFord;
 
 
     public Johnson johnsonsAlgorithm;
@@ -273,13 +273,15 @@ public class MainWindowController implements Initializable {
     public void belmannFordButtonClick() {
         try {
             int w = Integer.parseInt(wValueBelmanFord.getText());
+            // zwiększamy w o 1, bo w belmannie fordzie tablice indeksujemy  od 1
+            w = w+1;
 //            bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
-            bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
+            bellmanFord = new xBellmanFord(diGraph.getGraphMatrix().length);
             diGraph.setWagesMatrixBelmannFord();
             String tmp = "";
             int[] distances = bellmanFord.BellmanFordEvaluation(w, diGraph.getWagesMatixBelmannFord());
             for (int vertex = 1; vertex <= bellmanFord.numberOfVertices; vertex++) {
-                tmp += "odległość od: " + w + " do: " + (vertex-1) + " wynosi: " + distances[vertex] + "\n";
+                tmp += "odległość od: " + (w-1) + " do: " + (vertex-1) + " wynosi: " + distances[vertex] + "\n";
             }
             shortestPathToVertex.setText(tmp);
 

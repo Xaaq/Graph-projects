@@ -44,7 +44,7 @@ public class BellmanFord {
                 }
             }
         }
-        // (nie może jednak występować cykl o łącznej ujemnej wadze osiągalny ze źródła)
+        // (nie może  występować cykl o łącznej ujemnej wadze osiągalny ze źródła)
 
         for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
             for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
@@ -66,5 +66,7 @@ public class BellmanFord {
             System.out.println("odległość od: " + (source - 1) + " do: " + (vertex - 1) + " wynosi: " + distances[vertex]);
         }
     }
-
+    public int[] getDistances() {
+        return distances;
+    }
 }

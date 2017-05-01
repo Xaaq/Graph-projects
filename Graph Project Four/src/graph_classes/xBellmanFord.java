@@ -12,12 +12,12 @@ public class xBellmanFord {
     }
 
     public int[] BellmanFordEvaluation(int source, int adjacencymatrix[][]) {
+
         for (int node = 1; node <= numberOfVertices; node++) {
             distances[node] = MAX_VALUE;
         }
 
         distances[source] = 0;
-
         for (int node = 1; node <= numberOfVertices-1; node++) {
             for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
                 for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
@@ -37,7 +37,7 @@ public class xBellmanFord {
                 if (adjacencymatrix[sourcenode][destinationnode] != MAX_VALUE) {
                     if (distances[destinationnode] > distances[sourcenode]
                             + adjacencymatrix[sourcenode][destinationnode])
-                        System.out.println("The Graph contains negative egde cycle");
+                        System.out.println("Graf zawiera cykl o łącznej ujemnej wadze osiągalny ze źródła!");
                 }
             }
         }
