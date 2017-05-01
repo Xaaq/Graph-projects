@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Johnson{
     private int SOURCE_NODE;
-    private int numberOfNodes;
+    public int numberOfNodes;
     private int augmentedMatrix[][];
     private int potential[];
     private xBellmanFord bellmanFord;
@@ -27,7 +27,7 @@ public class Johnson{
         allPairShortestPath = new int[numberOfNodes + 1][numberOfNodes + 1];
     }
 
-    public void johnsonsAlgorithms(int adjacencyMatrix[][]) {
+    public int[][] johnsonsAlgorithms(int adjacencyMatrix[][]) {
         computeAugmentedGraph(adjacencyMatrix);
 
         bellmanFord.BellmanFordEvaluation(SOURCE_NODE, augmentedMatrix);
@@ -62,6 +62,8 @@ public class Johnson{
             }
             System.out.println();
         }
+        return allPairShortestPath;
+
     }
 
     private void computeAugmentedGraph(int adjacencyMatrix[][]) {

@@ -7,7 +7,7 @@ package graph_classes;
 public class BellmanFord {
     //macierz odległości
     private int distances[];
-    private int numberOfVertices;
+    public int numberOfVertices;
     // nasza wartośc nieskończoność
     public static final int infinity = 999;
 
@@ -17,7 +17,11 @@ public class BellmanFord {
         distances = new int[numberOfVertices + 1];
     }
 
-    public void BellmanFordEvaluation(int source, int adjacencymatrix[][]) {
+    public int[] BellmanFordEvaluation(int source, int adjacencymatrix[][]) {
+        // dołożone
+        source = source + 1;
+        //
+
         for (int node = 1; node <= numberOfVertices; node++) {
             distances[node] = infinity;
         }
@@ -40,14 +44,14 @@ public class BellmanFord {
                 }
             }
         }
-
         // Wypisujemy odległości
         printDistancesFromSource(source);
+        return distances;
     }
 
     private void printDistancesFromSource(int source) {
         for (int vertex = 1; vertex <= numberOfVertices; vertex++) {
-            System.out.println("odległość od: " + source + " do: " + vertex + " wynosi: " + distances[vertex]);
+            System.out.println("odległość od: " + (source-1) + " do: " + (vertex - 1) + " wynosi: " + distances[vertex]);
         }
     }
 

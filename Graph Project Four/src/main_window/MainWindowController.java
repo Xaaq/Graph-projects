@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
+import javax.xml.soap.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -48,19 +49,23 @@ public class MainWindowController implements Initializable {
     public TextField wValueBelmanFord;
     // wywołuje algorytm Belmanna-Forda po wciśnięciu
     public Button runBelmannFord;
+    // generuje losowy silnie spojny digraf
+    public Button generateRandomSSDigraph;
     // wświetla najkrótszej ścieżki od danego wierzchołka
     public Label shortestPathToVertex;
 
     // ZADANIE 4
 
     // do wyświetlenia wierzchołków wraz z najkrótymi wartościami dotarcia do nich
-    public TextArea showJohnson;
+    public Label showJohnson;
     public Button runJohnson;
+    public TextArea showJohnsonTextArea;
 
     // Nasi goście specjalni
     public DiGraph diGraph = new DiGraph();
     public Kosaraju kosaraju;
-
+    public BellmanFord bellmanFord;
+    public Johnson johnsonsAlgorithm;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,60 +73,63 @@ public class MainWindowController implements Initializable {
          * testy
          */
 
-        diGraph.printMatrix();
-//      //   Zadanie 1
-        DiGraph diGraph = new DiGraph();
-        diGraph.createGraph();
-        diGraph.printMatrix();
-        diGraph.printNodeArray();
-        for (int i = 0; i < 1; ++i) {
-            System.out.println(i + ": ------------------");
-            diGraph.generateProbabilityMatrix(5, 0.35);
-        }
-      //  Zadanie 2
-        Kosaraju kosaraju = new Kosaraju(diGraph);
-        kosaraju.getSCComponents();
+//        diGraph.printMatrix();
+////      //   Zadanie 1
+//        DiGraph diGraph = new DiGraph();
+////        diGraph.createGraph();
+//        diGraph.printMatrix();
+//        diGraph.printNodeArray();
+//        for (int i = 0; i < 1; ++i) {
+//            System.out.println(i + ": ------------------");
+//            diGraph.generateProbabilityMatrix(5, 0.35);
+//        }
+//      //  Zadanie 2
+//        Kosaraju kosaraju = new Kosaraju(diGraph);
+//        kosaraju.getSCComponents();
+//
+//        //Zadanie 3
+//        diGraph.generateRandomSCCdigraphWithWages();
+//        BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
+//        diGraph.setWagesMatixBelmannFord();
+//
+//        bellmanFord.BellmanFordEvaluation(1, diGraph.getWagesMatixBelmannFord());
+//
+//        int infinity = 999;
+//        // tworze macierz która wypełniam od indeksu 1
+//        int[][] tab = new int[diGraph.getGraphMatrix().length + 1][diGraph.getGraphMatrix().length + 1];
+//        for (int i = 0; i < diGraph.getGraphMatrix().length; ++i) {
+//            for (int j = 0; j < diGraph.getGraphMatrix().length; ++j) {
+//                tab[i + 1][j + 1] = diGraph.getWagesMatrix()[i][j];
+//                //odległość do samego siebie równa 0
+//                if (i == j) {
+//                    tab[i + 1][j + 1] = 0;
+//                    continue;
+//                }
+//                // brak połączenia - odległość równa 'nieskończoność'
+//                if (tab[i + 1][j + 1] == 0)
+//                    tab[i + 1][j + 1] = infinity;
+//            }
+//        }
+//
+//        System.out.println("Wypisuje macierz z wagami:");
+//        for (int i = 1; i < tab.length; ++i) {
+//            System.out.print("|");
+//            for (int j = 1; j < tab.length; ++j) {
+//                System.out.print(" ");
+//                System.out.print(tab[i][j]);
+//                System.out.print(" ");
+//            }
+//            System.out.print("|\n");
+//        }
+//        System.out.println("");
 
-        //Zadanie 3
-        diGraph.generateRandomSCCdigraphWithWages();
-        BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
-
-        int infinity = 999;
-        // tworze macierz która wypełniam od indeksu 1
-        int[][] tab = new int[diGraph.getGraphMatrix().length + 1][diGraph.getGraphMatrix().length + 1];
-        for (int i = 0; i < diGraph.getGraphMatrix().length; ++i) {
-            for (int j = 0; j < diGraph.getGraphMatrix().length; ++j) {
-                tab[i + 1][j + 1] = diGraph.getWagesMatrix()[i][j];
-                //odległość do samego siebie równa 0
-                if (i == j) {
-                    tab[i + 1][j + 1] = 0;
-                    continue;
-                }
-                // brak połączenia - odległość równa 'nieskończoność'
-                if (tab[i + 1][j + 1] == 0)
-                    tab[i + 1][j + 1] = infinity;
-            }
-        }
-        System.out.println("Wypisuje macierz z wagami:");
-        for (int i = 1; i < tab.length; ++i) {
-            System.out.print("|");
-            for (int j = 1; j < tab.length; ++j) {
-                System.out.print(" ");
-                System.out.print(tab[i][j]);
-                System.out.print(" ");
-            }
-            System.out.print("|\n");
-        }
-        System.out.println("");
-
-        bellmanFord.BellmanFordEvaluation(1, tab);
 
         //Zadanie 4
-        System.out.println("ZADANIE 4 ------------------");
-        Johnson johnsonsAlgorithm = new Johnson(tab.length - 1);
-        johnsonsAlgorithm.johnsonsAlgorithms(tab);
-
-        System.out.println("---------------------------------------------");
+//        System.out.println("ZADANIE 4 ------------------");
+//        Johnson johnsonsAlgorithm = new Johnson(diGraph.getWagesMatixBelmannFord().length - 1);
+//        johnsonsAlgorithm.johnsonsAlgorithms(diGraph.getWagesMatixBelmannFord());
+//
+//        System.out.println("---------------------------------------------");
 
     }
 
@@ -249,9 +257,61 @@ public class MainWindowController implements Initializable {
                 4);
     }
 
-    public void belmannFordButtonClick(){
-        int w = Integer.parseInt(wValueBelmanFord.getText());
-
+    public void generateRandomSSDigraphButtonClick() {
+        System.out.println("HELLO!");
+        diGraph.generateRandomSCCdigraphWithWages();
+        // tutaj jeszcze wyrysowac na canvasie digraf z wagami!
+//        drawGraph(diGraph, true);
     }
+
+
+    public void belmannFordButtonClick() {
+        try {
+            int w = Integer.parseInt(wValueBelmanFord.getText());
+            bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
+            diGraph.setWagesMatrixBelmannFord();
+            String tmp = "";
+            int[] distances = bellmanFord.BellmanFordEvaluation(w, diGraph.getWagesMatixBelmannFord());
+            for (int vertex = 1; vertex <= bellmanFord.numberOfVertices; vertex++) {
+                tmp += "odległość od: " + w + " do: " + vertex + " wynosi: " + distances[vertex] + "\n";
+            }
+            shortestPathToVertex.setText(tmp);
+
+
+        } catch (NullPointerException e) {
+            System.out.println("Nie zainicjowano tablicy wag!");
+            shortestPathToVertex.setText("Nie zainicjowano tablicy wag!");
+        } catch (NumberFormatException e) {
+            System.out.println("Nie podano wierzchołka!");
+            shortestPathToVertex.setText("Nie podano wierzchołka!");
+        }
+    }
+
+    public void johnsonButtonClick() {
+        diGraph.setWagesMatrixBelmannFord();
+        int numberOfNodes = diGraph.getWagesMatixBelmannFord().length - 1;
+
+        johnsonsAlgorithm = new Johnson(numberOfNodes);
+
+        int[][] allPairShortestPath = johnsonsAlgorithm.johnsonsAlgorithms(diGraph.getWagesMatixBelmannFord());
+        String tmp = "";
+
+        for (int i = 0; i < numberOfNodes; i++) {
+            tmp += "\t" + i;
+        }
+        tmp += "\n";
+
+        for (int source = 0; source < numberOfNodes; source++) {
+            tmp += source + "\t";
+            for (int destination = 0; destination < numberOfNodes; destination++) {
+                tmp += allPairShortestPath[source+1][destination+1] + "\t";
+            }
+            tmp +="\n";
+        }
+//        showJohnson.setText(tmp);
+//        lub na TextArea
+        showJohnsonTextArea.setText(tmp);
+    }
+
 
 }

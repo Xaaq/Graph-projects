@@ -13,20 +13,20 @@ public class DiGraph {
 
     public DiGraph() {
         //Testowo
-        graphMatrix = new int[][]{
-                {0, 0, 0, 0},
-                {1, 0, 1, 0},
-                {1, 1, 0, 0},
-                {0, 1, 0, 0}
-        };
 //        graphMatrix = new int[][]{
 //                {0, 0, 0, 0},
-//                {1, 0, 0, 0},
-//                {0, 1, 0, 1},
-//                {0, 0, 1, 0},
+//                {1, 0, 1, 0},
+//                {1, 1, 0, 0},
+//                {0, 1, 0, 0}
 //        };
-        // generujemy tablice węzłów
-        generateNodeArray();
+////        graphMatrix = new int[][]{
+////                {0, 0, 0, 0},
+////                {1, 0, 0, 0},
+////                {0, 1, 0, 1},
+////                {0, 0, 1, 0},
+////        };
+//        // generujemy tablice węzłów
+//        generateNodeArray();
 
 
 //        graphMatrix = new int[4][4]{{1,2,3,4},{},{},{}};
@@ -63,6 +63,42 @@ public class DiGraph {
      */
     private int[][] wagesMatrix;
 
+    /**
+     * macierz która przechowuje odległości między wierzchołkami, indeksowana od 1!!!
+     */
+    private int[][] wagesMatixBelmannFord;
+
+    public void setWagesMatrixBelmannFord(){
+        int infinity = 999;
+        // tworze macierz która wypełniam od indeksu 1
+        wagesMatixBelmannFord = new int[getGraphMatrix().length + 1][getGraphMatrix().length + 1];
+        for (int i = 0; i < getGraphMatrix().length; ++i) {
+            for (int j = 0; j < getGraphMatrix().length; ++j) {
+                wagesMatixBelmannFord[i + 1][j + 1] = getWagesMatrix()[i][j];
+                //odległość do samego siebie równa 0
+                if (i == j) {
+                    wagesMatixBelmannFord[i + 1][j + 1] = 0;
+                    continue;
+                }
+                // brak połączenia - odległość równa 'nieskończoność'
+                if (wagesMatixBelmannFord[i + 1][j + 1] == 0)
+                    wagesMatixBelmannFord[i + 1][j + 1] = infinity;
+            }
+        }
+
+        System.out.println("Wypisuje macierz z wagami:");
+        for (int i = 1; i < wagesMatixBelmannFord.length; ++i) {
+            System.out.print("|");
+            for (int j = 1; j < wagesMatixBelmannFord.length; ++j) {
+                System.out.print(" ");
+                System.out.print(wagesMatixBelmannFord[i][j]);
+                System.out.print(" ");
+            }
+            System.out.print("|\n");
+        }
+        System.out.println("");
+
+    }
 
     /**
      * Zwraca węzeł według id
@@ -197,11 +233,13 @@ public class DiGraph {
         return wagesMatrix.clone();
     }
 
+    public int[][] getWagesMatixBelmannFord(){return wagesMatixBelmannFord.clone();}
 
     /**
      * generuje losowy silnie spójny digraf z losowymi wagami z zakresu [-5,10]
      */
     public void generateRandomSCCdigraphWithWages() {
+        System.out.println("Generujemy SCC z wagami!");
         // Tworzymy losowy graf (w poleceniu nie jest podana wielkosc)
         //generateProbabilityMatrix(5, 0.4);
         // uzywamy algorytmu Kosaraju do znalezienia najwiekszej spojna skladowej
@@ -209,6 +247,7 @@ public class DiGraph {
         kosaraju.getSCComponents();
         // tutaj zapisjemy najwieksza spojna skladowa
         List<Integer> theBiggestSCCComponent = kosaraju.getTheBiggestSCComponent();
+        System.out.println("RANDOM SSC Po Kosaraju");
 
 
         // robimy płytką kopie naszej macierzy
@@ -250,8 +289,8 @@ public class DiGraph {
 
         // aktualizujemy
         generateNodeArray();
-
         generateEdgeArray();
+
         Random r = new Random();
 
         //dla testów
@@ -261,7 +300,7 @@ public class DiGraph {
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                         int temp = r.nextInt(16) - 5;
-                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(tmptab[counter++]); //(temp); //(tmptab[counter++]);
+                        edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp); //(temp); //(tmptab[counter++]);
 
             }
         }
@@ -283,7 +322,11 @@ public class DiGraph {
 //        }
 
         //generujemy macierz do bellmana forda
-        generateWagesMatrix(graphMatrix.length);
+        try{
+            generateWagesMatrix(graphMatrix.length);
+        } catch (Exception e){
+            System.out.println("Wystąpił błąd!");
+        }
 
         System.out.println("Koniec Generowania SCC digrafu z wagami");
     }
