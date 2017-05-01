@@ -189,6 +189,9 @@ public class DiGraph {
         }
     }
 
+    public ArrayList<GraphEdge> getEdgeGraph() {
+        return edgeGraph;
+    }
 
     public int[][] getWagesMatrix() {
         return wagesMatrix.clone();
@@ -331,9 +334,9 @@ public class DiGraph {
      */
     public void printNodeArray() {
         for (GraphNode eachNode : nodeGraph) {
-            System.out.print(eachNode.getId() + 1 + ": ");
+            System.out.print(eachNode.getId() + ": ");
             for (GraphNode e : eachNode.getConnectionList()) {
-                System.out.print(e.getId() + 1 + " -> ");
+                System.out.print(e.getId() + " -> ");
             }
             System.out.println("NULL");
             System.out.println();

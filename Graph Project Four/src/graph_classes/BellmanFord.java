@@ -25,7 +25,7 @@ public class BellmanFord {
         distances[source] = 0;
         // moze byc bez tego -1?
         // dla -2 dziala(?)
-        for (int node = 1; node <= numberOfVertices - 2; node++) {
+        for (int node = 1; node <= numberOfVertices - 1; node++) {
             for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
                 for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
                     if (adjacencymatrix[sourcenode][destinationnode] != infinity) {

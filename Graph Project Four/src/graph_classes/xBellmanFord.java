@@ -18,7 +18,7 @@ public class xBellmanFord {
 
         distances[source] = 0;
 
-        for (int node = 1; node <= numberofvertices-2; node++) {
+        for (int node = 1; node <= numberofvertices-1; node++) {
             for (int sourcenode = 1; sourcenode <= numberofvertices; sourcenode++) {
                 for (int destinationnode = 1; destinationnode <= numberofvertices; destinationnode++) {
                     if (adjacencymatrix[sourcenode][destinationnode] != MAX_VALUE) {

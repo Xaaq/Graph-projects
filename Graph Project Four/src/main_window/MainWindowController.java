@@ -1,26 +1,28 @@
 package main_window;
 
 
-import graph_classes.BellmanFord;
-import graph_classes.DiGraph;
-import graph_classes.Johnson;
-import graph_classes.Kosaraju;
+import graph_classes.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Transform;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
  * Created by Mateusz on 10.04.2017.
  */
 public class MainWindowController implements Initializable {
-    public Canvas canvas;
+    public Canvas graphCanvas;
     // tutaj użytkownik poda zakodowany graf
 
     // ZADANIE 1
@@ -66,38 +68,38 @@ public class MainWindowController implements Initializable {
          * testy
          */
 
-//        diGraph.printMatrix();
+        diGraph.printMatrix();
 //      //   Zadanie 1
-//        DiGraph diGraph = new DiGraph();
-//        diGraph.createGraph();
-//        diGraph.printMatrix();
-//        diGraph.printNodeArray();
-//        for (int i = 0; i < 1; ++i) {
-//            System.out.println(i + ": ------------------");
-//            diGraph.generateProbabilityMatrix(5, 0.35);
-//        }
-//      //  Zadanie 2
-//        Kosaraju kosaraju = new Kosaraju(diGraph);
-//        kosaraju.getSCComponents();
-//
-//        //Zadanie 3
+        DiGraph diGraph = new DiGraph();
+        diGraph.createGraph();
+        diGraph.printMatrix();
+        diGraph.printNodeArray();
+        for (int i = 0; i < 1; ++i) {
+            System.out.println(i + ": ------------------");
+            diGraph.generateProbabilityMatrix(5, 0.35);
+        }
+      //  Zadanie 2
+        Kosaraju kosaraju = new Kosaraju(diGraph);
+        kosaraju.getSCComponents();
+
+        //Zadanie 3
         diGraph.generateRandomSCCdigraphWithWages();
         BellmanFord bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
 
         int infinity = 999;
         // tworze macierz która wypełniam od indeksu 1
-        int[][] tab = new int[diGraph.getGraphMatrix().length+1][diGraph.getGraphMatrix().length+1];
-        for(int i=0;i<diGraph.getGraphMatrix().length;++i){
-            for(int j=0;j<diGraph.getGraphMatrix().length;++j){
-                tab[i+1][j+1]= diGraph.getWagesMatrix()[i][j];
+        int[][] tab = new int[diGraph.getGraphMatrix().length + 1][diGraph.getGraphMatrix().length + 1];
+        for (int i = 0; i < diGraph.getGraphMatrix().length; ++i) {
+            for (int j = 0; j < diGraph.getGraphMatrix().length; ++j) {
+                tab[i + 1][j + 1] = diGraph.getWagesMatrix()[i][j];
                 //odległość do samego siebie równa 0
-                if(i == j){
-                    tab[i+1][j+1] = 0;
+                if (i == j) {
+                    tab[i + 1][j + 1] = 0;
                     continue;
                 }
                 // brak połączenia - odległość równa 'nieskończoność'
-                if(tab[i+1][j+1] == 0)
-                    tab[i+1][j+1] = infinity;
+                if (tab[i + 1][j + 1] == 0)
+                    tab[i + 1][j + 1] = infinity;
             }
         }
         System.out.println("Wypisuje macierz z wagami:");
@@ -112,11 +114,11 @@ public class MainWindowController implements Initializable {
         }
         System.out.println("");
 
-        bellmanFord.BellmanFordEvaluation(1,tab);
+        bellmanFord.BellmanFordEvaluation(1, tab);
 
         //Zadanie 4
         System.out.println("ZADANIE 4 ------------------");
-        Johnson johnsonsAlgorithm = new Johnson(tab.length-1);
+        Johnson johnsonsAlgorithm = new Johnson(tab.length - 1);
         johnsonsAlgorithm.johnsonsAlgorithms(tab);
 
         System.out.println("---------------------------------------------");
@@ -127,44 +129,41 @@ public class MainWindowController implements Initializable {
     public void generateGgraphButtonClick() {
         float p = Float.parseFloat(pValue.getText());
         int size = Integer.parseInt(nValue.getText());
-        System.out.println(size);
         diGraph.generateProbabilityMatrix(size, p);
+        drawGraph(diGraph, false);
     }
 
-    public void generateCodedGraphButtonClick(){
+    public void generateCodedGraphButtonClick() {
         int lenght = codeGraph.getText().split("\n").length;
         String codedGraph[] = codeGraph.getText().split("\n");
 
 //         length * length = codedGraph.length
-//        System.out.println("l:" + codedGraph.length);
-//        System.out.println("lenght:" + lenght);
-
         String codedGraphSplitted[][] = new String[lenght][lenght];
 
         int counter = 0;
-        for(String x: codedGraph){
+        for (String x : codedGraph) {
             codedGraphSplitted[counter++] = x.split(" ");
         }
         //  tutaj przechowujemy tymczasową macierz sąsiedztwa
         int[][] tmpMatrix = new int[lenght][lenght];
-        int row=0,column=0;
-        for(String x[]: codedGraphSplitted){
-            for(String y: x){
+        int row = 0, column = 0;
+        for (String x[] : codedGraphSplitted) {
+            for (String y : x) {
                 tmpMatrix[row][column] = Integer.parseInt(y);
                 column++;
             }
             row++;
-            column =0;
+            column = 0;
         }
         // Aktualizujemy nasz graf
         diGraph.updateDigraph(tmpMatrix);
         diGraph.printMatrix();
         diGraph.printNodeArray();
+        drawGraph(diGraph, false);
     }
 
 
-
-    public void kosarajuButtonClick(){
+    public void kosarajuButtonClick() {
         kosaraju = new Kosaraju(diGraph);
         String text = kosaraju.getSCComponents().toString();
         SSComponents.setText(text);
@@ -172,15 +171,87 @@ public class MainWindowController implements Initializable {
 
 // Labela zamiast TextArea do wyswietlania Johnsona, przeciagnac kontrolki na dol apki i pousuwac niepotrzebne linie
 
-//    public void generateCodedGraphButtonClick() {
-//        int KValueInput = Integer.parseInt(kValueInput.getText());
-//        int numbersOfVercices = Integer.parseInt(numbersOfVerctices.getText());
-//        if (numbersOfVercices * KValueInput % 2 != 0) {
-//            KRegularLabel.setText("Błąd! Liczba wierzchołków * k musi być liczbą parzysta!");
-//        }
-//        graph.kReguralGraphs(numbersOfVercices, KValueInput);
-//        canvas.drawGraph(graph);
-//    }
 
+    public void drawGraph(DiGraph digraph, boolean withWages) {
+        double canvasWidth = graphCanvas.getWidth();
+        double canvasHeight = graphCanvas.getHeight();
+        double graphSize = (canvasWidth <= canvasHeight) ? canvasWidth : canvasHeight;
+        int dotSize = 15;
+        ArrayList<GraphNode> nodeGraph = digraph.getNodeGraph();
+        ArrayList<GraphEdge> edgeGraph = digraph.getEdgeGraph();
+        int dotCount = nodeGraph.size();
+        GraphicsContext context = graphCanvas.getGraphicsContext2D();
+
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+//        context.setFill(Color.web("#673ab7"));
+        context.setFill(Color.web("#673ab7"));
+        context.setStroke(Color.web("#673ab7"));
+        context.setLineWidth(3);
+
+        //rysuje kółka
+        for (int i = 0; i < dotCount; i++) {
+            double angle = i * 360 / dotCount * Math.PI / 180;
+            double x = canvasWidth / 2 + Math.sin(angle) * graphSize * 2 / 5 - dotSize / 2;
+            double y = canvasHeight / 2 + Math.cos(angle) * graphSize * 2 / 5 - dotSize / 2;
+            context.fillText(Integer.toString(digraph.getNodeGraph().get(i).getId()), x + dotSize, y + dotSize);
+            context.fillOval(x, y, dotSize, dotSize);
+        }
+
+        //rysuje linie i opcjonalnie wagi krawędzi w zależności czy withWages == false czy == true
+        for (int i = 0; i < dotCount; i++) {
+            for (GraphNode node : nodeGraph.get(i).getConnectionList()) {
+                // ten sam kat co wczesniej
+                double angle1 = i * 360 / dotCount * Math.PI / 180;
+                double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
+                double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
+                int index = nodeGraph.indexOf(node);
+                double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
+                double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
+                double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
+                context.strokeLine(x1, y1, x2, y2);
+
+//            ??    context.fillText(Integer.toString(edgeGraph.get(i).getConnectionEdgeList().get(0).getWeight()),(x1+x2)/2, (y1+y2)/2);
+//                drawArrow(context,x1,y1,x2,y2);
+
+
+                //rysuje grot strzałki
+                double dx = x2 - x1, dy = y2 - y1;
+                double angleDif = Math.atan2(dy, dx);
+                int len = (int) Math.sqrt(dx * dx + dy * dy);
+                int arrowSize = 12;
+//                context.fillPolygon(new double[]{len, len - arrowSize, len - arrowSize, len}, new double[]{0, -arrowSize, arrowSize, 0},
+//                        4);
+//                gc.fillPolygon(new double[]{len, len - arrowSize, len - arrowSize, len}, new double[]{0, -arrowSize, arrowSize, 0},
+//                        4);
+
+//                double angleDifference = Math.PI * 30 / 180;
+//                context.strokeLine(x2, y2, x2 - Math.cos(angle2 + angleDifference) * 15, y2 - Math.sin(angle2 + angleDifference) * 15);
+//                context.strokeLine(x2, y2, x2 - Math.cos(angle2 - angleDifference) * 15, y2 - Math.sin(angle2 - angleDifference) * 15);
+            }
+        }
+    }
+
+    // Z neta - nie działa jak się narysuje kolejny raz inny graf
+    void drawArrow(GraphicsContext gc, double x1, double y1, double x2, double y2) {
+        gc.setFill(Color.web("#673ab7"));
+
+        double dx = x2 - x1, dy = y2 - y1;
+        double angle3 = Math.atan2(dy, dx);
+        int len = (int) Math.sqrt(dx * dx + dy * dy);
+
+        Transform transform = Transform.translate(x1, y1);
+        transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle3), 0, 0));
+        gc.setTransform(new Affine(transform));
+
+        gc.strokeLine(0, 0, len, 0);
+        int arrowSize = 12;
+        gc.fillPolygon(new double[]{len, len - arrowSize, len - arrowSize, len}, new double[]{0, -arrowSize, arrowSize, 0},
+                4);
+    }
+
+    public void belmannFordButtonClick(){
+        int w = Integer.parseInt(wValueBelmanFord.getText());
+
+    }
 
 }
