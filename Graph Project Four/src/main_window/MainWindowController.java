@@ -137,14 +137,18 @@ public class MainWindowController implements Initializable {
 
     }
 
-
+    // Tutaj narysować digraf bez wag
     public void generateGgraphButtonClick() {
         float p = Float.parseFloat(pValue.getText());
         int size = Integer.parseInt(nValue.getText());
         diGraph.generateProbabilityMatrix(size, p);
+
+        // Rysowanie
         drawGraph(diGraph, false);
     }
 
+
+    // Tutaj narysować digraf bez wag
     public void generateCodedGraphButtonClick() {
         int lenght = codeGraph.getText().split("\n").length;
         String codedGraph[] = codeGraph.getText().split("\n");
@@ -171,17 +175,20 @@ public class MainWindowController implements Initializable {
         diGraph.updateDigraph(tmpMatrix);
         diGraph.printMatrix();
         diGraph.printNodeArray();
+
+        // Rysowanie
         drawGraph(diGraph, false);
     }
 
+    // Tutaj narysować digraf z wagami
+    public void generateRandomSSDigraphButtonClick() {
+        System.out.println("HELLO!");
+        diGraph.generateRandomSCCdigraphWithWages();
+        // tutaj jeszcze wyrysowac na canvasie digraf z wagami!
 
-    public void kosarajuButtonClick() {
-        kosaraju = new Kosaraju(diGraph);
-        String text = kosaraju.getSCComponents().toString();
-        SSComponents.setText(text);
+        // Rysowanie
+//        drawGraph(diGraph, true);
     }
-
-// Labela zamiast TextArea do wyswietlania Johnsona, przeciagnac kontrolki na dol apki i pousuwac niepotrzebne linie
 
 
     public void drawGraph(DiGraph digraph, boolean withWages) {
@@ -195,7 +202,6 @@ public class MainWindowController implements Initializable {
         GraphicsContext context = graphCanvas.getGraphicsContext2D();
 
         context.clearRect(0, 0, canvasWidth, canvasHeight);
-//        context.setFill(Color.web("#673ab7"));
         context.setFill(Color.web("#673ab7"));
         context.setStroke(Color.web("#673ab7"));
         context.setLineWidth(3);
@@ -222,15 +228,21 @@ public class MainWindowController implements Initializable {
                 double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
                 context.strokeLine(x1, y1, x2, y2);
 
-//            ??    context.fillText(Integer.toString(edgeGraph.get(i).getConnectionEdgeList().get(0).getWeight()),(x1+x2)/2, (y1+y2)/2);
+                // To działa jak się narysuje raz, z każdym kolejnym razem już się psuje
 //                drawArrow(context,x1,y1,x2,y2);
 
 
                 //rysuje grot strzałki
-                double dx = x2 - x1, dy = y2 - y1;
-                double angleDif = Math.atan2(dy, dx);
-                int len = (int) Math.sqrt(dx * dx + dy * dy);
-                int arrowSize = 12;
+                double lineAngle = Math.atan2(y2 - y1, x2 - x1);
+                double angleDifference = Math.PI * 30 / 180;
+                context.strokeLine(x2, y2, x2 - Math.cos(lineAngle + angleDifference) * 15, y2 - Math.sin(lineAngle + angleDifference) * 15);
+                context.strokeLine(x2, y2, x2 - Math.cos(lineAngle - angleDifference) * 15, y2 - Math.sin(lineAngle - angleDifference) * 15);
+
+
+//                double dx = x2 - x1, dy = y2 - y1;
+//                double angleDif = Math.atan2(dy, dx);
+//                int len = (int) Math.sqrt(dx * dx + dy * dy);
+//                int arrowSize = 12;
 //                context.fillPolygon(new double[]{len, len - arrowSize, len - arrowSize, len}, new double[]{0, -arrowSize, arrowSize, 0},
 //                        4);
 //                gc.fillPolygon(new double[]{len, len - arrowSize, len - arrowSize, len}, new double[]{0, -arrowSize, arrowSize, 0},
@@ -243,7 +255,7 @@ public class MainWindowController implements Initializable {
         }
     }
 
-    // Z neta - nie działa jak się narysuje kolejny raz inny graf
+    // Rozwiązanie z neta - nie działa jak się narysuje kolejny raz inny graf
     void drawArrow(GraphicsContext gc, double x1, double y1, double x2, double y2) {
         gc.setFill(Color.web("#673ab7"));
 
@@ -261,11 +273,10 @@ public class MainWindowController implements Initializable {
                 4);
     }
 
-    public void generateRandomSSDigraphButtonClick() {
-        System.out.println("HELLO!");
-        diGraph.generateRandomSCCdigraphWithWages();
-        // tutaj jeszcze wyrysowac na canvasie digraf z wagami!
-//        drawGraph(diGraph, true);
+    public void kosarajuButtonClick() {
+        kosaraju = new Kosaraju(diGraph);
+        String text = kosaraju.getSCComponents().toString();
+        SSComponents.setText(text);
     }
 
 // !! CZASAMI BELMANN FORD POKAZUJE ŹLE ???
@@ -274,14 +285,14 @@ public class MainWindowController implements Initializable {
         try {
             int w = Integer.parseInt(wValueBelmanFord.getText());
             // zwiększamy w o 1, bo w belmannie fordzie tablice indeksujemy  od 1
-            w = w+1;
+            w = w + 1;
 //            bellmanFord = new BellmanFord(diGraph.getGraphMatrix().length);
             bellmanFord = new xBellmanFord(diGraph.getGraphMatrix().length);
             diGraph.setWagesMatrixBelmannFord();
             String tmp = "";
             int[] distances = bellmanFord.BellmanFordEvaluation(w, diGraph.getWagesMatixBelmannFord());
             for (int vertex = 1; vertex <= bellmanFord.numberOfVertices; vertex++) {
-                tmp += "odległość od: " + (w-1) + " do: " + (vertex-1) + " wynosi: " + distances[vertex] + "\n";
+                tmp += "odległość od: " + (w - 1) + " do: " + (vertex - 1) + " wynosi: " + distances[vertex] + "\n";
             }
             shortestPathToVertex.setText(tmp);
 
@@ -312,9 +323,9 @@ public class MainWindowController implements Initializable {
         for (int source = 0; source < numberOfNodes; source++) {
             tmp += source + "\t";
             for (int destination = 0; destination < numberOfNodes; destination++) {
-                tmp += allPairShortestPath[source+1][destination+1] + "\t";
+                tmp += allPairShortestPath[source + 1][destination + 1] + "\t";
             }
-            tmp +="\n";
+            tmp += "\n";
         }
 //        showJohnson.setText(tmp);
 //        lub na TextArea

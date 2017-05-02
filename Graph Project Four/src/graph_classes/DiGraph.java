@@ -247,6 +247,7 @@ public class DiGraph {
         kosaraju.getSCComponents();
         // tutaj zapisjemy najwieksza spojna skladowa
         List<Integer> theBiggestSCCComponent = kosaraju.getTheBiggestSCComponent();
+        System.out.println("\nTHE BIGGESTSCC: " + theBiggestSCCComponent + "\n");
         System.out.println("RANDOM SSC Po Kosaraju");
 
 
@@ -294,12 +295,14 @@ public class DiGraph {
         Random r = new Random();
 
         //dla testów
-        int tmptab[]={2,-3,1,-2,8,-1};
+//        int tmptab[]={2,-3,1,-2,8,-1};
         int counter=0;
 
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
                         int temp = r.nextInt(16) - 5;
+                        while(temp == 0)
+                            temp = r.nextInt(16) - 5;
                         edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp); //(temp); //(tmptab[counter++]);
 
             }
