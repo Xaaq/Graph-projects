@@ -52,7 +52,6 @@ public class GraphEdge {
     }
 
     public GraphNode getFirst() {
-
         return first;
     }
 

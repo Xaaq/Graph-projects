@@ -8,9 +8,10 @@ import java.util.Scanner;
 
 public class Johnson{
     private int SOURCE_NODE;
-    private int numberOfNodes;
+    public int numberOfNodes;
     private int augmentedMatrix[][];
-    private int potential[];
+    private int d[];
+//    private xBellmanFord bellmanFord;
     private xBellmanFord bellmanFord;
     private DijkstraShortesPath dijsktraShortesPath;
     private int[][] allPairShortestPath;
@@ -21,18 +22,24 @@ public class Johnson{
         this.numberOfNodes = numberOfNodes;
         augmentedMatrix = new int[numberOfNodes + 2][numberOfNodes + 2];
         SOURCE_NODE = numberOfNodes + 1;
-        potential = new int[numberOfNodes + 2];
+        d = new int[numberOfNodes + 2];
         bellmanFord = new xBellmanFord(numberOfNodes + 1);
         dijsktraShortesPath = new DijkstraShortesPath(numberOfNodes);
         allPairShortestPath = new int[numberOfNodes + 1][numberOfNodes + 1];
     }
 
-    public void johnsonsAlgorithms(int adjacencyMatrix[][]) {
+    public int[][] johnsonsAlgorithms(int adjacencyMatrix[][]) {
+        System.out.println("--------------------Johnson-------------------------");
+        // dodajemy nowy węzeł q połączony krawędziami o wagach 0 z każdym innym wierzchołkiem grafu
         computeAugmentedGraph(adjacencyMatrix);
-
+        // używamy algorytmu Belmanna Forda startując od dodanego wierzchołka q, aby odnaleźć minimala
+        // odległość d[v] każdego wierzchołka v od q.
+        // Jeżeli został wykryty cykl to algorytm powinien się przerwać??
         bellmanFord.BellmanFordEvaluation(SOURCE_NODE, augmentedMatrix);
-        potential = bellmanFord.getDistances();
-
+        // pobieram tablice odległości
+        d = bellmanFord.getDistances();
+        // przewagujemy graf tak, aby zlikwidować ujemne wagi krawędzi nie zmieniając wartości najkrótszych ścieżek.
+        // W tym celu każdej krawędzi(u,v) o wadze w(u,v) przypisz nową wagę w(u,v)+d[u]-d[v]
         int reweightedGraph[][] = reweightGraph(adjacencyMatrix);
         for (int i = 1; i <= numberOfNodes; i++) {
             for (int j = 1; j <= numberOfNodes; j++) {
@@ -40,28 +47,29 @@ public class Johnson{
             }
             System.out.println();
         }
-
+        // Użyj algorytmu Dijkstry dla każdego wierzchołka w grafie
         for (int source = 1; source <= numberOfNodes; source++) {
             dijsktraShortesPath.dijkstraShortestPath(source, reweightedGraph);
             int[] result = dijsktraShortesPath.getDistances();
             for (int destination = 1; destination <= numberOfNodes; destination++) {
                 allPairShortestPath[source][destination] = result[destination]
-                        + potential[destination] - potential[source];
+                        + d[destination] - d[source];
             }
         }
 
-        System.out.println();
-        for (int i = 1; i <= numberOfNodes; i++) {
-            System.out.print("\t" + i);
-        }
-        System.out.println();
-        for (int source = 1; source <= numberOfNodes; source++) {
-            System.out.print(source + "\t");
-            for (int destination = 1; destination <= numberOfNodes; destination++) {
-                System.out.print(allPairShortestPath[source][destination] + "\t");
-            }
-            System.out.println();
-        }
+//        System.out.println();
+//        for (int i = 1; i <= numberOfNodes; i++) {
+//            System.out.print("\t" + i);
+//        }
+//        System.out.println();
+//        for (int source = 1; source <= numberOfNodes; source++) {
+//            System.out.print(source + "\t");
+//            for (int destination = 1; destination <= numberOfNodes; destination++) {
+//                System.out.print(allPairShortestPath[source][destination] + "\t");
+//            }
+//            System.out.println();
+//        }
+        return allPairShortestPath;
     }
 
     private void computeAugmentedGraph(int adjacencyMatrix[][]) {
@@ -80,7 +88,7 @@ public class Johnson{
         for (int source = 1; source <= numberOfNodes; source++) {
             for (int destination = 1; destination <= numberOfNodes; destination++) {
                 result[source][destination] = adjacencyMatrix[source][destination]
-                        + potential[source] - potential[destination];
+                        + d[source] - d[destination];
             }
         }
         return result;

@@ -13,14 +13,43 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="700.0" prefWidth="705.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main_window.MainWindowController">
+<GridPane alignment="center" hgap="10" prefHeight="616.0" prefWidth="703.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main_window.MainWindowController">
    <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
+      <ColumnConstraints maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
       <ColumnConstraints />
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" />
+      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" />
+      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />
@@ -28,19 +57,18 @@
       <RowConstraints />
       <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
       <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
-      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
       <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
    </rowConstraints>
    <children>
-      <Canvas fx:id="canvas" height="240.0" width="312.0" GridPane.rowIndex="1" GridPane.rowSpan="3" />
-      <TextField promptText="przykładowy tekst" style="-fx-border-color: #673ab7; -fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 0 2 0; -fx-padding: 0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Canvas fx:id="graphCanvas" height="337.0" width="470.0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="13" />
+      <TextField fx:id="wValueBelmanFord" promptText="w:" style="-fx-border-color: #673ab7; -fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 0 2 0; -fx-padding: 0;" GridPane.columnIndex="3" GridPane.rowIndex="3">
           <font>
               <Font name="Calibri" size="16.0" />
           </font>
       </TextField>
-      <Button fx:id="buttonCodedGraph" cache="true" mnemonicParsing="false" onMouseClicked="#generateCodedGraphButtonClick" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Graf zakodowany" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="10">
+      <Button fx:id="buttonCodedGraph" cache="true" mnemonicParsing="false" onMouseClicked="#generateCodedGraphButtonClick" prefHeight="37.0" prefWidth="173.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Graf zakodowany" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="24">
           <font>
               <Font name="Calibri" size="14.0" />
           </font>
@@ -57,11 +85,11 @@
               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
           </padding>
       </Button>
-      <Label fx:id="labelek" text="Koduj graf:" GridPane.rowIndex="7" />
-      <TextArea fx:id="codeGraph" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8" />
-      <TextField fx:id="nValue" promptText="Podaj n:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <TextField fx:id="pValue" promptText="Podaj p:" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Button fx:id="generateGgraph" cache="true" mnemonicParsing="false" onMouseClicked="#generateGgraphButtonClick" prefHeight="40.0" prefWidth="149.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Generuj G(n,p)" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="7" GridPane.rowSpan="3">
+      <Label fx:id="labelek" text="Koduj graf:" GridPane.rowIndex="16" />
+      <TextArea fx:id="codeGraph" prefHeight="108.0" prefWidth="200.0" GridPane.rowIndex="17" GridPane.rowSpan="5" />
+      <TextField fx:id="nValue" promptText="Podaj n:" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+      <TextField fx:id="pValue" promptText="Podaj p:" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+      <Button fx:id="generateGgraph" cache="true" mnemonicParsing="false" onMouseClicked="#generateGgraphButtonClick" prefHeight="59.0" prefWidth="179.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Generuj G(n,p)" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="9">
          <font>
             <Font name="Calibri" size="14.0" />
          </font>
@@ -78,6 +106,78 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </Button>
-      <Button fx:id="testowyButton" mnemonicParsing="false" onMouseClicked="#generateCodedGraphButtonClick" text="Button" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <Button fx:id="runBelmannFord" cache="true" mnemonicParsing="false" onMouseClicked="#belmannFordButtonClick" prefHeight="59.0" prefWidth="180.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Belmann-Ford" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="4">
+         <font>
+            <Font name="Calibri" size="14.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="#00000080" height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </Button>
+      <Label fx:id="shortestPathToVertex" prefHeight="89.0" prefWidth="182.0" text="Najkrótsza ścieżka do wierzchołka:" GridPane.columnIndex="1" GridPane.rowIndex="24" />
+      <Button fx:id="generateRandomSSDigraph" cache="true" mnemonicParsing="false" onMouseClicked="#generateRandomSSDigraphButtonClick" prefHeight="65.0" prefWidth="176.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="losowy SS digraf" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="6">
+          <font>
+              <Font name="Calibri" size="20.0" />
+          </font>
+          <opaqueInsets>
+              <Insets />
+          </opaqueInsets>
+          <effect>
+              <DropShadow blurType="GAUSSIAN" color="#00000080" height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
+          </effect>
+          <cursor>
+              <Cursor fx:constant="HAND" />
+          </cursor>
+          <padding>
+              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+      </Button>
+      <Button fx:id="runKosaraju" cache="true" mnemonicParsing="false" onMouseClicked="#kosarajuButtonClick" prefHeight="28.0" prefWidth="177.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Kosaraju" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="14" GridPane.rowSpan="3">
+          <font>
+              <Font name="Calibri" size="20.0" />
+          </font>
+          <opaqueInsets>
+              <Insets />
+          </opaqueInsets>
+          <effect>
+              <DropShadow blurType="GAUSSIAN" color="#00000080" height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
+          </effect>
+          <cursor>
+              <Cursor fx:constant="HAND" />
+          </cursor>
+          <padding>
+              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+      </Button>
+      <Label fx:id="SSComponents" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="402.0" text="Silnie spójne składowe" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="22" />
+      <Button fx:id="runJohnson" cache="true" mnemonicParsing="false" onMouseClicked="#johnsonButtonClick" prefHeight="121.0" prefWidth="177.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="Johnson" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="17">
+          <font>
+              <Font name="Calibri" size="20.0" />
+          </font>
+          <opaqueInsets>
+              <Insets />
+          </opaqueInsets>
+          <effect>
+              <DropShadow blurType="GAUSSIAN" color="#00000080" height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
+          </effect>
+          <cursor>
+              <Cursor fx:constant="HAND" />
+          </cursor>
+          <padding>
+              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+          </padding>
+      </Button>
+      <TextArea fx:id="showJohnsonTextArea" prefHeight="161.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.rowSpan="5" />
+      <Label text="Odległości do wierzchołków:" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+      <Label fx:id="showJohnson" prefHeight="118.0" prefWidth="182.0" text="Johnson" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="24" />
    </children>
 </GridPane>
