@@ -63,6 +63,10 @@ public class DiGraph {
      */
     private int[][] wagesMatrix;
 
+    public int getWagesMatrix(int x, int y){
+        return wagesMatrix[x][y];
+    }
+
     /**
      * macierz która przechowuje odległości między wierzchołkami, indeksowana od 1!!!
      */

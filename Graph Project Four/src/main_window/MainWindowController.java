@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
@@ -187,7 +188,7 @@ public class MainWindowController implements Initializable {
         // tutaj jeszcze wyrysowac na canvasie digraf z wagami!
 
         // Rysowanie
-//        drawGraph(diGraph, true);
+        drawGraph(diGraph, true);
     }
 
 
@@ -218,6 +219,12 @@ public class MainWindowController implements Initializable {
         //rysuje linie i opcjonalnie wagi krawędzi w zależności czy withWages == false czy == true
         for (int i = 0; i < dotCount; i++) {
             for (GraphNode node : nodeGraph.get(i).getConnectionList()) {
+                //pierwszy wierzchołek
+//                GraphNode node2 = nodeGraph.get(i);
+                // drugi
+//                node
+
+
                 // ten sam kat co wczesniej
                 double angle1 = i * 360 / dotCount * Math.PI / 180;
                 double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
@@ -238,6 +245,23 @@ public class MainWindowController implements Initializable {
                 context.strokeLine(x2, y2, x2 - Math.cos(lineAngle + angleDifference) * 15, y2 - Math.sin(lineAngle + angleDifference) * 15);
                 context.strokeLine(x2, y2, x2 - Math.cos(lineAngle - angleDifference) * 15, y2 - Math.sin(lineAngle - angleDifference) * 15);
 
+                //wypisuje wagę połączenia
+                if(withWages){
+                    // to rysuje w połowie lini
+                    double textX = x2 - Math.cos(lineAngle + Math.PI / 2) * 20;
+                    double textY = y2 - Math.sin(lineAngle + Math.PI / 2) * 20;
+
+//                    double textX = x2 - x1/10;//- Math.cos(lineAngle + Math.PI / 2) * 20;
+//                    double textY = y2 - 8;//- Math.sin(lineAngle + Math.PI / 2) * 20 ;
+                    context.setFill(Color.web("#000000"));
+//                    context.setStroke(Color.web("#000000"));
+
+                    Font font = new Font(16);
+                    context.setFont(font);
+                    String tmp = "("+ nodeGraph.get(i).getId() + "->" + node.getId() + ")";
+                    context.fillText(String.valueOf(digraph.getWagesMatrix(nodeGraph.get(i).getId(), node.getId())), textX, textY);
+                }
+
 
 //                double dx = x2 - x1, dy = y2 - y1;
 //                double angleDif = Math.atan2(dy, dx);
@@ -255,7 +279,7 @@ public class MainWindowController implements Initializable {
         }
     }
 
-    // Rozwiązanie z neta - nie działa jak się narysuje kolejny raz inny graf
+    // Rozwiązanie  nie działa jak się narysuje kolejny raz inny graf
     void drawArrow(GraphicsContext gc, double x1, double y1, double x2, double y2) {
         gc.setFill(Color.web("#673ab7"));
 
