@@ -256,7 +256,7 @@ public class MainWindowController implements Initializable {
                     context.setFill(Color.web("#000000"));
 //                    context.setStroke(Color.web("#000000"));
 
-                    Font font = new Font(16);
+                    Font font = new Font(12);
                     context.setFont(font);
                     String tmp = "("+ nodeGraph.get(i).getId() + "->" + node.getId() + ")";
                     context.fillText(String.valueOf(digraph.getWagesMatrix(nodeGraph.get(i).getId(), node.getId())), textX, textY);
