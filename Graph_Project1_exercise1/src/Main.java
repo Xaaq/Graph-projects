@@ -7,9 +7,9 @@ public class Main {
     private static int nrOfVertices;
 
     private static void message(){
-        System.out.println("Uzupełnij sąsiadów: wpisując 1, jeżeli dane wierzchołki sąsiadują ze sobą, oraz 0 jeżeli nie.");
+        System.out.println("Uzupełnij sąsiadów: wpisując numer wierzchołka z którym sąsiaduje dany wierzchołek");
         System.out.println("Zaczynamy od wierzchołka nr. 1. Każde cyfry oddziel spacją.");
-        System.out.println("0 kończy wpisywanie w danym wierzchołku.");
+        System.out.println("0 kończy wpisywanie dla danego wierzchołka.");
     }
     //Tworzymy macierz sąsiedztwa według rozmiaru podanego przez użytkownika i uzupełnia ją
     private static void createGraph() {
@@ -25,7 +25,7 @@ public class Main {
         try {
             numberOfVertices = reader.nextInt();
         } catch (NumberFormatException ex) {
-            System.out.println("Not a number !");
+            System.out.println("Nie podałeś numeru !");
         }
 
         nrOfVertices = numberOfVertices;
@@ -62,19 +62,26 @@ public class Main {
     }
     public static void main(String[] args) {
         createGraph();
+        // Wypisaie macierzy połączeń
         cMatrix.printMatrix();
         int nrOfEdges = cMatrix.getNumberOfEdges();
 
         // Macierz incydencji z macierzy połączeń
+        System.out.println("\n----- Macierz incydencji z macierzy połączeń-----");
         IncidenceMatrix incMatrix = new IncidenceMatrix(cMatrix, nrOfVertices, nrOfEdges);
         incMatrix.printIncidenceMatrix();
+
         // Lista sąsiadów z macierzy połączeń
+        System.out.println("\n----- Lista sąsiadów z macierzy połączęń-----");
         ListOfNeighbors listOfN = new ListOfNeighbors(cMatrix, nrOfVertices);
         listOfN.printListOfNeighbors();
+
         // Macierz połączeń z listy sąsiadów
+        System.out.println("\n-----Macierz połączęń z listy sąsiadów-----");
         ConnectionMatrix connectionMatrixFromListOfNeighbors = new ConnectionMatrix(listOfN, nrOfVertices);
         connectionMatrixFromListOfNeighbors.printMatrix();
         // Macierz połączeń z macierzy incydencji
+        System.out.println("\n-----Macierz połączęń z macierzy incydencji-----");
         ConnectionMatrix connectionMatrixFromIncidenceList = new ConnectionMatrix(incMatrix,nrOfVertices,nrOfEdges);
         connectionMatrixFromIncidenceList.printMatrix();
     }

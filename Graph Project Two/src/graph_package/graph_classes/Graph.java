@@ -209,11 +209,17 @@ public class Graph {
     }
 
     //Program do sprawdzania (dla małych grafów) czy graf jest hamiltonowski.
-    public boolean isHamiltonianGraph(){
-        //Wystarczy sprawdzić od wierzchołka 0. Jak jest hamiltonowski to nie ważne od którego wierzchołka zaczniemy
-        DFSPaths dfs = new DFSPaths(this, 0);
 
-        return dfs.isHamiltonianGraph();
+//    public boolean isHamiltonianGraph(){
+//        //Wystarczy sprawdzić od wierzchołka 0. Jak jest hamiltonowski to nie ważne od którego wierzchołka zaczniemy
+//        DFSPaths dfs = new DFSPaths(this, 0);
+//
+//        return dfs.isHamiltonianGraph();
+//    }
+
+    public boolean isHamiltonianGraph(){
+        DFS dfs = new DFS();
+        return dfs.isHamiltonianCycle(this.getGraphMatrix());
     }
 
     //randomizuje graf
