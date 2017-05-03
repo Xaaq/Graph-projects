@@ -92,18 +92,6 @@ public class MainWindowController implements Initializable {
                 double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
                 double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
                 context.strokeLine(x1, y1, x2, y2);
-
-//                if (edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId() >= nodeGraph.get(i).getId()) {
-//                    context.setFill(Color.web("#000000"));
-//                    context.setStroke(Color.web("#000000"));
-//                    double lineAngle = Math.atan2(y2 - y1, x2 - x1);
-//                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2) * 12;
-//                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2) * 12;
-//
-//                    context.fillText(String.valueOf(edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight() + ""), textX, textY);
-//                    context.setFill(Color.web("#673ab7"));
-//                    context.setStroke(Color.web("#673ab7"));
-//                }
             }
         }
 
@@ -124,8 +112,8 @@ public class MainWindowController implements Initializable {
                     double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
 
                     double lineAngle = Math.atan2(y2 - y1, x2 - x1);
-                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2)*5;
-                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2)*10;
+                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2) * 5;
+                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2) * 10;
 
                     context.fillText(String.valueOf(edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight() + ""), textX, textY);
                 }
