@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -80,21 +81,59 @@ public class MainWindowController implements Initializable {
             context.fillOval(x, y, dotSize, dotSize);
         }
 
-        //rysuje linie i wagi
         for (int i = 0; i < dotCount; i++) {
-            for (GraphNode node : nodeGraph.get(i).getConnectionList()) {
+            for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+                GraphNode node = nodeGraph.get(i).getConnectionList().get(j);
+
                 double angle1 = i * 360 / dotCount * Math.PI / 180;
                 double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
                 double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
-                int index = nodeGraph.indexOf(node);
                 double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
                 double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
                 double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
                 context.strokeLine(x1, y1, x2, y2);
-//            ??    context.fillText(Integer.toString(edgeGraph.get(i).getConnectionEdgeList().get(0).getWeight()),(x1+x2)/2, (y1+y2)/2);
+
+//                if (edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId() >= nodeGraph.get(i).getId()) {
+//                    context.setFill(Color.web("#000000"));
+//                    context.setStroke(Color.web("#000000"));
+//                    double lineAngle = Math.atan2(y2 - y1, x2 - x1);
+//                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2) * 12;
+//                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2) * 12;
+//
+//                    context.fillText(String.valueOf(edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight() + ""), textX, textY);
+//                    context.setFill(Color.web("#673ab7"));
+//                    context.setStroke(Color.web("#673ab7"));
+//                }
             }
         }
+
+        context.setFill(Color.web("#000000"));
+        context.setStroke(Color.web("#000000"));
+
+        for (int i = 0; i < dotCount; i++) {
+            for (int j = 0; j < nodeGraph.get(i).getConnectionList().size(); j++) {
+                if (edgeGraph.get(i).getConnectionEdgeList().get(j).getSecond().getId() >= nodeGraph.get(i).getId()) {
+
+                    GraphNode node = nodeGraph.get(i).getConnectionList().get(j);
+
+                    double angle1 = i * 360 / dotCount * Math.PI / 180;
+                    double x1 = canvasWidth / 2 + Math.sin(angle1) * graphSize * 2 / 5;
+                    double y1 = canvasHeight / 2 + Math.cos(angle1) * graphSize * 2 / 5;
+                    double angle2 = nodeGraph.indexOf(node) * 360 / dotCount * Math.PI / 180;
+                    double x2 = canvasWidth / 2 + Math.sin(angle2) * graphSize * 2 / 5;
+                    double y2 = canvasHeight / 2 + Math.cos(angle2) * graphSize * 2 / 5;
+
+                    double lineAngle = Math.atan2(y2 - y1, x2 - x1);
+                    double textX = (x1 + x2) / 2 - Math.cos(lineAngle + Math.PI / 2)*5;
+                    double textY = (y1 + y2) / 2 - Math.sin(lineAngle + Math.PI / 2)*10;
+
+                    context.fillText(String.valueOf(edgeGraph.get(i).getConnectionEdgeList().get(j).getWeight() + ""), textX, textY);
+                }
+            }
+        }
+
     }
+
 
     public void createGraphFromNumberSequenceButtonClick() {
         String[] inputStringArray = numberSequenceInput.getText().replaceAll(" ", "").split(",");
