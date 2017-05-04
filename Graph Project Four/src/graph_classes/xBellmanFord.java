@@ -18,12 +18,16 @@ public class xBellmanFord {
         }
 
         distances[source] = 0;
+        // iterujemy N-1 razy!
         for (int node = 1; node <= numberOfVertices-1; node++) {
+            // dla każdej krawędzi
             for (int sourcenode = 1; sourcenode <= numberOfVertices; sourcenode++) {
                 for (int destinationnode = 1; destinationnode <= numberOfVertices; destinationnode++) {
                     if (adjacencymatrix[sourcenode][destinationnode] != MAX_VALUE) {
+                        // relaksacja
                         if (destinationnode != source && distances[destinationnode] > distances[sourcenode]
                                 + adjacencymatrix[sourcenode][destinationnode]) {
+
                             distances[destinationnode] = distances[sourcenode]
                                     + adjacencymatrix[sourcenode][destinationnode];
                         }

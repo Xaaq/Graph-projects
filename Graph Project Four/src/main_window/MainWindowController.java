@@ -248,18 +248,18 @@ public class MainWindowController implements Initializable {
                 //wypisuje wagę połączenia
                 if(withWages){
                     // to rysuje w połowie lini
-                    double textX = x2 - Math.cos(lineAngle + Math.PI / 2) * 20;
-                    double textY = y2 - Math.sin(lineAngle + Math.PI / 2) * 20;
+                    double textX = (x2 + x1)/2 - Math.cos(lineAngle + Math.PI / 2) * 20;
+                    double textY = (y2 + y1)/2 - Math.sin(lineAngle + Math.PI / 2) * 20;
 
 //                    double textX = x2 - x1/10;//- Math.cos(lineAngle + Math.PI / 2) * 20;
 //                    double textY = y2 - 8;//- Math.sin(lineAngle + Math.PI / 2) * 20 ;
                     context.setFill(Color.web("#000000"));
 //                    context.setStroke(Color.web("#000000"));
 
-                    Font font = new Font(12);
+                    Font font = new Font(10);
                     context.setFont(font);
                     String tmp = "("+ nodeGraph.get(i).getId() + "->" + node.getId() + ")";
-                    context.fillText(String.valueOf(digraph.getWagesMatrix(nodeGraph.get(i).getId(), node.getId())), textX, textY);
+                    context.fillText(String.valueOf(digraph.getWagesMatrix(nodeGraph.get(i).getId(), node.getId())) , textX, textY);
                 }
 
 
