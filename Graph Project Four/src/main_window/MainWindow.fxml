@@ -123,7 +123,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </Button>
-      <Label fx:id="shortestPathToVertex" prefHeight="89.0" prefWidth="182.0" text="Najkrótsza ścieżka do wierzchołka:" GridPane.columnIndex="1" GridPane.rowIndex="24" />
+      <Label prefHeight="89.0" prefWidth="182.0" text="Najkrótsza ścieżka do wierzchołka:" GridPane.columnIndex="1" GridPane.rowIndex="24" fx:id="xshortestPathToVertex" />
       <Button fx:id="generateRandomSSDigraph" cache="true" mnemonicParsing="false" onMouseClicked="#generateRandomSSDigraphButtonClick" prefHeight="65.0" prefWidth="176.0" style="-fx-background-color: #673ab7; -fx-border-style: solid; -fx-border-color: #673ab7; -fx-border-width: 1;" text="losowy SS digraf" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="6">
           <font>
               <Font name="Calibri" size="20.0" />
@@ -178,6 +178,6 @@
       </Button>
       <TextArea fx:id="showJohnsonTextArea" prefHeight="161.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.rowSpan="5" />
       <Label text="Odległości do wierzchołków:" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-      <Label fx:id="showJohnson" prefHeight="118.0" prefWidth="182.0" text="Johnson" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="24" />
+      <TextArea fx:id="shortestPathToVertex" prefHeight="81.0" prefWidth="200.0" promptText="Belmann Ford" GridPane.columnIndex="3" GridPane.rowIndex="24" GridPane.rowSpan="4" />
    </children>
 </GridPane>
