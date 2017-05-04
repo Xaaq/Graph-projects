@@ -52,8 +52,9 @@ public class MainWindowController implements Initializable {
     public Button runBelmannFord;
     // generuje losowy silnie spojny digraf
     public Button generateRandomSSDigraph;
+    public Label xshortestPathToVertex;
     // wświetla najkrótszej ścieżki od danego wierzchołka
-    public Label shortestPathToVertex;
+    public TextArea shortestPathToVertex;
 
     // ZADANIE 4
 
