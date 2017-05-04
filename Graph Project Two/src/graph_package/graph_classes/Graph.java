@@ -486,7 +486,7 @@ public class Graph {
 
 //        //stos cyklu
         Stack<Integer> cycle = new Stack<Integer>();
-        //algorytm hierholzera - DFS
+        //DFS
         while (!stack.isEmpty()) {
             int v = stack.pop();
             while (!adj[v].isEmpty()) {
