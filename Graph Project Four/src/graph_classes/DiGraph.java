@@ -90,7 +90,7 @@ public class DiGraph {
             }
         }
 
-        System.out.println("Wypisuje macierz z wagami:");
+        System.out.println("Wypisuje macierz z wagami(setWagesMatrixBelmannFord):");
         for (int i = 1; i < wagesMatixBelmannFord.length; ++i) {
             System.out.print("|");
             for (int j = 1; j < wagesMatixBelmannFord.length; ++j) {
@@ -223,6 +223,7 @@ public class DiGraph {
      * funkcja ktora generuje tablice krawedzi na podstawie tablicy wierzcholkow
      */
     public void generateEdgeArray() {
+        edgeGraph = new ArrayList<>();
         for (int i = 0; i < nodeGraph.size(); i++) {
             edgeGraph.add(new GraphEdge());
             edgeGraph.get(i).convertNodesToEdges(nodeGraph, i);
@@ -302,9 +303,10 @@ public class DiGraph {
 //        int tmptab[]={2,-3,1,-2,8,-1};
         int counter=0;
 
+        int temp;
         for (int i = 0; i < edgeGraph.size(); i++) {
             for (int j = 0; j < edgeGraph.get(i).getConnectionEdgeList().size(); j++) {
-                        int temp = r.nextInt(16) - 5;
+                        temp = r.nextInt(16) - 5;
                         while(temp == 0)
                             temp = r.nextInt(16) - 5;
                         edgeGraph.get(i).getConnectionEdgeList().get(j).setWeight(temp); //(temp); //(tmptab[counter++]);
@@ -332,6 +334,7 @@ public class DiGraph {
         try{
             generateWagesMatrix(graphMatrix.length);
         } catch (Exception e){
+            System.out.println(e.getMessage());
             System.out.println("Wystąpił błąd!");
         }
 
@@ -413,6 +416,8 @@ public class DiGraph {
         }
         // musimy zaaktualizować naszą listę
         generateNodeArray();
+        generateEdgeArray();
+
         // wypisuje, dla testów!
         printMatrix();
     }
