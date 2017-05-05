@@ -381,6 +381,7 @@ public class Graph {
                 Collections.sort(nodes, (o1, o2) -> Integer.compare(o1.getId(), o2.getId()));
                 nodeGraph.clear();
                 nodeGraph.addAll(nodes);
+                randomizeGraph();
 //            // losuj cykl eulera dla kazdego wierzcholka
 //            for (GraphNode n : nodeGraph) {
 //                EulerianCycle(nodeGraph,n.getId());
